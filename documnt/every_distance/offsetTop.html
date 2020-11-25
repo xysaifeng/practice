@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>offsetTop</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 10px;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #box {
+            width: 300px;
+            height: 300px;
+            border: 1px solid;
+            /* position: relative; */
+        }
+        #child {
+            margin: 0 auto;
+            margin-top: 100px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <!-- <h3>关于offsetTop的理解</h3>
+    <ul>
+        <li>1.<strong>offsetTop:</strong> 元素到offsetParent顶部的距离</li>
+        <li>2.<strong>offsetParent:</strong> 距离元素最近的一个具有定位的祖宗元素(relative, posation,fixed)，若祖宗元素比偶不符合条件，offsetParent则为body，</li>
+    </ul> -->
+    
+    <div id='box'>
+        <div id='child'>123</div>
+    </div>
+    
+    <script>
+        // https://blog.csdn.net/jinxi1112/article/details/90692484
+
+        // 1.如果box元素position: relative，则child元素的offsetTop = 100;
+        // console.log(child.offsetTop); // 100
+
+        // 2.如果box元素没有position: relative，则child元素的offsetTop = 111;
+        console.log(child.offsetTop); // 111
+
+        // 3.注意：只有元素show（渲染完成）才会计算入offsetTop，若是中间有元素数据需要异步获取，会导致最终获取的offsetTop值偏小
+    </script>
+</body>
+</html>

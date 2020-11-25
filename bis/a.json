@@ -1,0 +1,352 @@
+{
+    "type": 2,
+    "data": {
+        "node": {
+            "type": 0,
+            "childNodes": [
+                {
+                    "type": 1,
+                    "name": "html",
+                    "publicId": "",
+                    "systemId": "",
+                    "id": 2
+                },
+                {
+                    "type": 2,
+                    "tagName": "html",
+                    "attributes": {
+                        "lang": "en"
+                    },
+                    "childNodes": [
+                        {
+                            "type": 2,
+                            "tagName": "head",
+                            "attributes": {},
+                            "childNodes": [
+                                {
+                                    "type": 3,
+                                    "textContent": "\n    ",
+                                    "secret": false,
+                                    "id": 5
+                                },
+                                {
+                                    "type": 2,
+                                    "tagName": "meta",
+                                    "attributes": {
+                                        "charset": "UTF-8"
+                                    },
+                                    "childNodes": [],
+                                    "id": 6
+                                },
+                                {
+                                    "type": 3,
+                                    "textContent": "\n    ",
+                                    "secret": false,
+                                    "id": 7
+                                },
+                                {
+                                    "type": 2,
+                                    "tagName": "meta",
+                                    "attributes": {
+                                        "name": "viewport",
+                                        "content": "width=device-width, initial-scale=1.0"
+                                    },
+                                    "childNodes": [],
+                                    "id": 8
+                                },
+                                {
+                                    "type": 3,
+                                    "textContent": "\n    ",
+                                    "secret": false,
+                                    "id": 9
+                                },
+                                {
+                                    "type": 2,
+                                    "tagName": "title",
+                                    "attributes": {},
+                                    "childNodes": [
+                                        {
+                                            "type": 3,
+                                            "textContent": "Document",
+                                            "secret": false,
+                                            "id": 11
+                                        }
+                                    ],
+                                    "id": 10
+                                },
+                                {
+                                    "type": 3,
+                                    "textContent": "\n    ",
+                                    "secret": false,
+                                    "id": 12
+                                },
+                                {
+                                    "type": 2,
+                                    "tagName": "script",
+                                    "attributes": {},
+                                    "childNodes": [],
+                                    "id": 13
+                                },
+                                {
+                                    "type": 3,
+                                    "textContent": "\n",
+                                    "secret": false,
+                                    "id": 14
+                                }
+                            ],
+                            "id": 4
+                        },
+                        {
+                            "type": 3,
+                            "textContent": "\n",
+                            "secret": false,
+                            "id": 16
+                        },
+                        {
+                            "type": 2,
+                            "tagName": "body",
+                            "attributes": {},
+                            "childNodes": [
+                                {
+                                    "type": 3,
+                                    "textContent": "\n    ",
+                                    "secret": false,
+                                    "id": 18
+                                },
+                                {
+                                    "type": 2,
+                                    "tagName": "div",
+                                    "attributes": {},
+                                    "childNodes": [
+                                        {
+                                            "type": 3,
+                                            "textContent": "\n        ",
+                                            "secret": false,
+                                            "id": 20
+                                        },
+                                        {
+                                            "type": 2,
+                                            "tagName": "ul",
+                                            "attributes": {},
+                                            "childNodes": [
+                                                {
+                                                    "type": 3,
+                                                    "textContent": "\n            ",
+                                                    "secret": false,
+                                                    "id": 22
+                                                },
+                                                {
+                                                    "type": 2,
+                                                    "tagName": "li",
+                                                    "attributes": {},
+                                                    "childNodes": [
+                                                        {
+                                                            "type": 3,
+                                                            "textContent": "1",
+                                                            "secret": false,
+                                                            "id": 24
+                                                        }
+                                                    ],
+                                                    "id": 23
+                                                },
+                                                {
+                                                    "type": 3,
+                                                    "textContent": "\n            ",
+                                                    "secret": false,
+                                                    "id": 25
+                                                },
+                                                {
+                                                    "type": 2,
+                                                    "tagName": "li",
+                                                    "attributes": {},
+                                                    "childNodes": [
+                                                        {
+                                                            "type": 3,
+                                                            "textContent": "2",
+                                                            "secret": false,
+                                                            "id": 27
+                                                        }
+                                                    ],
+                                                    "id": 26
+                                                },
+                                                {
+                                                    "type": 3,
+                                                    "textContent": "\n            ",
+                                                    "secret": false,
+                                                    "id": 28
+                                                },
+                                                {
+                                                    "type": 2,
+                                                    "tagName": "li",
+                                                    "attributes": {},
+                                                    "childNodes": [
+                                                        {
+                                                            "type": 3,
+                                                            "textContent": "3",
+                                                            "secret": false,
+                                                            "id": 30
+                                                        }
+                                                    ],
+                                                    "id": 29
+                                                },
+                                                {
+                                                    "type": 3,
+                                                    "textContent": "\n            ",
+                                                    "secret": false,
+                                                    "id": 31
+                                                },
+                                                {
+                                                    "type": 2,
+                                                    "tagName": "li",
+                                                    "attributes": {},
+                                                    "childNodes": [
+                                                        {
+                                                            "type": 3,
+                                                            "textContent": "4",
+                                                            "secret": false,
+                                                            "id": 33
+                                                        }
+                                                    ],
+                                                    "id": 32
+                                                },
+                                                {
+                                                    "type": 3,
+                                                    "textContent": "\n            ",
+                                                    "secret": false,
+                                                    "id": 34
+                                                },
+                                                {
+                                                    "type": 2,
+                                                    "tagName": "li",
+                                                    "attributes": {},
+                                                    "childNodes": [
+                                                        {
+                                                            "type": 3,
+                                                            "textContent": "5",
+                                                            "secret": false,
+                                                            "id": 36
+                                                        }
+                                                    ],
+                                                    "id": 35
+                                                },
+                                                {
+                                                    "type": 3,
+                                                    "textContent": "\n        ",
+                                                    "secret": false,
+                                                    "id": 37
+                                                }
+                                            ],
+                                            "id": 21
+                                        },
+                                        {
+                                            "type": 3,
+                                            "textContent": "\n        ",
+                                            "secret": false,
+                                            "id": 38
+                                        },
+                                        {
+                                            "type": 2,
+                                            "tagName": "p",
+                                            "attributes": {},
+                                            "childNodes": [
+                                                {
+                                                    "type": 3,
+                                                    "textContent": "\n            ",
+                                                    "secret": false,
+                                                    "id": 40
+                                                },
+                                                {
+                                                    "type": 2,
+                                                    "tagName": "span",
+                                                    "attributes": {},
+                                                    "childNodes": [
+                                                        {
+                                                            "type": 3,
+                                                            "textContent": "hhh",
+                                                            "secret": false,
+                                                            "id": 42
+                                                        }
+                                                    ],
+                                                    "id": 41
+                                                },
+                                                {
+                                                    "type": 3,
+                                                    "textContent": "\n        ",
+                                                    "secret": false,
+                                                    "id": 43
+                                                }
+                                            ],
+                                            "id": 39
+                                        },
+                                        {
+                                            "type": 3,
+                                            "textContent": "\n    ",
+                                            "secret": false,
+                                            "id": 44
+                                        }
+                                    ],
+                                    "id": 19
+                                },
+                                {
+                                    "type": 3,
+                                    "textContent": "\n    ",
+                                    "secret": false,
+                                    "id": 45
+                                },
+                                {
+                                    "type": 2,
+                                    "tagName": "script",
+                                    "attributes": {},
+                                    "childNodes": [
+                                        {
+                                            "type": 3,
+                                            "textContent": "SCRIPT_PLACEHOLDER",
+                                            "secret": false,
+                                            "id": 47
+                                        }
+                                    ],
+                                    "id": 46
+                                },
+                                {
+                                    "type": 3,
+                                    "textContent": "\n\n",
+                                    "secret": false,
+                                    "id": 48
+                                }
+                            ],
+                            "id": 17
+                        },
+                        {
+                            "type": 2,
+                            "tagName": "div",
+                            "attributes": {
+                                "style": "all: initial;"
+                            },
+                            "childNodes": [
+                                {
+                                    "type": 2,
+                                    "tagName": "div",
+                                    "attributes": {},
+                                    "childNodes": [],
+                                    "id": 50
+                                }
+                            ],
+                            "id": 49
+                        }
+                    ],
+                    "id": 3
+                }
+            ],
+            "id": 1
+        },
+        "initialOffset": {
+            "left": 0,
+            "top": 0
+        }
+    },
+    "timestamp": 1603872865504,
+    "clientTime": 1603872865518,
+    "count": 84,
+    "jessionId": "",
+    "iseeBiz": "XX21000L0236hbiaUWeXkc8faWssw6T.T"
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            /**
+             * 日期格式化
+             * @param {date} data - 待格式化的时间
+             * @param {string} fmt - 格式化形式
+             * @returns {string} - 格式化后的时间
+             */
+            function dateFormat(data, fmt) {
+                const o = {
+                    "y+": data.getFullYear(),
+                    "M+": data.getMonth() + 1, // 月份
+                    "d+": data.getDate(), // 日
+                    "h+": data.getHours(), // 小时
+                    "m+": data.getMinutes(), // 分
+                    "s+": data.getSeconds(), // 秒
+                    "q+": Math.floor((data.getMonth() + 3) / 3), // 季度
+                    "S+": data.getMilliseconds(), // 毫秒
+                };
+                Object.entries(o).forEach((e, i) => {
+                    console.log(fmt, 'fmt');
+                    const [k, v] = e;
+                    let reg = new RegExp(`(${k})`);
+                    // console.log('reg: ', reg);
+                    if (reg.test(fmt)) {
+                        if (k === "y+") {
+                            console.dir( reg);
+                            // console.log('yyyy');
+                            console.log(RegExp.$1, 'RegExp.$1 = '+i);
+                            // console.log(RegExp.$2, 'RegExp.$2');
+                            fmt = fmt.replace(
+                                RegExp.$1,
+                                `${v}`.substr(4 - RegExp.$1.length)
+                            );
+                        } else if (k === "S+") {
+                            console.log('SSS');
+                            let lens = RegExp.$1.length;
+                            lens = lens === 1 ? 3 : lens;
+                            fmt = fmt.replace(
+                                RegExp.$1,
+                                `00${v}`.substr(`${v}`.length - 1, lens)
+                            );
+                        } else {
+                            console.log(RegExp.$1, 'aaa = '+i);
+                            // console.log(RegExp.$2, 'bbb');
+                            // console.log('7777');
+                            fmt = fmt.replace(
+                                RegExp.$1,
+                                RegExp.$1.length === 1
+                                    ? v
+                                    : `00${v}`.substr(`${v}`.length)
+                            );
+                        }
+                    }
+                });
+                return fmt;
+            }
+            console.log(dateFormat(new Date(1586666614159), 'yyyy-MM-dd hh:mm:ss q'));
+
+            // 2.String.prototype.replace()
+            // replace的第二个参数可以使用美元符号$，用来指代所替换的内容。
+            // $& 匹配的子字符串（匹配到的字符串）
+            // $` 匹配结果前面的文本
+            // $' 匹配结果后面的文本
+            // $n 匹配成功的第n组内容，n是从1开始的自然数
+            // $$ 指代美元符号$
+            
+            let res = 'hello world'.replace(/(\w+)\s*(\w+)/, '$2 $1');
+            console.log(res, '====res'); // world hello ====res
+            var res2 = 'abc'.replace('b', '[$`-$&-$\']')
+            console.log('res2: ', res2); // res2: a[a-b-c]c
+
+        </script>
+    </body>
+</html>

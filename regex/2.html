@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h3>replace</h3>
+        <script>
+            var r = /data:image([a-zA-Z0-9/.;,:+=]+)/gi;
+            var s =
+                "data:image/jpeg;bas.e64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAYAAACAvzbMAAAgAElEQVR4Xu2dCZgcVbn+";
+            var s2 =
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAYAAACAvzbMAAAgAElEQVR4Xu2dCZgcVbn+2";
+
+            var obj = [
+                { name: "tom" },
+                { img1: s, age: 10 },
+                { img2: s2, lig: "love" },
+            ];
+            let index = 0;
+            let imageMap = [];
+            var so = JSON.stringify(obj);
+            // console.log(so);
+            var res = so.match(r);
+            // console.log('res: ', res);
+            const config = {
+                baseurl: "CLEAR_BASE_URL",
+                apiDomain: "CLEAR_API_DOMAIN",
+                playerurl: "CLEAR_PLAYER_URL",
+            };
+            const PLACEHOLDER_IMAGE =
+                config.baseurl.indexOf("zhongan") >= 0
+                    ? "https://static.zhongan.com/website/isee/img/placeholder.jpg"
+                    : `${config.baseurl}/placeholder.jpg`;
+
+            _so = so.replace(r, function (s) {
+                console.log(arguments);
+                // console.log(s);
+                const key = `${++index}_P`;
+                imageMap.push(s);
+                return PLACEHOLDER_IMAGE + `?key=${key}`;
+            });
+            console.log(JSON.parse(_so), '======_so');
+
+            console.log('========================');
+            let res2 = '3 and 5'.replace(/(\d)+/g, function(r, $1) {
+                // console.log(r);
+                // console.log(arguments);
+                console.log($1);
+                return r * 2
+            });
+            console.log(res2); // 6 and 10
+        </script>
+    </body>
+</html>

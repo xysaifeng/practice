@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3 id='ctn'>123</h3>
+    
+    <script>
+        class Unit {
+            constructor(element) {
+                this._currentElement = element;
+            }
+            getMarkUp() {
+                // 该方法写了只是让子类去重写的
+                throw Error('此方法不能被调用')
+            }
+        }
+
+        class TextUnit extends Unit {
+            getMarkUp(reactid) {
+                this._reactid = reactid;
+                return `<span data-reactid="${reactid}">${this._currentElement}</span>`
+            }
+        }
+
+        function createElement(element) {
+            if(typeof element === 'string' || typeof element === 'number') {
+                return new TextUnit(element)
+            }
+        }
+
+        function render(element, container) {
+            let unit = createElement(element);
+            console.log('unit: ', unit);
+            let markup = unit.getMarkUp(0);
+            container.innerHTML = markup;
+        }
+        render('hello world', document.getElementById('ctn'))
+    </script>
+</body>
+</html>

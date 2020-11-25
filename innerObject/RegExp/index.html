@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // var r = /(foo) (bar) \1 \2/;
+            // var s = 'foo bar foo bar';
+            // console.log(s.match(r));
+            // console.log(r.exec(s));
+
+            var r = /(?:foo){1,2}/g; // 匹配 'foo' 但是不记住匹配项,这种括号叫作非捕获括号
+            var r = /(?:foo){1,2}/g; // 匹配 'foo' 但是不记住匹配项,这种括号叫作非捕获括号
+            var s= 'ajadfoofooajsdkfajfooafdkjafooosasdffoos';
+            console.log(s.match(r));
+            console.log(r.exec(s));
+
+            // var r = /Jack(?=Sprat)/; // 匹配'Jack'仅仅当'Jack'后面跟着'Sprat'.这种叫做先行断言
+            // var s = "adskJackSprat";
+            // console.log(s.match(r));
+            // console.log(r.exec(s));
+
+            // var str = "Is this all there is";
+            // var patt1 = /is(?= all)/;
+            // console.log(str.match(patt1),333);
+
+            // var r = /(?<=Jack|tom)Sprat/; // 后行断言
+            // var s= 'adskJacktomSpratajdks';
+            // console.log(s.match(r));
+            // console.log(r.exec(s));
+
+            // x(?!y) 仅当x后面不跟着y时匹配x,这被称为正向否定查找
+            // var r = /\d+(?!\.)/;
+            // var s= '13284.232'; // 1328
+            // var s= '3.1241'; // 1241
+            // var s= 'sd3sd.1241'; // 3
+            // var s= 'sd3.1241'; // 1241
+            // var s= 'sd3.sdsa'; // null
+            // console.log(s.match(r));
+            // console.log(r.exec(s));
+
+            // (?<!y)x 仅当x前面不是y时匹配x，这被称为反向否定查找
+            // var r = /(?<!-)\d+/;
+            // var s= '-783.1241'; // 83
+            // var s= '882.1241'; // 882
+            // var s= '.1241'; // 1241
+            // var s= 'as1241'; // 1241
+            // var s= '0.1241'; // 0
+            // var s= '-0.1241'; // 1241
+            // var s= '-01.1241'; // 1
+            // console.log(s.match(r)); // 83
+            // console.log(r.exec(s));
+
+            // var r = /[^abc]/g;
+            // var r = /[^abc]/;
+            // var s = 'bcsjaskldf';
+            // console.log(s.match(r)); // j //["j", "s", "k", "l", "d", "f"]
+            // console.log(r.exec(s));
+
+            // var str="Is this all there is";
+            // var patt1=/is(?! all)/gi;
+            // console.log(str.match(patt1));
+
+            (() => {
+                // https://blog.csdn.net/lihchweb/article/details/77982895
+                // num.toString().replace(/(\d)(?=(?:\d{3})+$)/g,'$1,')
+
+                //  // eslint-disable-next-line no-useless-escape
+//   let transName = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]')
+//   var regex = new RegExp('[\\?&]' + transName + '=([^&#]*)')
+            })();
+
+            (_ => {
+                var o1 = {name:'class',age: 12, id:1 };
+                var o2 = {name:'mary',age: 13, id:2 };
+                var o3 = {name:'jack',age: 11, id:3 };
+                var list = [o1, o2,o3];
+                for(let {name, age} of list) {
+                    // console.log(`${name}=> ${age}`);
+                }
+            })();
+
+            (() => {
+                // x(?!y) 仅仅当'x'后面不跟着'y'时匹配'x'，这被称为正向否定查找。
+
+                // var r = /^(?!www\.|(?:http|ftp)s?:\/\/|[A-Za-z]:\\|\/\/).*/;
+                // var u = 'https://yingtai-tst.zaouter.com/mobile/index/main/user'; // false
+                // var u = 'www.yingtai-tst.zaouter.com/mobile/index/main/user'; // false
+                // var u = 'yingtai-tst.zaouter.com/mobile/index/main/user'; // true
+                // console.log(r.test(u));
+                // console.log(u.match(r));
+
+                // var r = /\d+(?!www\.)/;
+                // var s = '123www.com';
+                // console.log(s.match(r));// 12
+
+                var r = /[a-z](?!www\.)/;
+                var s = 'adwww.yb.com.cn'; 
+                console.log(s.match(r));
+            })();
+
+            (() => {
+                function absoluteToDoc (attributeValue, doc = document ) {
+                    if (!attributeValue || attributeValue.trim() === '') {
+                        return attributeValue
+                    }
+                    const a = doc.createElement('a')
+                    a.href = attributeValue
+                    return a.href
+                }
+                // console.log(absoluteToDoc('za-cmis.oss-cn-shanghai-finance-1-pub-internal.aliyuncs.com/isee-studio/2020/11/09/abe85c99bbc142bf90dc049ccf303917.pdf'));
+            })();
+
+
+            (() => {
+                let id = 1;
+                function getId() { return id ++ }
+                var map = {
+                    1: '11',
+                    2: '22',
+                    3: '33',
+                    4: '44',
+                    5: '55',
+                };
+                let _id;
+                _id = getId();
+                // console.log(_id);
+                while(map[_id]) {
+                    // console.log(map[_id], '------999');
+                    _id = getId()
+                }
+                // console.log(_id); // 6
+            })();
+        </script>
+        
+    </body>
+</html>

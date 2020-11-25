@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let a = [
+            {
+                name: 'tom',
+                id: 1
+            },
+            {
+                name: 'lili',
+                id: 2
+            },
+            {
+                name: 'lilei',
+                id: 3
+            },
+            {
+                name: 'mary',
+                id: 4
+            },
+            {
+                name: 'jack',
+                id: 5
+            }
+        ];
+        let b = [
+            {
+                name: 'lilei',
+                id: 3
+            },
+            {
+                name: 'static',
+                id: 100
+            }
+        ];
+        let arr = [];
+        // for(let e of a) {
+        //     for(let e2 of b) {
+        //         if(e.id !== e2.id) {
+        //             arr.push(e);
+        //         }
+        //     }
+        // }
+        var ids = b.map(item => item.id);
+        var res = a.filter(item => !ids.includes(item.id))
+        console.log('res ', res);
+        console.log(arr);
+    </script>
+</body>
+</html>

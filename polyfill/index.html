@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--  -->
+    <script>
+        var o = [
+            {name:'tom', age: 12},
+            {name:'mary', age: 11},
+            {name:'jack', age: 10},
+            {name:'lisa', age: 9},
+        ];
+        let t = o.find(function(e,i,t) {
+            return e.age > 10;
+        });
+        console.log(t); // {name: "tom", age: 12}
+
+        // 1.Array.prototype.find
+        Array.prototype.fd = function(fn) {
+            'use strict';
+            if(typeof(fn) !== 'function') {
+                throw new Error('fn expected a function')
+            }
+            let thisArg = arguments[1] || null;
+
+            for(var i=0; i< this.length; i ++) {
+                if(fn.call(thisArg, this[i], i, this)) {
+                    return this[i]
+                }
+            }
+            return undefined;
+        }
+        let t2 = o.fd(function(e,i,t) {
+            return e.age > 10;
+        })
+        console.log(t2);
+    </script>
+</body>
+</html>

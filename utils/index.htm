@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            function paramToObj(url) {
+                url = 'http://localhost:9002/retailer/cameraplayv2?id=6750&name=tom&age="12"';
+                let search = url.split("?")[1];
+                console.log("search: ", search);
+                if (!search) return {};
+
+                let res = JSON.parse(
+                    `{"${decodeURIComponent(search)
+                        .replace(/"/g, '\\"')
+                        .replace(/&/g, '","')
+                        .replace(/=/g, '":"')}"}`
+                );
+                console.log(res, 'res');
+
+                var s1 = 'id=6750&name=tom&age="12"';
+                console.log(s1.replace(/&/g, '","'));
+                console.log(s1.replace(/&/g, '","').replace(/=/g, '":"'));
+            }
+            paramToObj2();
+
+            function paramToObj2(url) {
+                url = 'http://localhost:9002/retailer/cameraplayv2?id=6750&name=tom&age=12&info=我是123号';
+                let search = url.split("?")[1];
+                console.log("search: ", search);
+                if (!search) return {};
+                let o = {};
+                let a = search.split('&');
+                a.forEach(item => {
+                    let [ key, value ] = item.split('=');
+                    key = encodeURIComponent(key);
+                    value = encodeURIComponent(value);
+                    o[key] = value;
+                })
+                console.log(o, '0o');
+            }
+        </script>
+    </body>
+</html>

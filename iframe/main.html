@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>iframe+postMessage 跨域通信 主页面</title>
+</head>
+<body>
+    <h1>主页面</h1>
+    <iframe id="child" src="iframe.html"></iframe>
+    <div>
+        <h2>主页面接收消息区域</h2>
+        <span id="message"></span>
+    </div>
+</body> 
+<script>
+    var aa = '9999';
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage#The_dispatched_event
+    window.onload = function(){
+        let child = document.getElementById('child').contentWindow;
+
+        // child.postMessage("主页面消息", "http://127.0.0.1:5500")
+        // child.postMessage("主页面消息", "*")
+        child.postMessage({
+            data: 111,
+            type: 'set'
+        }, "http://127.0.0.1:5500")
+    }
+
+    window.addEventListener('message', function(event){
+        if(event.origin !== 'http://127.0.0.1:5500') return;
+        // console.log(event);
+        document.getElementById('message').innerHTML = "收到"
+         + event.origin + "消息：" + event.data;
+    }, false);
+</script>
+</html>

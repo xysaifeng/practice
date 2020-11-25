@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // x(?=y)
+            // 匹配'x'仅仅当'x'后面跟着'y'.这种叫做 先行断言。
+            // 例如，/Jack(?=Sprat)/会匹配到'Jack'仅当它后面跟着'Sprat'。/Jack(?=Sprat|Frost)/匹配‘Jack’仅当它后面跟着'Sprat'或者是‘Frost’。但是‘Sprat’和‘Frost’都不是匹配结果的一部分。
+
+            // (?<=y)x
+            // 匹配'x'仅当'x'前面是'y'.这种叫做 后行断言。
+            // 例如，/(?<=Jack)Sprat/会匹配到' Sprat '仅仅当它前面是' Jack '。/(?<=Jack|Tom)Sprat/匹配‘ Sprat ’仅仅当它前面是'Jack'或者是‘Tom’。但是‘Jack’和‘Tom’都不是匹配结果的一部分。
+
+            // x(?!y)
+            // 仅仅当'x'后面不跟着'y'时匹配'x'，这被称为 正向否定查找。
+            // 例如，仅仅当这个数字后面没有跟小数点的时候，/\d+(?!\.)/ 匹配一个数字。正则表达式/\d+(?!\.)/.exec("3.141")匹配‘141’而不是‘3.141’
+
+            // (?<!y)x
+            // 仅仅当'x'前面不是'y'时匹配'x'，这被称为 反向否定查找。
+            // 例如, 仅仅当这个数字前面没有负号的时候，/(?<!-)\d+/ 匹配一个数字。
+            // /(?<!-)\d+/.exec('3') 匹配到 "3".
+            // /(?<!-)\d+/.exec('-3') 因为这个数字前有负号，所以没有匹配到。
+
+
+            let orangeNotLemon = "Do you want to have an orange? Yes, I do not want to have a lemon!";
+            let selectNotLemonRegex = /[^?!]+have(?! a lemon)[^?!]+[?!]/i;
+            console.log(orangeNotLemon.match(selectNotLemonRegex)); // [ 'Do you want to have an orange?' ]
+            let selectNotOrangeRegex = /[^?!]+have(?! an orange)[^?!]+[?!]/gi;
+            // console.log(orangeNotLemon.match(selectNotOrangeRegex)); // [ ' Yes, I do not want to have a lemon!' ]
+
+            // 后行断言
+            let oranges = ["ripe orange A ", "green orange B", "ripe orange C"];
+            let ripe_oranges = oranges.filter((fruit) => {
+                // console.log(fruit.match(/(?<=ripe )orange/));
+                return fruit.match(/(?<=ripe )orange/);
+            });
+            // console.log(ripe_oranges); // [ 'ripe orange A ', 'ripe orange C' ]
+
+
+            
+        </script>
+    </body>
+</html>

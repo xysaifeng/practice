@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="eye.js"></script>
+</head>
+<body>
+    <div>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+        <p>
+            <span>hhh</span>
+        </p>
+    </div>
+    <script>
+        // 1.1
+        // var a = 10;
+        // (function() {
+        //     console.log(a); // undefined
+        //     a = 5;
+        //     console.log(a); // 5
+        //     console.log(window.a); // 10
+        //     var a = 20;
+        //     console.log(a); // 20
+        // })()
+
+        // 1.2.当var替换为let
+        let a = 10;
+        (function() { // 在代码块儿中使用了let|const声明的变量，若在声明该变量前使用该变量，或给该变量赋值则统统报错
+            // console.log(a); // error ReferenceError: Cannot access 'a' before initialization
+            // a = 5; // error ReferenceError: Cannot access 'a' before initialization
+            // console.log(a); // error ReferenceError: Cannot access 'a' before initialization
+            console.log(window.a); // undefined
+            const a = 20;
+            console.log(a); // 20
+        })()
+        
+        let s = document.createElement('script');
+        // s.setAttribute('src', 'index.js');
+        s.src = 'index.js'
+        let head = document.getElementsByTagName('head')[0];
+        head.appendChild(s);
+        s.onload = function() {
+           setTimeout(() => {
+            head.removeChild(s);
+            clearInterval(window.timer)
+           }, 5000)
+        }
+    </script>
+</body>
+</html>

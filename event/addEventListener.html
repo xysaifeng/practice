@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            /* text-align: center; */
+        }
+        #box {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            border: 1px solid red;
+            line-height: 300px;
+        }
+        #box1 {
+            position: absolute;
+            width: 200px;
+            height:200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background-color: #ccc;
+        }
+        #box2 {
+            width: 120px;
+            height:120px;
+            position: absolute;
+            background-color: burlywood;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h3>addEventListener</h3>
+    <p>
+        <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener#The_event_listener_callback" ref='noreferrer' target="_blank">参考</a>
+    </p>
+    <div id='box'>1111
+        <div id='box1'>2222
+            <div id='box2'>3333</div>
+        </div>
+    </div>
+    <script>
+        function fn(e) {
+            // e.preventDefault();
+            console.log('1111')
+        }
+        function fn2() {
+            console.log('2222')
+        }
+        function fn3(e) {
+            // e.preventDefault();
+            // e.stopPropagation();
+            
+            console.log('3333')
+        }
+        let options = {
+            passive: true, // 值为true，表示listener永远不会调用preventDefalult(),如果listener仍然调用了这个函数，客户端会忽略它并抛出一个控制台警告。
+            capture: true, // 值为true，表示listener监听的该事件会在捕获阶段触发
+            once: true // 值为true，表示listener监听函数在添加之后最多调用一次
+        }
+        // addEventListener方法可以指定‘useCapture’参数来设置传递类型
+        // 默认值为false,即冒泡传递,设置为true时,事件使用捕获传递.
+        box.addEventListener('click',fn, false)
+        box1.addEventListener('click',fn2, options, false)
+        box2.addEventListener('click',fn3, false)
+    </script>
+</body>
+</html>

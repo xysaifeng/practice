@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <input type="checkbox" id='chk' name='chk'>
+        <br>
+        <button id='btn'>right click me</button>
+    </div>
+    <script>
+        chk.onclick = function(e) {
+            console.log(e.target.checked);
+            // e.preventDefault(); // 阻止默认行为（勾选不住了）
+            console.log(e);
+            e.returnValue = false; // 阻止默认行为（勾选不住了）
+        }
+        btn.oncontextmenu = function(e) {
+            console.log('clicked');
+            e.preventDefault(); // 阻止默认行为（不会显示右键打开的菜单）
+            // e.returnValue = false; // 阻止默认行为（不会显示右键打开的菜单）
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3 id='title' sa >属性操作的方法</h3>
+    <h4>demo</h4>
+    <button id='btn'>click me</button>
+    <script>
+        let h4 = document.querySelector('h4');
+        // console.log('h4: ', h4);
+
+        btn.onclick = () => {
+            // 1.getAttribute方法返回当前元素节点的指定属性，如果指定属性不存在则返回null
+            // let attr = title.getAttribute('sa');
+            // let attr2 = title.getAttribute('ss');
+            // console.log('attr ', attr == ''); // true
+            // console.log('attr ', attr == null); // false
+            // console.log('attr ', attr == undefined); // false
+            // console.log('attr ', attr.length); // 0
+            // console.log('attr2 ', attr2); // null
+
+            // 2.getAttributeNames方法返回一个数组，成员是当前元素的所有属性的名字。如果当前元素没有任何属性，则返回一个空数组。使用Element.attributes属性，也可以拿到统样的结果,唯一的区别是它返回的是类数组对象
+            // let attrs = title.getAttributeNames();
+            // let attrs2 = h4.getAttributeNames();
+            // console.log('attrs: ', attrs); // ["id", "sa"]
+            // console.log('attrs2: ', attrs2); // []
+
+            // let eAttrs = title.attributes;
+            // let eAttrs2 = h4.attributes;
+            // console.log('eAttrs: ', Array.from(eAttrs)); // [id, sa]
+            // console.log('eAttrs: ', ...eAttrs); // id="title" sa=""
+            // console.log('eAttrs2: ', eAttrs2);
+
+            // 3.setAttribute方法为当前元素节点新增属性。如果同名属性已存在，则相当于编辑已存在的属性。该方法没有返回值
+            // let b = document.getElementById('btn');
+            // b.setAttribute('name','myname')
+            // b.setAttribute('disabled', true)
+            // console.log('999');
+            // 上面代码有两点需要注意，首先，属性值总是字符串，其他类型的值会自动转换成字符串，比如布尔值true会转换成字符串true；其次，上例的disabled属性是一个布尔属性，对于button元素来说，这个属性不需要设置属性值，只要设置了总会生效，因此，setAttribute方法里可以将disabled属性设置为任意值。
+
+            // 4.hasAttribute方法返回一个布尔值，表示当前元素节点是否包含指定的属性。
+            // console.log(title.hasAttribute('sa')); // true
+            // console.log(title.hasAttribute('sb')); // false
+
+            // 5.hasAttributes方法返回一个布尔值，表示当前元素节点是否有属性，如果没有任何属性，返回false，否则返回true。
+            // console.log(title.hasAttributes()); // true
+            // console.log(h4.hasAttributes()); // false
+
+            // 6.removeAttribute方法移除指定属性，该方法没有返回值。
+            title.removeAttribute('sa')
+            h4.removeAttribute('sa')
+        }
+
+
+    </script>
+</body>
+</html>

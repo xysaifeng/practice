@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h3>emit</h3>
+        <script>
+            class Mit {
+                constructor(all) {
+                    this.all = all || new Map();
+                }
+                on(type, fn) {
+                    const handler = this.all.get(type);
+                    const added = handler && handler.push(fn);
+                    if (!added) {
+                        this.all.set(type, [fn]);
+                    }
+                }
+
+                off(type, fn) {
+                    if (type && fn) {
+                        let handlers = this.all.get(type);
+                        let i = handlers.indexOf(fn) >>> 0;
+                        console.log(i, "-----------i");
+                        i > -1 && handlers.splice(i, 1);
+                    }
+                    // if(type && !fn) {
+                    //     let handlers = this.all.get(type);
+                    //     handlers.splice(0);
+                    //     return;
+                    // }
+                    // this.all.clear();
+                }
+
+                emit(type, evt) {
+                    let handles = this.all.get(type);
+                    handles && handles.map((e) => e(evt));
+
+                    // if(type !== '*') {
+                    //     let handles = this.all.get(type);
+                    //     handles && handles.map(e => e(evt))
+                    // } else if(type === '*') {
+                    //     [...this.all.values()].forEach(e => {
+                    //         e.forEach(es => es(evt))
+                    //     })
+                    // }
+                }
+
+                clear() {
+                    this.all = new Map();
+                }
+            }
+            function f1(f1) {
+                console.log(f1 + " f1");
+            }
+            function f2(f2) {
+                console.log(f2 + " f2");
+            }
+            function f3(f3) {
+                console.log(f3 + " f3");
+            }
+            function f4(f4) {
+                console.log(f4 + " f4");
+            }
+
+            let mit = new Mit();
+            mit.on("a", f1);
+            mit.on("a", f3);
+            mit.on("b", f2);
+            mit.on("*", f4);
+            console.log("---------0");
+            mit.emit("a", "aaaa");
+            console.log("---------1");
+            mit.emit("*", "hhh");
+            console.log("-------2");
+            mit.off("b", f2);
+            mit.emit("b", "ssss");
+            console.log("-------3");
+
+            mit.off("a", f3);
+            mit.emit("a", "last");
+            console.log("-------4");
+            mit.clear();
+            mit.emit("a", "last");
+        </script>
+    </body>
+</html>

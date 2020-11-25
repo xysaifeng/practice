@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>elementFromPoint example</title>
+
+        <script>
+            // Document.elementFromPoint()，返回当前文档上处于指定坐标位置最顶层的元素，坐标是相对于包含该文档的浏览器窗口的左上角为原点来计算的，通常x和y坐标都应为正数。
+            // var element = document.elementFromPoint(x, y);
+            // element是返回的DOM元素.
+            // x, y是坐标数值，不需要单位如px.
+            function changeColor(newColor) {
+                elem = document.elementFromPoint(2, 2);
+                elem.style.color = newColor;
+            }
+        </script>
+    </head>
+
+    <body>
+        
+        <p id="para1">Some text here</p>
+        <button onclick="changeColor('blue');">blue</button>
+        <button onclick="changeColor('red');">red</button>
+    </body>
+</html>

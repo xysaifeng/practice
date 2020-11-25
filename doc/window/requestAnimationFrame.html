@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            #box {
+                position: relative;
+                height: 300px;
+                width: 100%;
+                border: 1px solid red;
+            }
+            #mover {
+                width: 100px;
+                height: 100px;
+                background: rgba(233, 200, 233, 0.7);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="box">
+            <div id="mover"></div>
+        </div>
+
+        <script>
+            var element = document.getElementById("mover");
+            element.style.position = "absolute";
+            var start = null;
+            window.requestAnimationFrame(step);
+            function step(timeStamp) {
+                console.log("timeStamp: ", timeStamp);
+                if (!start) start = timeStamp; // 记录requestAnimationFrame第一次调用step的时间
+                var progress = timeStamp - start; // 计算每次step调用的时间间隔
+                console.log("start: ", start);
+                console.log("progress: ", progress);
+                element.style.left = Math.min(progress / 10, 300) + "px";
+                // 在三秒后停止动画
+                if (progress < 3000) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .box {
+                width: 120px;
+                height: 120px;
+                border: 1px solid green;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>mousedown事件盘点鼠标左键触发还是右键触发的事件</h3>
+        <div class="box" id="box"></div>
+        <button id="btn">click me</button>
+        <div id="log"></div>
+        <script>
+            box.onmousedown = function (e) {
+                console.log(e);
+            };
+
+            btn.oncontextmenu = function (e) {
+                //    禁用右键
+                e.preventDefault();
+                //    console.log(e, '999');
+            };
+            btn.addEventListener("mousedown", logMouseButton);
+            function logMouseButton(e) {
+                e.preventDefault();
+                switch (e.button) {
+                    case 0:
+                        log.textContent = "左键点击";
+                        break;  
+                    case 1:
+                        log.textContent = "鼠标中键点击";
+                        break;
+                    case 2:
+                        log.textContent = "右键点击";
+                        break;
+                    case 3:
+                        log.textContent = "浏览器后退";
+                        break;
+                    case 4:
+                        log.textContent = "浏览器前进";
+                        break;
+
+                    default:
+                        log.textContent = "未知键点击";
+                        break;
+                }
+            }
+        </script>
+    </body>
+</html>

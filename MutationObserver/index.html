@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ol contenteditable="true">
+        <li>press enter</li>
+    </ol>
+
+
+    <script>
+        // 要观察的变动的节点
+        var list = document.querySelector('ol');
+        // 观察器的配置（需要观察什么变动)
+        var config = {
+            // attributeFilter: [],
+            attributeOldValue: true,
+            attributes: true, // 设置为true,可观察受监控的元素的属性变更 // 观察属性变动
+            childList: true, // 设置为true,可监视目标节点（如果subtree为true,则包含子孙节点）添加或删除新的子节点 // 观察目标子节点的变化，是否有添加或者删除
+            characterData: true, // 设置为true,可监视指定目标节点或子节点树中节点所包含的字符数据的变化
+            characterDataOldvalue: true,
+            subtree: false, // 观察后代节点，默认为false
+        };
+
+        var callback = function (mutations, ob) {
+            console.log('mutations: ', mutations);
+            // console.log(ob, '====ob');
+            mutations.forEach((mutation)  => {
+                console.log('mutation: ', mutation);
+                if(mutation.type === 'childList') {
+                    var list_values = [].slice.call(list.children).map(node => node.innerHTML).filter(item => {
+                        console.log(item, '====99');
+                        if(item === '<br>') return false
+                        return true;
+                    });
+                    console.log(list_values);
+                }
+            });
+        }
+        var MutationObserver = window.MutationObserver || window.WebkitMutationObserver || window.MozMutationObserver;
+        // 创建一个叫‘observer’的新`MutationOvbserver`实例，并将回调函数传给它
+        var observer = new MutationObserver(callback);
+        // 在`MutationOvbserver`实例上调用observe方法，并将要要观察的元素与配置选项传给此方法
+        observer.observe(list, config)
+    </script>
+</body>
+</html>

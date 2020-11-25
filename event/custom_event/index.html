@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <!-- <h3 id='tit' sa >自定义事件</h3> -->
+        <h3>自定义事件</h3>
+        <p>自定义事件的两种方式</p>
+        <div>
+            <button id="btn">click me</button><br />
+            <button id="btn2">click me2</button><br />
+        </div>
+        <script>
+            // 方式一:
+            // 1.创建事件对象
+            // js中，最简单的创建事件的方法，是使用Event构造函数：
+            // var myEvent = new Event('custom_event_name');
+            // 但是为了能够传递数据，就需要使用CustomEvent构造函数
+            let customEvent = new CustomEvent("customName", {
+                data: "hahah",
+                detail: {
+                    // 传参用detail字段
+                    content: "jeij",
+                },
+            });
+            let h3 = document.getElementsByTagName("h3")[0];
+            // console.log('h3: ', h3);
+
+            // 2.派发事件
+            // 自定义事件由于不是js内置的事件，我们需要在代码中显示的触发它，方法是使用dispatchEvent（ie8低版本兼容用fireEvent）
+            btn.onclick = () => {
+                document.dispatchEvent(customEvent);
+            };
+            // if (window.dispatchEvent) {
+            //     window.dispatchEvent(myEvent);
+            // } else {
+            //     window.fireEvent(myEvent);
+            // }
+
+            // 3.监听事件
+            // js中的时间监听（EventListener）是根据事件名称来进行监听的，例如，上面创建了一个名称为‘customName’的事件，那么当某个元素需要监听它的时候，，就需要创建相应的监听器。
+            // 假设listener注册在document对象上
+            document.addEventListener("customName", function (e) {
+                console.log(e);
+            });
+            // 至此，document对象上就有了对‘customName’这个事件的监听器，当document上触发这个事件的时候，相关的cb就会执行。
+
+            // 方式二:
+            // 创建事件对象
+            let ev = document.createEvent("CustomEvent");
+            // 初始化事件对象
+            ev.initCustomEvent("ev", false, true, { name: "xg" });
+            var aa = 109;
+            btn2.onclick = function () {
+                // 派发事件
+                window.dispatchEvent(ev);
+            };
+            // 监听事件
+            window.addEventListener("ev", function (e) {
+               
+                console.log(e);
+                /**
+                 *  bubbles: false, // onlyread 一个布尔值，用来表示该事件是否会在 DOM 中冒泡 
+
+                    cancelBubble: false // Event.stopPropagation() 的历史别名。在事件处理器函数返回之前，将此属性的值设置为 true，亦可阻止事件继续冒泡。
+
+                    cancelable: true // onlyread 一个布尔值，表示事件是否可以取消。
+
+                    composed: false // onlyread 一个布尔值，表示事件是否可以穿过 Shadow DOM 和常规 DOM 之间的隔阂进行冒泡
+
+                    currentTarget: Window {window: Window, self: Window, document: document, name: "", location: Location, …} // onlyread 对事件当前注册的目标的引用。这是一个当前计划将事件发送到的对象。它是有可能在重定向的过程中被改变的。
+
+                    defaultPrevented: false // onlyread 一个布尔值，表示 event.preventDefault() 方法是否取消了事件的默认行为。
+
+                    detail: {name: "xg"}
+
+                    eventPhase: 0 //onlyread 表示事件流正被处理到了哪个阶段。
+
+                    isTrusted: false // onlyread 表示事件是由浏览器（例如用户点击）发起的，还是由脚本（使用事件创建方法，例如 Event.initEvent）发出的。
+
+                    path: [Window] // 一个由事件流所经过的 DOM 节点组成的数组。??deepPath 
+
+                    returnValue: true // 旧版 Internet Explorer 引入的一个非标准历史属性，为保证依赖此属性的网页正常运作，此属性最终被收入规范。可用 Event.preventDefault() 与 Event.defaultPrevented 代替，但由于已进入规范，也可以使用此属性。
+
+                    srcElement: Window {window: Window, self: Window, document: document, name: "", location: Location, …} // 旧版 Internet Explorer 对 Event.target 的非标准别称。出于兼容原因，一些其他浏览器也支持此别称。
+
+                    target: Window {window: Window, self: Window, document: document, name: "", location: Location, …} // 对事件原始目标的引用，这里的原始目标指最初派发（dispatch）事件时指定的目标。
+
+                    timeStamp: 136.18500000302447 // onlyread 事件创建时的时间戳（精度为毫秒）。按照规范，这个时间戳是 Unix 纪元起经过的毫秒数，但实际上，在不同的浏览器中，对此时间戳的定义也有所不同。另外，规范正在将其修改为 DOMHighResTimeStamp。
+
+                    type: "ev" // onlyread 事件的类型，不区分大小写。
+                 */
+            });
+        </script>
+    </body>
+</html>

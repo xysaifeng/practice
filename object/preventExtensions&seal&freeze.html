@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对象的防扩展，密封，冻结</title>
+</head>
+<body>
+    <script>
+        // 'use strict';
+        // 1.对象扩展：Object.preventExtensions  Object.isExtensible
+        // 2.对象密封：Object.seal  Object.isSealed
+        // 3.对象冻结：Object.freeze  Object.isFrozen
+
+        // 1.
+        /*
+        // Object.preventExtensions：阻止对象扩展，让一个对象变为不可扩展，也就是不能再添加新属性。
+        var obj = {name: 'tom'};
+        Object.preventExtensions(obj);
+        // obj.age = 12;
+        Reflect.defineProperty(obj, 'as', {
+            value: 33
+        })
+        console.log(obj); // {name: 'tom'}; 新属性age添加失败
+        // 严格模式下会报错：TypeError: Cannot add property age, object is not extensible,注意：使用Reflect.defineProperty()方法为obj添加属性也不会生效，同时在严格模式下还不会报错。
+
+        // Object.isExtensible
+        // 判断一个对象是否可扩展，即是否可以给它添加新属性
+        console.log(Object.isExtensible(obj)); // false
+        */ 
+
+        // 2.
+        /* 
+        // Object.seal
+        // 让一个对象密封，并返回被密封的对象。密封对象是指不能给对象添加新的属性，不能删除已有的属性，以及不能修改已有属性的可没举性、可写性、可配置性，但可以修改已有属性的值。
+        // 2.1添加属性：
+        var obj = {name: 'tom'};
+        var o = Object.seal(obj);
+        console.log(o === obj); // true
+        console.log(Object.isSealed(obj, 's')); // true
+        // obj.age = 12; // 严格模式下报错:TypeError: Cannot add property age, object is not extensible
+        console.log(obj) // {name: 'tom'} 添加失败
+
+        // 2.2删除已有属性：
+        delete obj.name; // 严格模式下报错:TypeError: Cannot delete property 'name' of #<Object>
+        console.log(obj, 2) // {name: 'tom'} 删除失败
+
+        // 2.3修改已有属性的可枚举性、可写性、可配置性：
+        // TypeError: Cannot redefine property: name
+        // Object.defineProperty(obj, 'name', {
+        //     value: obj.name,
+        //     writable: true,
+        //     enumerable: true,
+        //     configurable: true,
+        // })
+
+        // 2.4修改已有属性的值：
+        obj.name = 'jack';
+        console.log('obj: ', obj); // {name: "jack"} 修改成功
+
+        // Object.isSealed:判断一个对象是否是密封的；
+        console.log(Object.isSealed(obj)); // true
+        */
+        
+        // 3.
+        /**/
+        // Object.freeze(),这个方法比Object.seal()更厉害，冻结的对象除了不能给对象添加新的属性，不能删除已有的属性，已及不能修改已有属性的可没举性、可写性、可配置性，而且不能修复已有属性的值。也就是说这个对象永远是不变的。
+        var obj = {name: 'tom'};
+        var s = Object.freeze(obj);
+        console.log(s === obj); // true
+
+        // 3.1添加属性
+        obj.age = 12;
+        console.log(obj); // {name: 'tom'} 添加失败
+
+        // 3.2删除已有属性
+        delete obj.name;
+        console.log(obj, 'delete') // {name: 'tom'} 删除失败
+
+        // 3.3修改已有属性的可枚举性、可写性、可配置性：
+        // TypeError: Cannot redefine property: name
+        // Object.defineProperty(obj, 'name', {
+        //     writable: true,
+        //     enumerable: true,
+        //     configurable: true,
+        // })
+
+        // 3.4修改已有属性的值：
+        obj.name = 123
+        console.log(obj, 'update') // {name: 'tom'} 修改失败
+
+        // Object.isFrozen:判断一个对象是否被冻结
+        console.log('Object.isFrozen(obj): ', Object.isFrozen(obj)); // true
+
+
+
+    </script>
+</body>
+</html>

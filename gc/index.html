@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>garbage collection</h3>
+    <script>
+        function Person(name) {
+            this.name = name;
+        }
+        var a = 1;
+        var b = 2;
+
+        let p3 = new Person('zzz')
+        let p5 = new Person('fff')
+        console.log(window.p3 == p3);
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            p {
+                color: Green;
+            }
+            /* 无效 */
+            #foo.custom {
+                font-size: 20px;
+                font-weight: bold;
+            }
+            /* input[type="range"] {
+                width: 100%;
+            }
+            input[type="range"] {
+                -webkit-appearance: none;
+                background-color: Red;
+                width: 200px;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                background-color: Green;
+                opacity: 0.5;
+                width: 10px;
+                height: 40px;
+            } */
+
+            input[type="range"]::-webkit-slider-thumb {
+                /* -webkit-appearance: none; */
+            }
+
+            input[type="range"]::-webkit-slider-runnable-track {
+                height: 25px;
+                border-radius: 10px;
+                /*将轨道设为圆角的*/
+                box-shadow: 0 1px 1px #def3f8, inset 0 0.125em 0.125em #0d1112;
+                /*轨道内置阴影效果*/
+            }
+
+            input[type="range"]:focus {
+                outline: none;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                height: 30px;
+                width: 30px;
+                /* margin-top: -3px; */
+                /*使滑块超出轨道部分的偏移量相等*/
+                background: #ffffff;
+                border-radius: 50%;
+                /*外观设置为圆形*/
+                border: solid 0.125em rgba(205, 224, 230, 0.5);
+                /*设置边框*/
+                box-shadow: 0 0.125em 0.125em #3b4547;
+                /*添加底部阴影*/
+            }
+        </style>
+    </head>
+    <body>
+        <h3>
+            <a href="https://blog.csdn.net/liumf2005/article/details/8648575"
+                >shadow dom</a
+            >
+        </h3>
+        <p>My Future is so bright</p>
+        <div id="foo">
+            <p>hei</p>
+        </div>
+        <div>
+            <input type="range" id="in" />
+        </div>
+
+        <script>
+            let foo = document.getElementById("foo");
+            var shadow = foo.attachShadow({ mode: "open" });
+            var p = document.createElement("p");
+            p.innerHTML = `<span>hello shadow dom</span>`;
+            // foo.appendChild(p); // 无效
+            shadow.appendChild(p);
+
+            let style = document.createElement("style");
+            // style.innerTex t = ` p { color: red; }`;
+            // style.innerHTML = ` p { color: red; }`;
+            style.textContent = ` p { color: red; }`;
+            shadow.appendChild(style);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // demo1:
+            var a = [1, 2, 3, 4, 5, 6];
+            function fn(a) {
+                a.forEach((e) => {
+                    
+                    if (e == 3) {
+                        return e;
+                    }
+                    console.log(e);
+                });
+            }
+            // console.log(fn(a));
+
+            // demo2
+            var o = {
+                type: 3,
+                data: {
+                    texts: [],
+                    attributes: [],
+                    source: 0,
+                    removes: [
+                        {
+                            id: 37,
+                            parentId: 4,
+                        },
+                        {
+                            id: 38,
+                            parentId: 5,
+                        },
+                        {
+                            id: 39,
+                            parentId: 6,
+                        },
+                        {
+                            id: 40,
+                            parentId: 7,
+                        },
+                    ],
+                    adds: [],
+                },
+            };
+            function odd(id) {
+                return id % 2 === 0;
+            }
+            function applyIncremental(e) {
+                let { data: d } = e;
+                // console.log(d);
+                switch (d.source) {
+                    case 0:
+                        d.removes.forEach((item, i) => {
+                            console.log(i*10, i*10);
+                            // if(!null) {
+                            if(i<1) {
+                                console.log(i, '00000000000');
+                                return item;
+                            }
+                            if(i<2) {
+                                console.log(i, '111111111');
+                                return item;
+                            }
+                            console.log(`$${i}`);
+                        })
+                        console.log(2323);
+                        break;
+                    case 1:
+                        console.log(44);
+                        break;
+                
+                    default:
+                        break;
+                }
+
+            }
+            console.log('applyIncremental(o);: ', applyIncremental(o));
+        </script>
+    </body>
+</html>
