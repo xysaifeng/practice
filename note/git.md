@@ -49,3 +49,7 @@ _方法 2： git push --set-upstream origin dev_
 build/   表示忽略 build/目录下的所有文件，过滤整个build文件夹，不管是否在根目录下；
 
 ### 七、.gitignore忽略一提交的文件
+1.git rm --cached filename(要忽略的文件名) or git rm --cached -r filename or git rm --cached -f filename  
+2.git add .  
+3.git commit -m 'descript'   
+4.git push  
