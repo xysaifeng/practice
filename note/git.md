@@ -48,8 +48,9 @@ _方法 2： git push --set-upstream origin dev_
 /TODO  表示仅仅忽略项目根目录下的 TODO 文件，如果这个文件不在根目录下，则不会忽略  
 build/   表示忽略 build/目录下的所有文件，过滤整个build文件夹，不管是否在根目录下；
 
-### 七、.gitignore忽略一提交的文件
-1.git rm --cached filename(要忽略的文件名) or git rm --cached -r filename or git rm --cached -f filename  
+### 七、.gitignore忽略一提交的文件 [参考](https://www.cnblogs.com/zqifa/p/git-rm-1.html)
+**作用：删除远程文件同时保留本地文件**  
+1.git rm --cached file_name(要忽略的文件名) or git rm --cached -r folder_name(要忽略的文件夹名) or git rm --cached -f filename(强制删除)  
 2.git add .  
-3.git commit -m 'descript'   
+3.git commit -m 'description'   
 4.git push  
