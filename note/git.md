@@ -39,3 +39,13 @@ _方法 2： git push --set-upstream origin dev_
 
 [参考链接 1](https://github.com/includeios/document/issues/12)、
 [参考链接 2](https://includeios.github.io/archives/)
+
+### 六、.gitignore 文件例子
+\# 表示此为注释,将被Git忽略  
+1.txt     表示忽略1.txt 文件  
+*.txt    表示忽略所有 .txt 结尾的文件  
+!2.txt  不忽略2.txt这个文件  
+/TODO  表示仅仅忽略项目根目录下的 TODO 文件，如果这个文件不在根目录下，则不会忽略  
+build/   表示忽略 build/目录下的所有文件，过滤整个build文件夹，不管是否在根目录下；
+
+### 七、.gitignore忽略一提交的文件
