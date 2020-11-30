@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            function absoluteToDoc(doc, attributeValue) {
+                console.log(attributeValue, "-----777----");
+                const a = doc.createElement("a");
+                a.setAttribute("class", "isee-block");
+                a.href = window.decodeURIComponent(attributeValue);
+                return a.href;
+            }
+
+            var value =
+                'background: url("images/newww/Check.png") right center; background-image: url("images/newww/Check2.png") right center';
+            console.log(value, "-------s 111"); // background: url("images/newww/Check.png")
+            let r = /url\s*\(["''](.+)["'']\)/;
+
+            let matched = value.match(r);
+            console.log(matched, '----matched');
+            let res = matched[1];
+            if (res && !/^http(s)?/.test(res)) {
+                let newReg = new RegExp(res);
+                value = value.replace(newReg, absoluteToDoc(document, res));
+            }
+            console.log(value, "------s");
+            var s = "/\.s88";
+            // var rs = new RegExp(s);
+            // console.log(rs);
+            // console.log(rs.test('8/\.s8800s0d'));
+        </script>
+    </body>
+</html>
