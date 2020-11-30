@@ -22,7 +22,7 @@
     </section>
     <section>
         <ol oninput="" contenteditable="true" data-test='888'>
-            <li>Press enter</li>
+            <li id='lis'>Press enter</li>
         </ol>
     </section>
     <script>
@@ -75,6 +75,7 @@
                 if (mutation.type === "attributes") {
                     console.log("mutation =0", mutation);
                     console.log(`The \`${mutation.attributeName}\` attribute was modified.`);
+                    console.log("sss", mutation.target.getAttribute(mutation.attributeName));
                     // console.log("list style =", list.style);
                     let {
                         width,
@@ -108,7 +109,12 @@
         }, 1000 * 4);
         // bug ??? after disconnect
 
-        
+        window.addEventListener('click', function() {
+            let el = document.getElementById('lis');
+            if(el) {
+                el.style.background = 'url("img/icon.png")'
+            }
+        })
     </script>
 </body>
 </html>

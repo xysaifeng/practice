@@ -17,21 +17,53 @@
 
             var value =
                 'background: url("images/newww/Check.png") right center; background-image: url("images/newww/Check2.png") right center';
-            console.log(value, "-------s 111"); // background: url("images/newww/Check.png")
-            let r = /url\s*\(["''](.+)["'']\)/;
 
-            let matched = value.match(r);
-            console.log(matched, '----matched');
-            let res = matched[1];
-            if (res && !/^http(s)?/.test(res)) {
-                let newReg = new RegExp(res);
-                value = value.replace(newReg, absoluteToDoc(document, res));
+
+            var value2 = value.split(';');
+            console.log('value2: ', value2);
+          
+           
+            if(value2.length) {
+                let r = /background(?:-image)?:\s*url\s*\(["'](.+)["']\)/;
+                let arr = [];
+                for(let i = 0; i< value2.length; i ++ ) {
+                    let str = value2[i];
+                    let matched = str.match(r);
+                    console.log('matched:========= ', matched);
+                    let res = matched[1];
+                    console.log('res: ============', res);
+                    if (res && !/^http(s)?/.test(res)) {
+                        let newReg = new RegExp(res);
+                        str = str.replace(res, absoluteToDoc(document, res));
+                        arr.push(str);
+                    }
+                }
+                console.log(arr.join(';'), '==============arr');
+
             }
-            console.log(value, "------s");
+
+           
+            
+           
+
+            // let matched = value.match(r);
+            // let res = matched[1];
+            // if (res && !/^http(s)?/.test(res)) {
+            //     let newReg = new RegExp(res);
+            //     value = value.replace(newReg, absoluteToDoc(document, res));
+            // }
+            // // console.log(value, "------s");
             var s = "/\.s88";
             // var rs = new RegExp(s);
             // console.log(rs);
             // console.log(rs.test('8/\.s8800s0d'));
+
+            (() => {
+                var s = 'http/data.png';
+                var r = /[^http]/;
+                var res = r.test(s);
+                console.log('res: ', res);
+            })();
         </script>
     </body>
 </html>
