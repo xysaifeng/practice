@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let newVal = ['2020-11-30', '2021-01-01'];
+        let days = [];
+
+
+        if (newVal && newVal[0] && newVal[1]) {
+        let [start, end ] = newVal;
+        let startTime = new Date(start);
+        let endTime = new Date(end);
+        let arr = [start];
+        if(startTime < endTime) {
+          while(true) {
+            let currentDay = startTime.getDate();
+            startTimestamp = startTime.setDate(currentDay + 1);
+            let nextDay = new Date(startTimestamp).toISOString().slice(0, 10);
+            if(new Date(nextDay) <= new Date(end)) {
+              arr.push(nextDay)
+            } else {
+              break;
+            }
+          }
+        }
+        days = arr;
+    }
+        console.log(days);
+    </script>
+</body>
+</html>

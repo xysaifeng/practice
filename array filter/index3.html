@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [
+            {caseAmount: 399377, caseCount: 4, dateStr: "2020-01-01", helpfulAmount: 371564, helpfulCount: 3},
+            {caseAmount: 39977, caseCount: 98, dateStr: "2020-01-12", helpfulAmount: 37164, helpfulCount: 23}
+        ];
+        // let o = arr.reduce((acc, item, i) => {
+        //     if(i ===0) {
+        //         acc = item
+        //         return acc;
+        //     } else {
+        //         acc.caseAmount =  acc.caseAmount + item.caseAmount
+        //         acc.caseCount =  acc.caseCount + item.caseCount
+        //         acc.helpfulAmount =  acc.helpfulAmount + item.helpfulAmount
+        //         acc.helpfulCount =  acc.helpfulCount + item.helpfulCount
+        //     }
+        //     return acc;
+        // },{})
+        let o = arr.reduce((acc, item, i) => {
+            acc.caseAmount =  acc.caseAmount + item.caseAmount
+            acc.caseCount =  acc.caseCount + item.caseCount
+            acc.helpfulAmount =  acc.helpfulAmount + item.helpfulAmount
+            acc.helpfulCount =  acc.helpfulCount + item.helpfulCount
+            return acc;
+        })
+        console.log(o, 'o');
+
+    </script>
+</body>
+</html>
