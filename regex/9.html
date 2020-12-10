@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Assertions</h3>
+    <p>断言的组成之一是边界。对于文本、词或模式，边界可以用来表明它们的起始或终止部分（如向前断言，向后断言以及条件表达式）</p>
+
+    <script>
+        const text = 'A quick fox';
+        const regexpLastWord = /\w+$/;
+        console.log(text.match(regexpLastWord)+''); // fox
+
+        const regexpWords2 = /\b\w+\b/g;
+        const regexpWords = /\w+/g;
+        console.log(text.match(regexpWords)); // ["A", "quick", "fox"]
+
+        // x(?=y) 向前断言
+        const regexpFoxQuality = /\w+(?= fox)/;
+        console.log(text.match(regexpFoxQuality)+''); // quick
+
+        const str = `
+            Lorem, ipsum dolor sit amet consecteturs
+            adipisicing elit. Sapiente voluptas esses
+            a quidem similique eligendi dignissimos
+            expedita qui dolorem eveniet sint neque
+            veniam itaque explicabo vero suscipit
+            minus, recusandae voluptatem.
+        `;
+        const reg99 = /\b\w+s$/gm;
+        const reg = /\w+s$/gm;
+        console.log(str.match(reg)); // ["consecteturs", "esses", "dignissimos"]
+
+        // 断言
+        // 1.向前断言:x(?=y)
+        // 向前断言:x被y跟随时匹配x(x后是y时匹配x)。
+        const str1 = 'adk tom jack dd', reg1 = /tom(?= jack|am)/;
+        console.log(str1.match(reg1)); // tom
+
+        // 2.向后断言:(?<=y)x
+        // 向后断言:x跟随y的情况下匹配x(x前是y时匹配x).
+        const str2 = 'adk tomjack dd', reg2 = /(?<=a|tom)jack/;
+        console.log(str2.match(reg2));
+
+        // 3.向前否定断言:x(?!y)
+        // 向前否定断言: x没有被y紧随时匹配x(x后不是y时匹配x)。
+        // const str3 = 43.141, reg3 = /\d+(?!\.)/;
+        // console.log(reg3.exec(str3)); // '4'
+
+        // const str3 = 403.141, reg3 = /\d+(?!\.)/;
+        // console.log(reg3.exec(str3)); // '40'
+
+        const str3 = 3.141, reg3 = /\d+(?!\.)/;
+        console.log(reg3.exec(str3)); // '141'
+
+        // 3. === 3 // true
+        // const str3 = 3., reg3 = /\d+(?!\.)/;
+        // console.log(reg3.exec(str3)); // '3'
+
+
+        // 4.向后否定断言:(?<!y)x
+        // 向后否定断言: x不跟随y时匹配x(x前不是y时匹配x)。
+        // const str4 = '24-23', reg4 = /(?<!-)\d+/;
+        // console.log(reg4.exec(str4)); // '24'
+
+        // const str4 = '2-1388', reg4 = /(?<!-)\d+/;
+        // console.log(reg4.exec(str4)); // '2'
+
+        // const str4 = 'sa-2388', reg4 = /(?<!-)\d+/;// 数字不紧随-符号的情况下才会得到匹配
+        // console.log(reg4.exec(str4)); // '388'
+
+        const str4 = 'sa-2', reg4 = /(?<!-)\d+/;// 数字不紧随-符号的情况下才会得到匹配
+        console.log(reg4.exec(str4)); // null
+
+        // eg:
+        // 向前断言 x(?=y) 匹配x被y跟随时的x
+        let regex = /First(?= test)/g;
+        console.log('First test'.match(regex)); // ["First"]
+        console.log('test First peach'.match(regex)); // null
+        console.log('This is a First test in a year.'.match(regex)); // ["First"]
+        console.log('This is a First peach in a month.'.match(regex)); // null
+
+        // 向前否定断言 x(?!y) x没有被y跟随时匹配x
+        // /\d+(?!\.)/匹配没有被小数点跟随且至少有一位的数字
+        console.log(/\d+(?!\.)/g.exec('23.141')+''); // 2
+        console.log(/\d+(?!\.)/g.exec('2.141')+''); // 141
+
+        // 向后断言
+        let oranges = ['ripe orange A ', 'green orange B', 'ripe orange C',];
+        let res = oranges.filter(fruit => fruit.match(/(?<=ripe )orange/));
+        console.log(res, '=======res'); // ["ripe orange A ", "ripe orange C"]
+
+        // 不同含义的'?!'：断言和范围的组合用法
+        let orangeNotLemon = "Do you want to have an orange? Yes, I do not want to have a lemon!";
+        let selectNotLemonRegex2 = /[^?!]+have(?! a lemon)[^?!]+[?!]/gi;
+        let selectNotLemonRegex = /.+have(?! a lemon)[^?]+[?!]/i;
+        console.log(orangeNotLemon.match(selectNotLemonRegex)); // Do you want to have an orange?
+
+    </script>
+</body>
+</html>

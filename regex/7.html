@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            (() => {
+                function absoluteToDoc(doc, attributeValue) {
+                    // console.log(attributeValue, "-----777----");
+                    const a = doc.createElement("a");
+                    a.setAttribute("class", "isee-block");
+                    a.href = window.decodeURIComponent(attributeValue);
+                    return a.href;
+                }
+                var value =
+                    'background: url("images/newww/Check.png") right center; background-image: url("images/newww/Check2.png") right center; background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4A;") right center / 19px no-repeat; background-image: url("/images/newww/Check3.png")';
+
+                let r =
+                    "background: url('http://127.0.0.1:5500/practice/regex/images/newww/Check.png') right center; background-image: url('http://127.0.0.1:5500/practice/regex/images/newww/Check2.png') right center";
+
+                let o = {
+                    id: 310,
+                    attributes: {
+                        style:
+                            'background: url("images/neww/Check.png") right center / 19px no-repeat;',
+                    },
+                };
+
+                function extractOrigin(url) {
+                    let origin;
+                    if (url.indexOf("//") > -1) {
+                        origin = url.split("/").slice(0, 3).join("/");
+                    } else {
+                        origin = url.split("/")[0];
+                    }
+                    origin = origin.split("?")[0];
+                    return origin;
+                }
+
+                let rr = /background(?:-image)?:\s*url\s*\(["'](.+)["']\)/;
+                const URL_IN_CSS_REF = /url\((?:'([^']*)'|"([^"]*)"|([^)]*))\)/gm;
+                const RELATIVE_PATH = /^(?!www\.|(?:http|ftp)s?:\/\/|[A-Za-z]:\\|\/\/).*/;
+                
+                function absoluteToStylesheet(cssText, href) {
+                    return cssText.replace(
+                        URL_IN_CSS_REF,
+                        (origin, path1, path2, path3) => {
+                            console.log('origin: ', origin);
+                            console.log('path1: ', path1);
+                            console.log('path2: ', path2);
+                            console.log('path3: ', path3);
+                            
+                            const DATA_URI = /^(data:)([\w/+-]+);(charset=[\w-]+|base64).*,(.*)/gi;
+                            const CSS_URI = /\S*\.css/;
+                            const filePath = path1 || path2 || path3;
+                            console.log('filePath: ', filePath);
+
+                            if (!filePath) {
+                                return origin;
+                            }
+                            if (DATA_URI.test(filePath)) {
+                                console.log('----------- base64');
+                                return `url(${filePath})`;
+                            }
+                            if (CSS_URI.test(origin)) {
+                                return `@import "${origin}";`;
+                            }
+                            if (filePath[0] === "/") {
+                                // 其实这个我觉得也有问题
+                                return `url('${
+                                    extractOrigin(href) + filePath
+                                    // extractOrigin('https://www.baidu.com/') + filePath
+                                }')`;
+                            }
+                            const isRelative = RELATIVE_PATH.test(filePath);
+                            console.log(isRelative, '-------isRelative');
+                            if (!isRelative) {
+                                return `url('${filePath}')`;
+                            }
+                            if (isRelative) {
+                                return `url('${absoluteToDoc(
+                                    document,
+                                    filePath
+                                )}')`;
+                            }
+                            const stack = href.split("/");
+                            const parts = filePath.split("/");
+                            stack.pop();
+                            for (const part of parts) {
+                                if (part === ".") {
+                                    continue;
+                                } else if (part === "..") {
+                                    stack.pop();
+                                } else {
+                                    stack.push(part);
+                                }
+                            }
+                            return `url('${stack.join("/")}')`;
+                        }
+                    );
+                }
+
+                let res = absoluteToStylesheet(value, window.location.href);
+                console.log(res, "---------r");
+            })();
+        </script>
+    </body>
+</html>

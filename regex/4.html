@@ -8,7 +8,7 @@
     <body>
         <script>
             function absoluteToDoc(doc, attributeValue) {
-                console.log(attributeValue, "-----777----");
+                // console.log(attributeValue, "-----777----");
                 const a = doc.createElement("a");
                 a.setAttribute("class", "isee-block");
                 a.href = window.decodeURIComponent(attributeValue);
@@ -17,36 +17,30 @@
 
             var value =
                 'background: url("images/newww/Check.png") right center; background-image: url("images/newww/Check2.png") right center';
-            // 
+            //
 
-            var value2 = value.split(';');
-            console.log('value2: ', value2);
-          
-           
-            if(value2.length) {
+            var value2 = value.split(";");
+            // console.log('value2: ', value2);
+
+            if (value2.length) {
                 let r = /background(?:-image)?:\s*url\s*\(["'](.+)["']\)/;
                 // let r = /background(?:-image)?:\s*url\s*\(["'](.+)["']\)/gm;
                 let arr = [];
-                for(let i = 0; i< value2.length; i ++ ) {
+                for (let i = 0; i < value2.length; i++) {
                     let str = value2[i];
                     let matched = str.match(r);
-                    console.log('matched:========= ', matched);
+                    // console.log('matched:========= ', matched);
                     let res = matched[1];
-                    console.log('res: ============', res);
+                    // console.log('res: ============', res);
                     if (res && !/^http(s)?/.test(res)) {
                         let newReg = new RegExp(res);
                         str = str.replace(res, absoluteToDoc(document, res));
                         arr.push(str);
                     }
                 }
-                console.log(arr.join(';'), '==============arr');
-
+                console.log(arr.join(";"), "==============arr");
             }
-
            
-            
-           
-
             // let matched = value.match(r);
             // let res = matched[1];
             // if (res && !/^http(s)?/.test(res)) {
@@ -60,7 +54,7 @@
             // console.log(rs.test('8/\.s8800s0d'));
 
             (() => {
-                var s = 'http/data.png';
+                var s = "http/data.png";
                 var r = /[^http]/;
                 var res = r.test(s);
                 console.log('res: ', res);

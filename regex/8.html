@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>字符类</h3>
+    <p>
+        字符类可以区分各种字符，例如区分字母和数字。<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes">参考</a>
+    </p>
+    <script>
+        // 1
+        const chessStory = 'He played the King in a8 and she moved her Queen in c2.';
+        const regexpCoordinates = /\w\d/gi;
+        console.log(chessStory.match(regexpCoordinates)); // ["a8", "c2"]
+
+        // 2
+        const moods = 'happy 🙂, confused 😕, sad 😢';
+        const regexpEmoticons = /[\u{1F600}-\u{1F64F}]/gu; // u:使用unicode码的模式进行匹配。
+        console.log(moods.match(regexpEmoticons)); // ["🙂", "😕", "😢"]
+
+        // 3
+        var aliceExcerpt = "I’m sure I’m not Ada,’ she said, ‘for her hair goes in such long ringlets, and mine doesn’t go in ringlets at all.";
+        var regexpWordStartingWithA = /\b[aA]\w+/g;
+        console.log(aliceExcerpt.match(regexpWordStartingWithA));
+    </script>
+</body>
+</html>

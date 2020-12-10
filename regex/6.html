@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var obj = {
+            clientTime: 1607322252915,
+            count: 4994,
+            data: {node: {
+                type: 2,
+                childNodes: {
+                    childNodes: [
+                       {
+                        type: 1,
+                        node: {
+                            attributes: {
+                            style: "background: data:image/svg+xml;base64,charset=utf8svgxmlns=4NS43MTQyODZyZW07XG59Il0sInNvdXJjZVJvb3QiOiIifQ==;"
+                        }
+                        } //   const DATA_URI = /^(data:)([\w/+-]+);(charset=[\w-]+|base64).*,(.*)/gi;
+                       },
+                       {
+                        type: 2,
+                        attributes: {
+                            style: "background: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMj;"
+                        }
+                       },
+                       {
+                        type: 3,
+                        attributes: {
+                            style: "background: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4A;"
+                        }
+                       },
+                       {
+                        type: 4,
+                        attributes: {
+                            style: "background: data:image/gif;base64,R0lGODlhIAAgAPUAAOXl5TIxMeHh4bu7u9XV1dra2sTDw4qJiZ2dnd7e;"
+                        }
+                       },
+                    ],
+                    id: 3,
+                    isSVG: undefined,
+                    tagName: "html",
+                    type: 2
+                }
+            }},
+            iseeBizRecord: 1607322252741,
+            jessionId: "",
+            timestamp: 1607322252793,
+            type: 2
+        };
+        let event = {
+            clientTime: 1607323831719,
+            count: 5235,
+            iseeBizRecord: 1607323831614,
+            jessionId: "",
+            timestamp: 1607323831660,
+            type: 2
+        }
+        let PLACEHOLDER_IMAGE = 'http://www.baidu.com/placeholder.jpg';
+        let DATA_IMG = /data:image.+?;base64([a-zA-Z0-9/.;,:+=]+)/gi;
+        const stringifyEvent = JSON.stringify(obj);
+        const _matchList = stringifyEvent.match(DATA_IMG)
+        console.log('_matchList: ', _matchList);
+        let _eventStr, imageMapEvent;
+
+        if (_matchList && _matchList.length && _matchList.toString().length > 100) {
+          let index = 0
+          let imageMap = []
+          _eventStr = stringifyEvent.replace(DATA_IMG, function (base64Str) {
+            const key = `${++index}_P`
+            imageMap.push(base64Str)
+            return PLACEHOLDER_IMAGE + `?key=${key}`
+          })
+          console.log(_eventStr, '----------_eventStr');
+          console.log(imageMap, '----------imageMap');
+          imageMapEvent = Object.assign({}, event, {
+            type: 8,
+            data: imageMap
+          })
+          event = JSON.parse(_eventStr)
+        }
+        console.log(event, '---event');
+        console.log(imageMapEvent, '---imageMapEvent');
+        
+
+
+        
+        
+    </script>
+</body>
+</html>
