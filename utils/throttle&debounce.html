@@ -20,11 +20,12 @@
     <script>
         // https://www.jianshu.com/p/08b0d4d1ff5e
         let btn = document.getElementById('btn');
-        let handler = function() {
-            console.log(99);
+        let handler = function(...rest) {
+            console.log(rest, '-----rest');
+            console.log('btn clicked');
         }
 
-        let debounce = function(fn, wait = 1000, immediate = false) {
+        let debounce1 = function(fn, wait = 1000) {
             let timer = null;
             return function() {
                 console.log(timer, '-----timer');
@@ -33,8 +34,101 @@
             }
         }
 
-        btn.onclick = debounce(handler)
+        let debounce = function(fn, wait = 1000, immediate = false) {
+            let timer = null;
+            return function(...args) {
+                if(timer) clearTimeout(timer);
+                timer = setTimeout(() => {
+                    console.log(args);
+                    fn.apply(this, args)
+                }, wait);
+            }
+        }
+
+        // btn.onclick = debounce(handler).bind(null, 3,4,5)
+        // btn.onclick = debounce(handler)
+
+
+        // ************ 实现一个带有立即执行选项的防抖函数 ************
+        // 当前时间戳
+        function now() {
+            // return Date.now();
+            return + new Date();
+        }
+
+        /**
+         * 防抖函数，返回函数连续调用时，空闲时间必须大于或等于wait时，func才会调用
+         * @param {function} fn 回调函数
+         * @param {number} wait 等待时间
+         * @param {boolean} immediate 设置为true时，是否立即调用回调函数
+         * @return {function} 返回客户调用函数
+         */
+        let debounce3 = function(fn, wait = 1000, immediate = false) {
+            let timer, context, args;
+            // 延迟执行函数
+            let later = () => setTimeout(() => {
+                // 延迟函数执行完毕，清空定时器序号
+                timer = null;
+                // 延迟执行的情况下，函数会在延迟函数中执行，使用之前缓存的参数和上下文
+                if(!immediate) {
+                    fn.apply(context, args);
+                    context = args = null;
+                }
+            }, wait);
+
+            // 这里返回的函数是每次实际调用的函数
+            return function(...params) {
+                // 如果已有延迟执行函数（later），调用的时候清除原来的，并重新设定一个
+                if(timer) {
+                    clearTimeout(timer)
+                    timer = later()
+                } else {
+                    // 如果没有创建延迟执行函数（later），就创建一个
+                    timer = later();
+                    // 如果是立即执行，调用函数
+                    // 否则缓存参数和执行上下文
+                    if(immediate) {
+                        fn.apply(this, params);
+                    } else {
+                        context = this
+                        args = params
+                    }
+                }
+            }
+        }
+        // 1.对于按钮防点击来说的实现：如果函数是立即执行的，就立即调用，如果函数是延迟执行的，就缓存上下文和参数，放到延迟函数中去执行。一旦我开始一个定时器，只要我定时器还在，你每次点击我都重新计时。一旦你点累了，定时器时间到，定时器重置为 null，就可以再次点击了。
+        // 2.对于延时执行函数来说的实现：清除定时器ID，如果是延迟调用就调用函数
+       
+
+        // ************ 实现一个带有立即执行选项的防抖函数2 ************
+        let debounce4 = function(fn, wait = 1000, immediate = true) {
+            let timer = null;
+            return function(...args) {
+                console.log(timer, '----timer');
+                if(timer) clearTimeout(timer);
+                if(immediate) {
+                    var dos = !timer;
+                    if(dos) {
+                        fn.apply(this, args)
+                    }
+                    timer = setTimeout(() => {
+                        timer = null;
+                    }, wait);
+                } else {
+                    timer = setTimeout(() => {
+                        fn.apply(this, args)
+                    }, wait)
+                }
+            }
+        }
+        btn.onclick = debounce4(handler, 1000, true).bind({name:'tom'},89,77)
+
+        // ************ 实现一个带有立即执行选项的节流函数 ************
+        // 防抖和节流的本质不一样。防抖将多次执行变为最后一次执行，节流是将多次执行变为每个一段时间执行。
+
 
     </script>
+
+    <script src="js/throttle.js"></script>
 </body>
 </html>
