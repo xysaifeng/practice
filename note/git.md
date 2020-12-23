@@ -54,3 +54,5 @@ build/   表示忽略 build/目录下的所有文件，过滤整个build文件�
 2.git add .  
 3.git commit -m 'description'   
 4.git push  
+
+### git相关知识[参考](https://www.yiibai.com/git/git_rebase.html)
