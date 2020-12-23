@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id='root'>
+        <p id='p1'>1</p>
+        <p id='p2'>2</p>
+        <p id='p3'>3</p>
+        <div id='f'>
+            <p id='c'>c</p>
+        </div>
+    </div>
+    <div id='root2'>
+        <p id='p4'>4</p>
+    </div>
+    <script>
+
+        // console.dir(root);
+
+        // Node.contains()返回的是一个布尔值，来表示传入的节点是否为该节点的后代节点。
+        // node.contains( otherNode ) node 是否包含otherNode节点. otherNode 是否是node的后代节点.
+        // 如果 otherNode 是 node 的后代节点或是 node 节点本身.则返回true , 否则返回 false.
+
+        if(root.contains && p1.nodeType === 1) {
+            // console.log(root.contains(root)); // true
+            console.log(root.contains(c) && root !== p1); // true
+        }
+
+        // https://developer.mozilla.org/zh-CN/docs/Web/API/Node/compareDocumentPosition
+        // Node.compareDocumentPosition() 可以比较当前节点与任意文档中的另一个节点的位置关系。
+        let head = document.getElementsByTagName('head').item(0);
+        // console.log(head.compareDocumentPosition(document.body) & 4); // 4
+        if(head.compareDocumentPosition(document.body) & 4) {
+            console.log("well-formed document");
+        } else {
+            console.log("<head> is not before <body>");
+        }
+
+        console.log( root.compareDocumentPosition(c) & 1, '--------------99oo'); // 0 不在同一文档中
+        console.log( root.compareDocumentPosition(c) & 2, '--------------99oo'); // 0 c在root之前 
+        console.log( root.compareDocumentPosition(c) & 4, '--------------99oo'); // 4 c在root之后，root在文档中相对靠前
+        console.log( root.compareDocumentPosition(c) & 8, '--------------99oo'); // 0 c包含root
+        console.log( root.compareDocumentPosition(c) & 16, '--------------99oo'); // 16 root包含c
+        console.log( root.compareDocumentPosition(c) & 32, '--------------99oo'); // 0 待定
+
+        function contain(root, el) {
+            while(el = el.parentNode) {
+                if(el == root) {
+                    return true
+                } 
+            }
+            return false;
+        }
+        console.log(contain(root, c));
+
+        function contain2(root, el) {
+            let id = 0;
+            while(true) {
+                id ++;
+                if(id > 10) {
+                    return id
+                }
+                // console.log(id);
+            }
+            return id;
+        }
+        console.log(contain2());
+
+
+        // Node上面有个contains方法，需要写兼容方法。
+        function containChild(root, el) {
+            if(root.compareDocumentPosition) {
+                console.log(11119988);
+                return !!(root.compareDocumentPosition(el) & 16);
+            }
+            if(root.contains) {
+                console.log(222);
+                return root.contains(el) && root !== el;
+            }
+            while(el = el.parentNode) {
+                console.log(3333);
+                if(el === root) return true
+            }
+            return false;
+        }
+
+        console.log(containChild(root, c), '-----last');
+    </script>
+</body>
+</html>

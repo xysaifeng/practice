@@ -61,5 +61,36 @@
             }
         }
     }
+
+    // copy from underscore and modified
+    function throttle (func, wait, options = {}) {
+    let timeout = null
+    let previous = 0
+    const { leading, trailing } = options
+    return function () {
+      // let now = Date.now()
+      let now = getCurrentTimestamp()
+      if (!previous && leading === false) {
+        previous = now
+      }
+      let remaining = wait - (now - previous)
+      let context = this
+      let args = arguments
+      if (remaining <= 0 || remaining > wait) {
+        if (timeout) {
+          window.clearTimeout(timeout)
+          timeout = null
+        }
+        previous = now
+        func.apply(context, args)
+      } else if (!timeout && trailing !== false) {
+        timeout = window.setTimeout(() => {
+          previous = leading === false ? 0 : getCurrentTimestamp() /* Date.now() */
+          timeout = null
+          func.apply(context, args)
+        }, remaining)
+      }
+    }
+  }
     // btn.onclick = throttle3(handler, 1000).bind({name:'tom'},88,77)
 })();

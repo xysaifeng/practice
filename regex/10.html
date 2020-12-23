@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // let ua = navigator.userAgent;
+            var ua =
+                "mozilla/5.0 (macintosh; intel mac os x 10_15_6) applewebkit/605.1.15 (khtml, like gecko) version/13.1.2 safari/605.1.15";
+            // 浏览器判断
+            // ie
+            if (
+                !(
+                    ua.toLowerCase().indexOf("trident") > -1 &&
+                    ua.indexOf("rv") > -1
+                )
+            ) {
+                console.log("false: ", false);
+            }
+            let browserName = "";
+            let browserVersion = 0;
+            if (/(chrome|firefox|opera|netscape)\D+(\d[\d.]*)/.test(ua)) {
+                browserName = RegExp.$1;
+                browserVersion = parseInt(RegExp.$2);
+            }
+            if (/version\D+(\d[\d.]*).*safari/.test(ua)) {
+                browserName = "safari";
+                // browserVersion = parseInt(RegExp.$2); // error
+                browserVersion = parseInt(RegExp.$1);
+            }
+            console.log(browserName, browserVersion);
+
+            window.addEventListener("pageshow", function (event) {
+                console.log("after , pageshow :", event);
+            });
+
+            window.addEventListener("load", function () {
+                console.log("before");
+            });
+        </script>
+    </body>
+</html>
