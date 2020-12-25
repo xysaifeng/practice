@@ -1,0 +1,47 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#canvas {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#canvas canvas {
+    display: block;
+}
+
+#clearCanvas,
+#saveCanvas {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    width: 50%;
+    height: 40px;
+    border: 1px solid #dedede;
+    line-height: 40px;
+    text-align: center;
+}
+
+#clearCanvas {
+    left: 0;
+}
+
+#saveCanvas {
+    right: 0;
+}
+
+.errorCanvas {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transform: translateY(40%);
+}
