@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 延时阻塞函数 
+        console.time('runTime:');
+        const d = Date.now();
+        console.log(123, d);
+
+        // 这么写不行的
+        // while (Date.now() - d < 1000) {
+        //     console.log(d, '-------');
+        //     continue;
+        // }
+        sleep2(1000)
+        console.log(Date.now(), 456);
+        console.timeEnd('runTime:');
+
+
+        function sleep(wait) {
+            return new Promise(resolve => {
+                setTimeout(resolve, wait)
+            })
+        }
+
+        function sleep2(time) {
+            var timeStamp = new Date().getTime();
+            var endTime = timeStamp + time;
+            // while (true) {
+            //     if (new Date().getTime() > endTime) {
+            //         return;
+            //     }
+            // }
+            while (true) {
+                if(Date.now() - timeStamp > time) {
+                    console.log('<');
+                    return
+                }
+              
+            }
+        }
+    </script>
+</body>
+
+</html>
