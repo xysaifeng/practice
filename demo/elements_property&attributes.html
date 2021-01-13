@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div><input id="the-input" type="text" value="Name:"></div>
+
+    <div><button id='btn' disabled='false'>click</button></div>
+
+    <script>
+        // https://stackoverflow.com/questions/6003819/what-is-the-difference-between-properties-and-attributes-in-html#answer-6004028
+
+        // https://blog.csdn.net/rudy_zhou/article/details/104058741 *
+        var theInput = document.getElementById('the-input');
+        console.log(' theInput.value: ',  theInput.value); // Name:
+        // input any content(eg:abc)then
+        console.log(' theInput.value: ',  theInput.value); // abc
+        // but
+        console.log(theInput.getAttribute('value')); // Name:
+
+        console.log('--------------------');
+        // console.log(btn.disabled); // false
+        // console.log(btn.getAttribute('disabled')); // null
+
+        // add disabled attribute then
+        console.log(btn.disabled); // true
+        console.log(btn.getAttribute('disabled')); // ''
+    </script>
+</body>
+</html>
