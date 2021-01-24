@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let route = [{
+            path: '/personalCenter',
+            redirect: '/personalCenter/myAssets',
+            name: 'personalCenter',
+            alwaysShow: true,
+            meta: { title: '个人中心', icon: 'user3', roles: ['admin', 'editor'] },
+            children: [
+                {
+                    path: 'myAssets',
+
+                    name: 'myAssets',
+                    meta: { title: '我的资产', icon: ' ', affix: true, roles: ['admin', 'editor'] }
+                },
+                {
+                    path: '/personalCenter/todo',
+
+                    name: 'todo',
+                    meta: { title: '待办中心', icon: ' ', roles: ['admin', 'editor'] },
+                    hidden: false
+                }
+            ]
+        },
+        {
+            path: '/assets-management',
+            name: 'assetsManagement',
+            meta: { title: '资产管理', icon: 'dashboard2', roles: ['admin', 'editor'] },
+            children: [
+                {
+                    path: '/assetsManagement/assetsQuery',
+                    name: 'assetsQuery',
+                    meta: { title: '资产查询', icon: ' ', roles: ['admin', 'editor'] }
+                },
+                {
+                    path: '/assetsManagement/stockManagement',
+                    name: 'stockManagement',
+                    meta: { title: '库存管理', icon: ' ', roles: ['admin', 'editor'] }
+                    // hidden: true
+                },
+                {
+                    path: '/assetsManagement/checkManagement',
+                    name: 'checkManagement',
+                    meta: { title: '盘点管理', icon: ' ', roles: ['admin', 'editor'] }
+                    // hidden: true
+                }
+            ]
+        }];
+
+        
+        let r = res(route, '', '')
+        function res(arr, path, title=[]) {
+            let r = []
+            arr.forEach(e => {
+                let o = {
+                    path: path + e.path,
+                    title: [...title]
+                }
+                if(e.meta && e.meta.title) {
+                    o.title = [...o.title, e.meta.title]
+                }
+                r.push(o);
+                if(e.children) {
+                    let temRoutes = res(e.children, o.path, o.title)
+                    r = [...r, ...temRoutes]
+                }
+            });
+            return r;
+        }
+        console.log(r);
+    </script>
+</body>
+
+</html>
