@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // async function fn() {
+    //   let res = await fn2()
+    //   console.log(res);
+    // } 
+    // fn()
+    // let p = new Promise(resolve => {
+    //   resolve(1)
+    // })
+    // p.then(res => console.log(res))
+    
+    // function fn2(){
+    //   return Promise.resolve(999)
+    // }
+
+    // async function fn() {
+    //   let res = await fn2()
+    //   console.log(res);
+    // } 
+    // fn()
+
+
+
+    // macro-task大概包括：
+    // script整体代码
+    // setTimeout
+    // setInterval
+    // setImmediate(node)
+    // I/O
+    // UI render(UI交互事件)
+    // postMessage
+    // MessageChannel
+
+    // macro-task大概包括：
+    // process.nextTick(node)
+    // promose.then
+    // async/await
+    // MutationObserver(html5新特性)
+
+    // 在 Node 中，会优先清空 next tick queue，即通过process.nextTick 注册的函数，再清空 other queue，常见的如Promise；此外，timers(setTimeout/setInterval) 会优先于 setImmediate 执行，因为前者在 timer 阶段执行，后者在 check 阶段执行。
+    // 纠正：requestAnimationFrame 既不属于 macrotask, 也不属于 microtask：(https://stackoverflow.com/questions/43050448/when-will-requestanimationframe-be-executed)
+  </script>
+
+  <script defer  src="js/index.js"></script>
+  <script defer src="js/index3.js"></script>
+</body>
+</html>
