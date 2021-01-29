@@ -6,3 +6,6 @@
 
 ### What's the difference between resolve(thenable) and resolve('non-thenable-object')?
 [参考](https://stackoverflow.com/questions/53894038/whats-the-difference-between-resolvethenable-and-resolvenon-thenable-object)  
+
+### promise, async, await, execution order
+[参考](https://github.com/xianshenglu/blog/issues/60#issuecomment-449739628)  
