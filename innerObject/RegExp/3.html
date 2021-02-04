@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 只能输入数字字母组合
+    var r = /^(?![0-9]+$)(?![A-Z]+$)[0-9A-Z]{1,12}$/;
+    // var r = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,18}$/;
+    var s = 'S283s'
+    var s1 = 'S83989'
+    var s2 = '283JKDS'
+    var s3 = '2JK8DS'
+    var s4 = 'J3K38DS'
+    var s5 = 'J3K38DS34'
+    var s6 = '32322'
+    var s7 = 'DJSJ8980980990'
+    // console.log(r.test(s7));
+
+    // 学习replace
+    // var str = 'a and b 0';
+    // var reg = /\d/g;
+    // var mr = str.replace(reg, function(match){
+    //   console.log(match, '----match');
+    //   console.log(arguments, '----arguments');
+    //   return match * 2
+    // }) 
+    
+    // 将非汉字替换为空
+    var str = 'z#就 搜到9';
+    var reg = /[^\u4e00-\u9fa5]/g;
+    var mr = str.replace(reg, function(match){
+      console.log(match, '----match');
+      console.log(arguments, '----arguments');
+      return ''
+    }) 
+    console.log(mr, '----str'); // 就搜到
+  </script>
+</body>
+</html>

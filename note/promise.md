@@ -9,3 +9,9 @@
 
 ### promise, async, await, execution order
 [参考](https://github.com/xianshenglu/blog/issues/60#issuecomment-449739628)  
+
+### 从一道题浅说 JavaScript 的事件循环
+[参考](https://github.com/dwqs/blog/issues/61)  
+
+### https://segmentfault.com/a/1190000017224799
+[参考](https://segmentfault.com/a/1190000017224799)  
