@@ -13,5 +13,8 @@
 ### 从一道题浅说 JavaScript 的事件循环
 [参考](https://github.com/dwqs/blog/issues/61)  
 
-### https://segmentfault.com/a/1190000017224799
+### 8张图帮你一步步看清 async/await 和 promise 的执行顺序
 [参考](https://segmentfault.com/a/1190000017224799)  
+
+### 翻译】Promises/A+规范
+[参考](https://www.ituring.com.cn/article/66566)  
