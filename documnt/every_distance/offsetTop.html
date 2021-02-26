@@ -22,7 +22,7 @@
             width: 300px;
             height: 300px;
             border: 1px solid;
-            /* position: relative; */
+            position: relative;
         }
         #child {
             margin: 0 auto;
@@ -52,6 +52,8 @@
 
         // 2.如果box元素没有position: relative，则child元素的offsetTop = 111;
         console.log(child.offsetTop); // 111
+
+        console.log(child.getBounding);
 
         // 3.注意：只有元素show（渲染完成）才会计算入offsetTop，若是中间有元素数据需要异步获取，会导致最终获取的offsetTop值偏小
     </script>
