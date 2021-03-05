@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://d3js.org/d3.v5.js"></script>
+</head>
+
+<body>
+  <h3>D3</h3>
+  <div class="chart">
+    <p class="text">world</p>
+    <p class="text">world</p>
+  </div>
+  <div class="div2">
+    <p class="text">world</p>
+    <p class="text">world</p>
+    <p class="text">world</p>
+  </div>
+  <div class="div3">
+    <p class="text">world</p>
+    <p class="text">world</p>
+    <p class="text">world</p>
+  </div>
+  <div class="div4">
+    <p class="other">Apple</p>
+    <p id='pear'>Pear</p>
+    <p class="other">Banana</p>
+  </div>
+
+  <script>
+    // 1.选择元素
+    //选择<body>中所有的<p>，其文本内容为 www.ourd3js.com，选择集保存在变量 p 中
+    let p = d3.select('.chart').selectAll('p').text('tomgo');
+    //修改段落的颜色和字体大小
+    p.style('color', 'red').style('font-size', '18px')
+
+    // 在 D3 中，用于选择元素的函数有两个：
+    // d3.select()：是选择所有指定元素的第一个
+    // d3.selectAll()：是选择指定元素的全部
+    // 这两个函数返回的结果称为选择集。
+    // var body = d3.select("body"); //选择文档中的body元素
+    // var p1 = body.select("p");      //选择body中的第一个p元素
+    // var p = body.selectAll("p");    //选择body中的所有p元素
+    // var svg = body.select("svg");   //选择body中的svg元素
+    // var rects = svg.selectAll("rect");  //选择svg中所有的svg元素
+
+    // 2.绑定数据
+    // D3 中是通过以下两个函数来绑定数据的：
+    // datum()：绑定一个数据到选择集上
+    // data()：绑定一个数组到选择集上，数组的各项值分别与选择集的各元素绑定
+    // 相对而言，data() 比较常用。
+    let p2 = d3.select('.div2').selectAll('p')
+    // console.log(p2, '---p2');
+    var str = "China";
+    p2.datum(str)
+    // console.log(p2, '---p2');
+    // p2.text(str)
+    p2.text(function fn(d, i, a) {
+      // console.log(arguments);
+      // console.log(a === p2._groups[0]); // true
+      return `第${i}个元素是${d}`
+    })
+
+    // data绑定
+    // 有一个数组，接下来要分别将数组的各元素绑定到三个段落元素上。
+    var dataset = ["I like dog", "I like cat", "I like snake"];
+    /**
+     * 绑定之后，其对应关系的要求为：
+      Apple 与 I like dog 绑定
+      Pear 与 I like cat 绑定
+      Banana 与 I like snake 绑定
+     */
+    // 调用 data() 绑定数据，并替换三个段落元素的字符串为被绑定的字符串，代码如下
+    let p3 = d3.selectAll('.div3').selectAll('p')
+    // console.log(p3);
+    p3.data(dataset)
+    // console.log(p3);
+    p3.on('dblclick', function(d, i, a) {
+      console.log(arguments);
+    })
+    p3.text(d => d)
+
+    // 3.选择、插入、删除元素
+    // 3.1选择
+    // 选择第一个 p 元素
+    let div4 = d3.select('.div4')
+    div4.select('p').style('color', 'red')
+    // 选择三个 p 元素
+    div4.selectAll('p').style('color', 'blue')
+    // 选择第二个 p 元素
+    // 有不少方法，一种比较简单的是给第二个元素添加一个 id 号。
+    div4.select("#pear").style('color','#fff000')
+    /**
+     * 选择后两个 p 元素
+给后两个元素添加 class，
+     */
+     div4.selectAll(".other").style('color','#ff00ff')
+    // 3.2插入
+    // 插入元素涉及的函数有两个：
+    // append()：在选择集末尾插入元素
+    // insert()：在选择集前面插入元素
+    // console.log(div4, '----div4');
+    // data只会绑定`i`而datum绑定`i am append` 
+    // 不能加 .enter() ？？？
+    // 绑定数据
+    // div4.append('p').attr('class', 'other foo').datum('i am append').text(function fn(d) {
+    //   console.log(arguments);
+    //   return d
+    // })
+    // 不绑定数据 直接写在text里
+    div4.append('p').attr('class', 'other foo').text('i am append2')
+
+    // insert
+    // 在 div4 中 id 为 pear 的元素前添加一个段落元素。
+    div4.insert('p', '#pear').attr('id', 'insert-pear').text('insert p')
+
+    // 3.3删除元素
+    // div4.select('#pear').remove()
+    // div4.remove()
+
+  </script>
+</body>
+
+</html>

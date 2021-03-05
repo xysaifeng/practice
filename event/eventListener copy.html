@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h3>事件处理器</h3>
+  <h3 onclick="fn()">2021年02月26日11:57:15</h3>
+  <h3 id='time'>2021年02月26日11:57:15</h3>
+  
+  <button id='btn'>click</button>
+
+  <script>
+    // 'use strict'
+
+    // this的指向
+    function fn() {
+      console.log(this,'999');
+    }
+    time.addEventListener('click', fn, false)
+
+
+    function handle(){
+      console.log(this,'click1');
+    }
+    function handle2(){
+      console.log('click2');
+    }
+    // 多个相同的事件处理器
+    btn.addEventListener('click', handle, {capture: false},false)
+    btn.addEventListener('click', handle, {capture: true}, false)
+    // btn.onclick = function() {
+    //   console.log(this); // <button id="btn">click</button>
+    // }
+
+  </script>
+</body>
+</html>

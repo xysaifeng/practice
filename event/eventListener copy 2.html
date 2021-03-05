@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h3>事件处理器</h3>
+  <h3 id='time'>2021-02-26 14:47:03</h3>
+  <button id='btn'>click</button>
+
+  <script>
+    // 'use strict'
+    // this的指向
+
+    let Something = function(el) {
+      // 这里的this指window
+      this.name = 'something ok';
+      this.click1 = function(e) {
+        console.log(this, '----this'); // this指向body
+        console.log(this.name, '--------this.name 1111'); // undefined body上面没有name属性
+      }
+      this.click2 = function(e) {
+        console.log(this); // window 本身this指向body，但是使用了bind重新将window绑定为this
+        console.log(this.name, '--------this.name 222'); // something ok
+      }
+      // el.addEventListener('click', this.click1, false)
+      el.addEventListener('click', this.click2.bind(this), false)
+    }
+
+    Something(document.body)
+    // console.dir(Something,'Something');
+    // document.body.addEventListener('click',click1)
+
+
+    // 上面的例子是没有移除监听器
+
+
+
+    class SomeClass {
+      constructor() {
+        this.name = 'good';
+      }
+      register() {
+        console.log(this, '-----outer this');
+        let _this = this
+        window.addEventListener('keydown', function(e) { 
+          console.log(this,'-----this');
+          _this.someMethod(e)
+         })
+      }
+      someMethod(e) {
+        console.log(this, '----method this');
+        console.log(e, '----method e');
+        switch (e.keyCode) {
+          case 5:
+            console.log(5);
+            break;
+        
+          default:
+            console.log(e.keyCode, '-----e.keyCode');
+            break;
+        }
+      }
+    }
+    let some = new SomeClass()
+    some.register()
+
+   
+  </script>
+</body>
+</html>
