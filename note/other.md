@@ -10,3 +10,9 @@
 
 ### 在线演示(动画演示)各种算法的实现过程
 [参考](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
+
+
+### 鼠标选中文本划词高亮、再次选中划词取消高亮效果
+[参考1](https://juejin.cn/post/6844904101789040654)
+[参考2](https://github.com/alienzhou/web-highlighter/blob/master/README.zh_CN.md, '官网')
+[参考3](https://github.com/alienzhou/web-highlighter/blob/master/docs/ADVANCE.zh_CN.md, '官网2')

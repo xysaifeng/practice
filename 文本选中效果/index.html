@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .nexts {
+            display: block;
+            width: 50px;
+            padding: 4px 6px;
+            border-radius: 5%;
+            border: 1px solid blueviolet;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div>
+        <p>Lorem ipsum <strong>dolor</strong> sit amet consectetur adipisicing elit. </p>
+        <p> Facilis obcaecati reiciendis dolore quos?</p>
+        <p>Iste tempora eos vel suscipit nobis libero quam enim blanditiis quaerat laboriosam, minus <strong>illo</strong>, magnam aliquam asperiores.</p>
+    </div>
+    <div>
+        <span οnclick="selectText" id="selectable">http://example.com/page.htm</span>
+        <input type="button" id='btn' onclick="nextCourse()" value="按钮" />
+        <span class="nexts" onclick="nextCourse()">下一节</span>
+    </div>
+    </div>
+    <script>
+        // https://blog.csdn.net/boyit0/article/details/41082941 own
+        // https://www.cnblogs.com/sanqianjin/p/9259033.html
+
+        btn.onclick = function selectText() {
+            if (document.getSelection2) {
+                console.log('21');
+                var range = document.createRange();
+                range.selectNode(document.getElementById('selectable'));
+                document.getSelection().addRange(range);
+
+                // range.moveToElementText(document.getElementById('selectable'));
+                // range.select();
+            } else if (window.getSelection) {
+                // console.log('3333');
+                let s = window.getSelection()
+                console.log('s: ', s);
+                if (s.rangeCount > 0) {
+                    s
+                    console.log(s.getRangeAt(0));
+                    s.removeAllRanges();
+                    // s.deleteFromDocument(); // 删除选中的节点
+                }
+                else {
+                    var range = document.createRange();
+                    console.log('range: ', range);
+                    range.selectNode(document.getElementById('selectable'));
+                    s.addRange(range);
+                    // s.deleteFromDocument(range);
+                    // window.getSelection().collapse(document.body, 0)
+                }
+            }
+        }
+
+        function nextCourse() {
+            console.log(this);
+        }
+
+
+
+       window.addEventListener('click', select, false)
+        /* 在一个HTML文档中选中所有加粗的文本。 */
+        function select() {
+            console.log('000');
+            let s = window.getSelection()
+            console.log('s: ', s);
+            let strongs = document.getElementsByTagName('strong')
+            if (s.rangeCount > 0) {
+                // console.log(s.getRangeAt(0), '-----removeAllRanges');
+                s.removeAllRanges();
+            }
+            //  else {
+                console.log('strong: ', strongs);
+                for (var i = 0; i < strongs.length; i++) {
+                    var range = document.createRange();
+                    console.log(strongs[i], '---strongs[i]');
+                    range.selectNode(strongs[i])
+                    // s.addRange(range)
+                }
+                s.addRange(range)
+            // }
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="box">
+
+    </div>
+
+    <script src="https://d3js.org/d3.v6.js"></script>
+
+    <script>
+        // https://blog.csdn.net/u011086331/article/details/108635461?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-4&spm=1001.2101.3001.4242
+        let margin = {
+            top: 10,
+            left: 10,
+        }
+        var dataset = [{ id: 1, n: 5 }, { id: 2, n: 10 }, { id: 3, n: 15 }, { id: 4, n: 20 }, { id: 5, n: 25 }, { id: 6, n: 30 }];
+        function setup() {
+            var svg = d3.select(".box")
+            .append("svg")
+            .attr("width", 640)
+            .attr("height", 480)
+            .append('g')
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+            
+        //数据集 id用于匹配新添加和删除的数据
+       
+
+        //从零开始添加数据的模板
+        let node = svg.selectAll('.nodes')
+            .data(dataset)
+            .enter()
+            .append('g')
+            .attr('class', 'nodes')
+            .on('click',change)
+            
+        // console.log(node, '-------node');
+
+        node.append("circle")
+            .attr('cx',(d,i) => i * 60 + 100 )
+            .attr('cy', 50)
+            .attr('r', d => d.n)
+            .attr('fill', 'red')
+            .transition()
+            .duration(1000)
+            //前面有transition就是补间
+            .attr("r", 20)
+           
+
+        node.append("text")
+            .attr("class", "text")
+            .attr('dx', (d,i) => i * 60 + 92)
+            .attr('dy', 55)
+            .transition()
+            .duration(1000)
+            .text(d => d.n)
+        }
+
+        setup()
+
+        function change() {
+            dataset.push({id: 7, n: 35});
+            d3.selectAll('svg').remove()
+            setup()
+        }
+         
+    // setTimeout(() => {
+    //     dataset.push({id: 7, n: 35});
+    //     d3.selectAll('svg').remove()
+    //     setup()
+    // }, 2000)
+
+    // setTimeout(() => {
+    //     // dataset.splice(3,1);
+    //     dataset.push(35);
+    //     var update = svg.selectAll(".nodes").data(dataset, d=> {
+    //         console.log(d,'--d');
+    //         return d.id
+    //     })
+    //     // .enter().attr('class', 'nodes').exit().remove();
+    //     let enter = update.enter().append('g');
+    //     // let exit = update.exit().remove();
+    // }, 2000)
+/*
+    setTimeout(() => {
+        dataset.splice(3,1);
+        //选中update部分，注意带主键
+        var update = svg.selectAll("circle").data(dataset, d => d.id);
+        var update2 = svg.selectAll(".text").data(dataset, d => d.id);
+        //选中enter部分
+        var enter = update.enter();
+        var enter2 = update2.enter();
+        //选中exit部分
+        var exit = update.exit();
+        var exit2 = update2.exit();
+        //接下来分别处理三个部分的元素，和前面基本一样
+        update
+            .transition()
+            .duration(1000)
+            .attr("cx", (d, i) => (i * 60) + 100)
+            .attr("r", d => {
+                console.log(11111);
+                return d.n
+            });
+        update2
+            .transition()
+            .duration(1000)
+            .attr('dx', (d,i) => {
+                console.log(1-1111);
+                return i * 60 + 92
+            })
+            
+        enter
+            .append("circle")
+            .attr("cx", (d, i) => (i * 60) + 100)
+            .attr("cy", 240)
+            .transition()
+            .duration(1000)
+            .attr("r", d => {
+                console.log(22222);
+                return d.n
+            });
+        enter2
+            .append("text")
+            .attr("class", "text")
+            .attr('dx', (d,i) => i * 60 + 92)
+            .attr('dy', 55)
+            .transition()
+            .duration(1000)
+            .text(d => d.n)
+
+        exit
+            .transition()
+            .duration(1000)
+            .attr("r", d => {
+                console.log(333);
+                return 0
+            })
+            //使用remove删除不需要的元素
+            .remove();
+
+        exit2
+            .transition()
+            .duration(1000)
+            .attr("dx", d => {
+                console.log(444);
+                return 0
+            })
+            //使用remove删除不需要的元素
+            .remove();
+    }, 4000)
+*/
+
+
+    </script>
+
+</body>
+
+</html>

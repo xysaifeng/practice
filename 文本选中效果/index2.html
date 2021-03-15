@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>这是一段默认被选中的文本</p>
+    <p>这是一段默认有开始截止位置的文本</p>
+    <div>
+        <span>太阳当空照，<br></span>
+        <span>花儿对我笑。<br></span>
+        <span>小鸟说：“早，早，早，<br></span>
+        <span>你为什么背上小书包？”<br></span>
+        <span>我去上学校，<br></span>
+        <span>天天不迟到。<br></span>
+        <span>爱学习，爱劳动，<br></span>
+        <span>长大要为祖国立功劳。<br></span>
+    </div>
+    </body>
+    <script>
+        // https://www.cnblogs.com/sanqianjin/p/9259033.html
+        let range2 = document.createRange()
+        var startNode = document.getElementsByTagName("div").item(0);
+        // console.dir( startNode);
+        let nodes = startNode.childNodes // div中的所有节点 包括空格
+        console.log('nodes: ', nodes);
+        for(var i = 0; i< nodes.length; i++) {
+            // console.log(nodes[i]);’
+            // 找到空格并让父元素删除
+            if(nodes[i].nodeName === '#text'  && !/\s/.test(startNode.childNodes.nodeValue)) {
+                // console.dir(nodes[i])
+                // 父节点删除子节点
+                // startNode.removeChild(nodes[i])
+
+                // 节点自己从它所属的 DOM 树中删除。
+                nodes[i].remove()
+            }
+        }
+
+        console.log(startNode);
+        range2.setStart(startNode.childNodes[5].firstChild, 2);
+        range2.setEnd(startNode.childNodes[7].firstChild, 8);
+        var selection2 = window.getSelection();
+        selection2.removeAllRanges();
+        selection2.addRange(range2)
+    </script>
+</html>

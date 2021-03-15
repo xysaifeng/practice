@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <button id='btn'>change</button>
+    </div>
+    <div id="chart">
+        <!-- <p class="test"></p>
+        <p class="test"></p>
+        <p class="test"></p> -->
+    </div>
+
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script>
+        let p = d3.selectAll('#chart>.test')
+        var arr = [3, 6, 9, 10]
+        // 绑定数据
+        var update = p.data(arr)
+        update.text(d => {
+            console.log(d, '--u');
+            return d
+        })
+
+        var enter = update.enter()
+        console.log('enter: ', enter);
+        // console.log('enter ss: ', enter.size());
+        enter.append('p').attr('class', 'text').text(d => d)
+
+        // dom多data少
+        // var exit = update.exit();
+        // console.log('exit: ', exit);
+        // exit.remove()
+        btn.onclick = function() {
+            var arr = [ 99, 88]
+            // arr.splice(2,1)
+            var update = d3.selectAll(".text").data(arr);
+            // 选中enter部分
+            var enter = update.enter();
+            // 选中exit部分
+            var exit = update.exit();
+
+        update // 更新
+            // .transition()
+            // .duration(1000)
+            // .attr("class", 'text')
+            .text(d => {
+                console.log('------d11');
+                return d
+            })
+                 
+        enter
+            .append("p")
+            // .transition()
+            // .duration(1000)
+            .attr("class", 'text')
+            .text(d => {
+                console.log('------d222');
+                return d
+            })
+
+        exit
+            // .transition()
+            // .duration(1000)
+            //使用remove删除不需要的元素
+            .remove();
+
+            // d3.selectAll('.test').remove()
+            // update = p.data(arr).enter().append('p').text(d =>d)
+            // console.log('update: ', update);
+            // d3.selectAll('.test').data(arr).append('p').text(d=>d).exit().remove()
+        }
+
+    </script>
+
+</body>
+
+</html>

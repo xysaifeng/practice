@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <style>
+        #title {
+            width: 200px;
+            border: 1px solid red;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <h3 id='title' name='title' name='tom'>d3-selection</h3>
+
+        <div class="text">
+            <p class="pp">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo nesciunt, saepe dolorum nisi ea
+                incidunt voluptatem unde eligendi odit consequuntur aperiam eum. Quod dolor fuga quam odio, fugit
+                tempore aut?</p>
+        </div>
+
+        <div class="remove-box">
+            <p class="remove"> ok ? </p>
+            <input class="remv" type="button" onclick="remove()" value='remove'>&nbsp;
+            <input type="button" onclick="append()" value='append'>
+        </div>
+
+        <div class="data">
+            <div name='a' id="A"></div>
+            <div name='b' id="B"></div>
+            <div name='c' id="C"></div>
+            <div name='d' id="D"></div>
+            <div name='e' id="E"></div>
+            <div name='f' id="F"></div>
+            <p>
+                <button id='btn'>change</button>
+            </p>
+        </div>
+
+
+        <div>
+            <ul id="list">
+                <li data-username="shawnbot">Shawn Allen</li>
+                <li data-username="mbostock">Mike Bostock</li>
+            </ul>
+        </div>
+
+        <div id='event'>eventListener</div>
+
+    </div>
+
+    <script>
+        let h3 = document.getElementById('title');
+        // let h3 = d3.select('#title');
+        // console.log('h3: ', h3);
+        console.log(d3.window(document.documentElement));
+
+        // d3.style(node, name)  返回指定node的样式里的name属性对应的值，或者返回空
+        console.log(d3.style(h3, 'font-size')); // 16px
+        console.log(d3.style(h3, 'fontSize')); // 空
+
+        // selection.attr(name[, value])
+        let h3_ = d3.select('#title');
+        console.log(h3_.attr('name')); // title
+        // console.log(h3_.attr('name', null));
+
+        // h3_.classed('bar foo', true)
+        h3_.data(['d3-selection is good']).text(d => d)
+        h3_.classed('bar foo', function (d, i, nodes) {
+            console.log(this === nodes[i]); // true
+            console.log(d, '0000');
+            return true
+            // return Math.random() > 0.5; 
+        })
+        // 如果没有指定 value 则返回当前选择集中第一个非空元素是否启用了指定的 classes. 在已知选择集中只包含一个元素时很有用。
+        console.log(h3_.classed('bar'), '-------6666'); // true
+
+        console.log(h3_.text()); // d3-selection is good
+
+        let t = d3.select('.text')
+        // console.log(t.html()); //  <p class="pp">Lorem i... </p>
+        let htm = '<div class="ha">\
+                ha li lu ya!\
+            </div>'
+        t.html(htm)
+        d3.select('.box').style('border', '1px solid blue').insert('p', '.text').text('insert')
+        console.log('-------------------------------------');
+        // selection.remove
+        let removed = null
+        function remove() {
+            removed = d3.select('.remove-box').select('.remove').remove()
+            console.log('remove', removed);
+        }
+        function append() {
+            d3.select('.remove-box').insert(removed._groups[0][0].tagName.toLocaleLowerCase(), '.remv').text(removed._groups[0][0].innerHTML)
+            d3.select('.remv').clone()
+        }
+
+        d3.select('#btn').datum('cha').text(d => {
+            console.log(d, '-----um');
+            return d
+        })
+
+        btn.onclick = function () {
+            var data = [
+                { name: "A", number: '4' },
+                { name: "B", number: '8' },
+                { name: "C", number: '15' },
+                { name: "F", number: '16' },
+                // null,
+                { name: "K", number: '31' },
+                { name: "F", number: '34' }
+            ];
+            let update = d3.select('.data').selectAll('div').data(data, function (d, i) {
+                // console.log(d, this.id, '--this');
+                return d?.name ? d.name : this.id
+            })
+
+            update.text(d => { // key(id)相同则更新
+                // console.log(d, '---test d');
+                return d ? d?.number : '-'
+            })
+
+            // update.enter()
+            console.log('  update.enter(): ', update.enter());
+            // .raise() 每次插入的元素都作为其父元素的最后一个子元素
+            update.enter().append('div', '#btn').raise().attr('id', d => d?.name).text(d => {
+                // console.log(d);
+                return d?.number // key(id)不相同则添加
+            })
+            // // update.exit()
+            console.log(' update.exit(): ', update.exit());
+            update.exit().remove() // 没有绑定上数据的节点则删除该节点
+
+            // d3.select('#btn').datum().text(d => d)
+            // console.log('获取数据', d3.select('#btn').datum(null)); // 如果为 null 则表示移除当前元素绑定的数据。d3.select('#btn').datum()就获取不到绑定的值`cha`了
+            console.log('获取数据', d3.select('#btn').datum()); // cha
+        }
+
+
+        //  selection.datum
+        d3.select('#list')
+            .selectAll('li')
+            .on('click', function (d) {
+                // console.log(this.dataset.username);
+                let name = this.dataset.username
+                // this.datum(function(){
+                //     console.log(this.dataset.username, '-----this8888');
+                //     return this.dataset.username
+                // })
+                // this.text(d => d)
+                d3.select('#list')
+                    .selectAll('li')
+                    .datum(function (d, i, node) {
+                        console.log(this, '----this2222');
+                        if (name === this.dataset.username) {
+                            return name;
+                        } else {
+                            return this.innerHTML
+                        }
+                    })
+                    .text(d => d)
+            })
+            console.log('-------------------------------------2');
+
+            // eventListener
+            d3.select('#event').data(['监听器']).text(d => d).on('mouseenter mouseleave', handleMouse, false)
+            // d3.select('#event').data(['监听器']).text(d => d).on('mouseenter mouseenter', handleMouse, false) // 只触发一次
+            // d3.select('#event').data(['监听器']).text(d => d).on('mouseenter.foo mouseenter.bar', handleMouse, false) // 指定了name,同一事件会触发二次
+            function handleMouse(d) {
+                console.log(d);
+            }
+
+            window.addEventListener('click', function() {
+                // 返回指定 typename 对应的listener, typename不能不指定
+                // console.log(d3.select('#event').on('mouseenter.foo'), '-----8888');
+                console.log(d3.select('#event').on('mouseleave'), '-----8888'); // f handleMouse
+            })
+
+
+
+    </script>
+
+</body>
+
+</html>

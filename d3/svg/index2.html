@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>viewBox属性的理解</h3>
+    <!-- <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"> -->
+    <!--
+        with relative unit such as percentage, the visual size
+        of the square looks unchanged regardless of the viewBox
+        -->
+    <!-- <rect x="0" y="0" width="100%" height="100%"/> -->
+
+    <!--
+        with a large viewBox the circle looks small
+        as it is using user units for the r attribute:
+        4 resolved against 100 as set in the viewBox
+        -->
+    <!-- <circle cx="50%" cy="50%" r="4" fill="white"/>
+      </svg> -->
+
+    <!-- <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"> -->
+    <!--
+        with relative unit such as percentage, the visual size
+        of the square looks unchanged regardless of the viewBox`
+        -->
+    <!-- <rect x="0" y="0" width="100%" height="100%"/> -->
+
+    <!--
+        with a small viewBox the circle looks large
+        as it is using user units for the r attribute:
+        4 resolved against 10 as set in the viewBox
+        -->
+    <!-- <circle cx="50%" cy="50%" r="4" fill="white"/> -->
+
+
+    <!-- <svg viewBox="-5 -5 10 10" xmlns="http://www.w3.org/2000/svg"> -->
+        <!--
+            The point of coordinate 0,0 is now in the center of the viewport,
+            and 100% is still resolve to a width or height of 10 user units so
+            the rectangle looks shifted to the bottom/right corner of the viewport
+            -->
+        <!-- <rect x="0" y="0" width="100%" height="100%" /> -->
+
+        <!--
+            With the point of coordinate 0,0 in the center of the viewport the
+            value 50% is resolve to 5 which means the center of the circle is
+            in the bottom/right corner of the viewport.
+            -->
+        <!-- <circle cx="50%" cy="50%" r="4" fill="white" />
+    </svg> -->
+
+
+    <svg width="100%" height="100%" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+            <path id="MyPath" d="M 100 200
+             C 200 100 300   0 400 100
+             C 500 200 600 300 700 200
+             C 800 100 900 100 900 100" />
+        </defs>
+
+        <use xlink:href="#MyPath" fill="none" stroke="red" />
+
+        <text font-family="Verdana" font-size="42.5">
+            <textPath xlink:href="#MyPath">
+                We go up, then we go down, then up again
+            </textPath>
+        </text>
+
+        <!-- Show outline of the viewport using 'rect' element -->
+        <rect x="1" y="1" width="998" height="298" fill="none" stroke="black" stroke-width="2" />
+    </svg>
+    </svg>
+    <script>
+
+
+    </script>
+</body>
+
+</html>

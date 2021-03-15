@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- 127.0.0.1：8089/ -->
+<!-- https://blog.csdn.net/silent_missile/article/details/84838780?spm=1001.2014.3001.5501 d3学习 -->
+
 <!-- http://visualdataweb.de/webvowl/# -->
 <!-- https://observablehq.com/search?page=12&query=force -->
 <!-- https://observablehq.com/search?page=4&query=force -->
 <!-- https://observablehq.com/search?page=7&query=force -->
-<!-- https://observablehq.com/@mdlmgmt/force-directed-graph-for-sem // 虚线--> 
+<!-- https://observablehq.com/@mdlmgmt/force-directed-graph-for-sem // 虚线-->
+<!-- https://observablehq.com/@stephenszc/clickable-force-directed-graph-network-graph // 箭头-->
+<!-- https://observablehq.com/@sethuram975351/force-directed-tree-with-zoom-and-tooltip-addons // zoom && tootip-->
+<!-- https://observablehq.com/@sethuram975351/force-directed-tree-with-coloring-and-blinking-effect // tooltip-->
+<!-- https://observablehq.com/@skofgar/force-directed-graph-integrated-html // tooltip-->
+<!-- https://observablehq.com/@6174/force-directed-graph-with-dom // 圆圈旁边加横线-->
+<!-- https://observablehq.com/@faraohh/force-directed-graph // 不显示圆圈显示文字-->
+<!-- https://observablehq.com/@garciaguillermoa/force-directed-graph-with-colored-node-borders // 圆圈边框多色-->
 
 <!-- https://scrimba.com/learn/d3js -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,6 +33,7 @@
         svg {
             border: 1px solid blue;
             /* float: left; */
+            overflow: visible;
         }
 
         .clear {
@@ -82,17 +94,15 @@ y2 属性在 y 轴定义线条的结束 -->
     <div class="clear"></div>
     <h5>多边形</h5>
     <!-- <polygon> 标签用来创建含有不少于三个边的图形。 -->
-        <!-- polygon来自希腊。 "Poly" 意味 "many" ， "gon" 意味 "angle". -->
+    <!-- polygon来自希腊。 "Poly" 意味 "many" ， "gon" 意味 "angle". -->
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height=260>
-    <polygon points="220,10 300,210 170,250 123,234"
-    style="fill:lime;stroke:purple;stroke-width:1"/>
+        <polygon points="220,10 300,210 170,250 123,234" style="fill:lime;stroke:purple;stroke-width:1" />
     </svg>
     <div class="clear"></div>
     <h5>曲线</h5>
     <!-- <polyline> 元素是用于创建任何只有直线的形状： -->
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <polyline points="20,20 40,25 60,40 80,120 120,140 200,180"
-    style="fill:none;stroke:black;stroke-width:3" />
+        <polyline points="20,20 40,25 60,40 80,120 120,140 200,180" style="fill:none;stroke:black;stroke-width:3" />
     </svg>
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
         <polyline points="0,40 40,40 40,80 80,80 80,120 120,120 120,160" style="fill:none;stroke:red;stroke-width:4" />
@@ -100,7 +110,7 @@ y2 属性在 y 轴定义线条的结束 -->
     <div class="clear"></div>
     <h5>路径</h5>
     <!-- <path> 元素用于定义一个路径。 -->
-        <!-- M = moveto
+    <!-- M = moveto
 L = lineto
 H = horizontal lineto
 V = vertical lineto
@@ -110,17 +120,78 @@ Q = quadratic Bézier curve
 T = smooth quadratic Bézier curveto
 A = elliptical Arc
 Z = closepath -->
-<!-- 例子定义了一条路径，它开始于位置150 0，到达位置75 200，然后从那里开始到225 200，最后在150 0关闭路径 -->
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height=220>
-    <!-- <path d="M150 0 L75 200 L225 200 Z" /> -->
-    <path d="M150 0 L75 200 T90 90 T100 120 T50 120 Z" fill='red' />
-</svg>
-<div class="clear"></div>
-<h5>文本</h5>
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-    <text x="0" y="15" fill='yellow' stroke="red" stroke-width='1'>I love SVG</text>
-  </svg>
+    <!-- 例子定义了一条路径，它开始于位置150 0，到达位置75 200，然后从那里开始到225 200，最后在150 0关闭路径 -->
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height=220>
+        <!-- <path d="M150 0 L75 200 L225 200 Z" /> -->
+        <path d="M150 0 L75 200 T90 90 T100 120 T50 120 Z" fill='red' />
+    </svg>
+    <div class="clear"></div>
+    <h5>文本</h5>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width=100>
+        <g id='gbox'>
+            <circle cx='50' cy='75' r='50' fill='#f1f1f1' />
+            <!-- <text x="0" y="15" fill='yellow' stroke="red" stroke-width='1'>I love SVG, <br />i love china</text> -->
+            <text x="0" y="15" stroke="red" stroke-width='1'>
+                <a>I love SVG,</a>
+                <!-- <tspan dx="10" dy='5' fill='green'>I love SVG,</tspan>
+                <tspan dx="-10"  dy="15">i love china</tspan> -->
+            </text>
+            <text x="0" y="35" stroke="red" stroke-width='1'>
+                <!-- <a>I love SVG,</a> -->
+                <!-- <tspan dx="10" dy='5' fill='green'>I love SVG,</tspan>-->
+                <tspan>i love china</tspan>
+            </text>
+        </g>
+    </svg>
+    <div class="clear"></div>
+    <h5>多边形</h5>
+    <svg width="300" height="150">
+        <polygon fill="#FFf" stroke="orange" stroke-width="1" points="10,10 100,10 100,100 10,100 10,10" />
+    </svg>
+    <div class="clear"></div>
+    <h5>use标签</h5>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height='300'>
+        <!-- <circle id='myCircle' cx='150' cy='75' r='75' fill='orange' /> -->
+        <circle id='myCircle' cx='150' cy='75' r='75' />
+        <use href='#myCircle' fill='red' />
+        <use href='#myCircle' x='20' y='0' style="stroke-dasharray: 10 5; " fill='green' stroke="blue" stroke-width="5"
+            stroke-opacity='.5' />
+    </svg>
+    <div class="clear"></div>
+    <h5>defs元素</h5>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height='300'>
+        <defs>
+            <g id="shape">
+                <rect x="100" y="100" width="100" height="100" />
+                <circle cx="100" cy="100" r="100" />
+            </g>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5"
+                markerWidth="6" markerHeight="6"
+                orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" />
+            </marker>
+        </defs>
+        <use href='#shape' fill='red' x="200" y="50" />
+        <polyline points="10,10 10,90 90,90" fill="none" stroke="black"
+      marker-start="url(#arrow)" marker-end="url(#arrow)" />
+        <!-- <use href='#myCircle' x='20' y='0' style="stroke-dasharray: 10 5; " fill='green' stroke="blue" stroke-width="5" stroke-opacity='.5' /> -->
+    </svg>
+    <div class="clear"></div>
+    <h5>marker元素</h5>
+    <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+            <marker id="Triangle" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 " fill='none' stroke='black' stroke-width="1.5"   />
+            </marker>
+        </defs>
 
+        <polyline points="10,90 50,80 90,20" fill="none" stroke="black" stroke-width="1" marker-end="url(#Triangle)" />
+    </svg>
+    <div class="clear"></div>
+    <h5>viewBox</h5>
+    <svg width="100" height="100" viewBox="-5 -5 50 50">
+        <circle id="mycircle" cx="50" cy="50" r="50" fill='pink' />
+    </svg>
     <script>
         // SVG 意为可缩放矢量图形（Scalable Vector Graphics）。
         // SVG 使用 XML 格式定义图像。
