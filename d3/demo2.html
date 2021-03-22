@@ -8,8 +8,7 @@
     <script src="https://d3js.org/d3.v5.js"></script>
 </head>
 <body>
-    <h5>一个简单的柱状图2 - 使用线性比例尺</h5>
-    <button id="update">更新</button>
+    <h5>一个简单的柱状图</h5>
     <div id='bar-chart'></div>
     <script>
         // https://www.jianshu.com/p/48cfe84e655e
@@ -26,30 +25,17 @@
         // 要注意，在 SVG 中，x 轴的正方向是水平向右，y 轴的正方向是垂直向下的。
 
         // 现在给出一组数据，要对此进行可视化。数据如下
-        // var dataset = [ 250 , 210 , 170 , 130 , 90 ];  //数据（表示矩形的宽度）
+        var dataset = [ 250 , 210 , 170 , 130 , 90 ];  //数据（表示矩形的宽度）
 
         // 修改一下数组，再定义一个线性比例尺。
         var dataset = [ 2.5 , 2.1 , 1.7 , 1.3 , 0.9 ];
-        // let minVal = d3.min(dataset)
+        let minVal = d3.min(dataset)
         let maxVal = d3.max(dataset)
         let linear = d3.scaleLinear() // 创建一个定量的线性比例尺.
-            .domain([0, maxVal]) // 定义域
+            .domain([min, max]) // 定义域
             .range([0, 250]) // 值
-        
-        dataset = dataset.map(v => {
-            return +(linear(v).toFixed(0))
-        })
 
-        var axis = d3.axisBottom(linear);
-        axis.ticks(5, 'f')
-        // .tickValues(['0', '0.5', 1.3, 1.5, 2, 2.5, 3]);
-        // axis.tickFormat(function(d) {
-        //     console.log(d, '---d');
-        //     return d
-        // })
-        
 
-        console.log(dataset, '----dataset');
         // 为简单起见，我们直接用数值的大小来表示矩形的像素宽度（后面会说到这不是一种好方法）。然后，添加以下代码。
         var reactHeight = 35; // 每个矩形所占的像素高度(包括空白)
         svg.selectAll('rect') // 选择svg内所有的矩形
@@ -71,10 +57,7 @@
             .data(dataset)
             .enter()
             .append('text')// <text x="0" y="15" fill='yellow' stroke="red" stroke-width='1'>I love SVG</text>
-             .text(d => {
-                //  console.log(d);
-                 return d/100
-             })
+             .text(d => d)
             .attr('x', (d,i) => {
                 // console.log(d);
                 return d + 20
@@ -82,16 +65,45 @@
             .attr('y', (d, i) => i * reactHeight+ 36)
             .attr('fill', 'red')
 
-        var g = svg.append('g').attr("transform","translate(20,200)").attr('id', 'g').call(axis);
+        // 比例尺的使用
+        // 比例尺是 D3 中很重要的一个概念，上面曾经提到过直接用数值的大小来代表像素不是一种好方法，本章正是要解决此问题
+        // 为什么需要比例尺？
+        // 上一章制作了一个柱形图，当时有一个数组：
+        // var dataset = [ 250 , 210 , 170 , 130 , 90 ];
+        // 绘图时，直接使用 250 给矩形的宽度赋值，即矩形的宽度就是 250 个像素。
+        // 此方式非常具有局限性，如果数值过大或过小，例如：
+        // var dataset_1 = [ 2.5 , 2.1 , 1.7 , 1.3 , 0.9 ];
+        // var dataset_2 = [ 2500, 2100, 1700, 1300, 900 ];
 
-        // 绑定事件
-        d3.select('#update').on('click', function() {
-            // 更新数据
-            linear.domain([0, Math.random() * 100]);
-            // g.call(axis);
-            // transition d3提供默认的动画
-            d3.select('#g').transition().call(axis)
-        })
+        // 于是，我们需要一种计算关系，能够：
+        // 将某一区域的值映射到另一区域，其大小关系不变。
+        // 这就是比例尺（Scale）。
+
+        // 线性比例尺(scaleLinear)
+        // 线性比例尺，能将一个连续的区间，映射到另一区间。要解决柱形图宽度的问题，就需要线性比例尺。
+
+        let arr = [1.2, 2.3, 0.9, 1.5, 3.3];
+        let min = d3.min(arr)
+        let max = d3.max(arr)
+        console.log('min: ', min); // 0.9
+        console.log('min: ', max); // 3.3
+        // 现有要求如下：将 dataset 中最小的值，映射成 0；将最大的值，映射成 300。
+        let linear = d3.scaleLinear() // 创建一个定量的线性比例尺.
+            .domain([min, max]) // 定义域
+            .range([0, 300]) // 值域
+
+        // console.dir(linear);
+        console.log(linear(0.9)); // 0
+        console.log(linear(2.3)); // 175
+        // 比例尺的定义域 domain 为：[0.9, 3.3]
+        // 比例尺的值域 range 为：[0, 300]  
+
+
+
+          
+
+
+
 
 
 

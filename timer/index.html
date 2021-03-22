@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>倒计时：<span id='count'>10</span></h3>
+    <div>
+        <input type="button" id='suspend' value="暂停">
+        <input type="button" id='startover' value="启动">
+    </div>
+
+    <script>
+        let count = 10;
+        let timer = null;
+        function setUP() {
+            timer = setInterval(() => {
+                // console.log(timer, '-----timer');
+                document.getElementById('count').innerHTML = --count;
+                console.log(count, '---inner');
+                if (count === 0) {
+                    clearInterval(timer)
+                    timer = null;
+                }
+            }, 1000)
+        }
+        setUP() 
+        console.log(count, '---outer');
+
+        suspend.onclick = function () {
+            if (count) {
+                clearInterval(timer)
+                timer = null;
+                console.log(timer, '------timer 666');
+            }
+        }
+
+        startover.onclick = function () {
+            console.log(timer, count, '===========startover');
+            if(count <= 0) {
+                count = 10
+            }
+            if(!timer) {
+                document.getElementById('count').innerHTML = count;
+                setUP(count);
+            }
+        }
+    </script>
+</body>
+
+</html>
