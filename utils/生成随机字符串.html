@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>生成随机字符串</h3>
+    <div>
+        <code>
+            Math.ceil(n);  //向上取整。返回大于等于n的最小整数。
+        </code>
+    </div>
+   <div>
+    <code>
+        Math.round(n);  //四舍五入。返回为n四舍五入后的整数。
+    </code>
+   </div>
+   <div>
+    <code>
+        Math.random();  //0.0 ~ 1.0 之间的一个伪随机数。【包含0，不包含1】 //比如0.8647578968666494;  //四舍五入。返回为n四舍五入后的整数。
+    </code>
+   </div>
+    <script>
+        // Math.ceil(n);  //向上取整。返回大于等于n的最小整数。
+        // Math.floor(n);  //向下取整。返回为n的整数部分。
+        // Math.round(n);  //四舍五入。返回为n四舍五入后的整数。
+        // Math.random(n);  //0.0 ~ 1.0 之间的一个伪随机数。【包含0，不包含1】 //比如0.8647578968666494
+        // Math.ceil(Math.random()*10);      // 获取从1到10的随机整数 ，取0的概率极小。
+        // Math.floor(Math.random()*10);    //可均衡获取0到9的随机整数。
+        // Math.round(Math.random());   //可均衡获取0或1的随机整数。(因为random()生成的是0-1的数，四舍五入后只有0或1)
+        // Math.round(Math.random()*10);  //基本均衡获取0到10的随机整数，其中获取最小值0和最大值10的几率少一半。
+        // 因为结果在0~0.4 为0，0.5到1.4为1...8.5到9.4为9，9.5到9.9为10。所以头尾的分布区间只有其他数字的一半
+
+        // 生成[n,m]的随机整数
+        // 生成从minNum到maxNum的随机数
+        function randomNum(minNum,maxNum){
+            let n = arguments.length;
+            switch (n) {
+                case 1:
+                    return parseInt(Math.random()*minNum + 1)
+                    break;
+            
+                case 2:
+                    return parseInt(Math.random()*(maxNum - minNum + 1) + minNum)
+                    break;
+            
+                default:
+                    return 0
+                    break;
+            }
+        }
+        console.log(`object`, randomNum(1,5))
+        // 生成[1,max]的随机数，公式如下：
+        // parseInt(Math.random() * max) + 1
+        // Math.floor(Math.random() * max) + 1
+        // 生成[0,max]的随机数，公式如下：
+        // parseInt(Math.random() * (max + 1))
+        // Math.floor(Math.random() * (max + 1))
+        // 生成[min,max]的随机数，公式如下：
+        // parseInt(Math.random() * (max - min + 1) + min)
+        // Math.floor(Math.random() * (max - min + 1) + min)
+
+        // 涉及范围的话，就有个边界值的问题。这样就包含四种情况：
+        // 1.)min ≤ r ≤ max
+        // 2.)min ≤ r < max
+        // 3.)min < r ≤ max
+        // 4.)min < r < max
+
+        // 1.min ≤ r ≤ max
+        function randomFn(min, max) {
+            let range = max - min;
+            return Math.round(Math.random()* range) + min
+        }
+        // 2.min ≤ r < max
+        function randomFn(min, max) {
+            let range = max - min;
+            return Math.floor(Math.random()* range) + min
+        }
+        // 3.min < r ≤ max
+        function randomFn(min, max) {
+            let range = max - min;
+            let r = Math.random()
+            let val = Math.round(r*range)
+            if (val === 0) {
+                return min + 1
+            }
+            return val + min
+        }
+        // 4.min < r < max
+        function randomFn(min, max) {
+            let range = max - min;
+            let r = Math.random()
+            let val = Math.round(r*range)
+            if (val === 0) {
+                return min + 1
+            }
+            if ((val + 1) === max) {
+                return max - 1
+            }
+            return val + min - 1
+        }
+
+       
+
+        // 1.使用randomString，e表示长度，默认32位
+        function randomString(len = 32) {
+            let s = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            // 生成[0,max]到任意数的随机数
+            // https://www.cnblogs.com/mq0036/p/9139231.html
+            let str = '';
+            for (let i = 0; i < len; i++) {
+                let n = parseInt(Math.random() * (s.length + 0)); // 这里不能+1 因为s的索引到61
+                // str += s[n]
+                str += s.charAt(n)
+            }
+            console.log(str);
+            return str
+        }
+        // randomString(8)
+
+        // 2.生成随机数
+        function getRandomNum(min, max) {
+            let range = max - min;
+            return min + Math.round(Math.random() * range)
+        }
+        let res = getRandomNum(0, 10)
+        // console.log('res: ', res);
+
+        // 3.对定义的数组字符集进行随机选取
+        function getRandomNum3(n) {
+            var arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+            let str = '', len = arr.length - 1;
+            for (let i = 0; i < n; i++) {
+                str += arr[Math.ceil(Math.random() * len)]
+            }
+            return str
+        }
+        let res3 = getRandomNum3(5)
+        // console.log('res: ', res3);
+
+        // 4.生成随机数转成36进制，再截取部分
+        function getRandomNum4(n) {
+            //Math.random() 生成随机数字, eg: 0.123456
+            //.toString(36) 转化成36进制 : "0.4fzyo82mvyr"
+            //.slice(-8); 截取最后八位 : "yo82mvyr"
+            if (n) {
+                if(n < 1) n = 1
+                if(n > 11) n = 11
+                return Math.random().toString(36).slice(-n)
+            } else {
+                return ''
+            }
+        }
+        let res4 = getRandomNum4(-1)
+        // console.log('res: ', res4);
+
+        // 5.对字符串集合随机排列，随机输出指定的长度
+        function getRandomNum5(n) {
+            var s = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var len = s.length;
+            var str = ''
+            for (let i =n; i >0; i--) {
+                str += s[Math.floor(Math.random() * len)]
+            }
+            return str
+        }
+        let res5 = getRandomNum5(100)
+        console.log('res: ', res5);
+
+
+    </script>
+</body>
+
+</html>

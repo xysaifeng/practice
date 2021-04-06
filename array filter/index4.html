@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>将二维数据抽离重组</h3>
+    <h5>解法1.</h5>
+    <ol>
+        <li>获取数组arr第一项的长度n，构造长度为n项，每一项为空数组的二维数组newArr,即newArr的长度为数组第一项的长度</li>
+        <li>外循环数组arr的第一项，内循环数组arr，根据外循环一次内循环一轮的逻辑，newArr[i]中push arr[j][i]</li>
+    </ol>
+    <h5>解法2.</h5>
+    <ol>
+        <li>声明一个空数组res,外循环数组arr，依次取出数组arr中的每一项赋值为item,内循环数组item</li>
+        <li>根据外循环一次内循环一轮的逻辑，外循环下一次会将item赋值为数组arr的下一项，从而每次内循环都是新数组，res[i] = [...res[i] || [], item[i]], ps:i为内循环的索引</li>
+    </ol>
+    <script>
+        var a = [[11, 22, 33], [44, 55, 'aa'], [66, 'bb', 'cc'], [77, 88, 'dd']]
+        // var res = [[11, 44, 66, 77], [22, 55, 'bb', 88], [33, 'aa', 'cc', 'dd']]
+
+        console.log('a: ', a);
+        // let len = a[0].length
+        // let obj = {}
+        // for(let i = 0; i < len; i ++) {
+        //     obj[i] = []
+        // }
+        // a.forEach((e,i) => {
+        //     Object.keys(obj).forEach(k => obj[k].push([e.shift()]))
+        // })
+        // let newArr = []
+        // Object.keys(obj).forEach(k => {
+        //     newArr.push(obj[k].flat())
+        // })
+        // console.log(newArr, '--newArr');
+
+        // let flag = 0;
+        // let len = a[0].length
+        // for(let i=0;i<a.length;i ++) {
+        //     flag = i
+        //     for(let j=0;j< len; j ++) {
+        //     }
+        // }
+
+        // var a = [[11, 22, 33], [44, 55, 'aa'], [66, 'bb', 'cc'], [77, 88, 'dd']]
+        // var res = [[11, 44, 66, 77], [22, 55, 'bb', 88], [33, 'aa', 'cc', 'dd']]
+
+        // let l = a.length // 4
+        // let len = a[0].length // 3
+        // let arr = new Array(len).fill([])
+        // a.forEach(e => {
+        //     arr.forEach(el => el.push(e.shift()))
+        // })
+        // console.log('arr: ', arr);
+
+        function helper2(arr) {
+            let array = []
+            for (let i = 0; i < arr.length; i++) {
+                const item = arr[i]
+                for (let j = 0; j < item.length; j++) {
+                    // console.log([...array[j] || []], '------90999');
+                    console.log(array, array[j], '------90999');
+                    array[j] = [...array[j] || [], item[j]]
+                    console.log( array[j] , '----- array['+ j +'] ');
+                }
+            }
+            console.log(array, '-----array');
+        }
+
+        helper2(a)
+
+        function helper(data) {
+            let len = data[0].length
+            let res = Array.from({ length: len }, () => [])
+            for (let j = 0; j < len; j++) {
+                for (let i = 0; i < data.length; i++) {
+                    console.log(j, '--------j');
+                    res[j].push(data[i][j])
+                }
+            }
+            console.log(res, '----res');
+        }
+        helper(a);
+
+        (() => {
+            var a = [[11, 22, 33, 44, 55], [66, 77, 'aa', 'bb', 'cc']]
+            function helper(data) {
+                let len = a[0].length;
+                let res = Array.from({length: len}, () => [])
+                for(let j=0;j< len;j ++) {
+                    for(let i = 0; i<data.length; i ++) {
+                        res[j].push(data[i][j])
+                    }
+                }
+                // console.log(res, '------------');
+            }
+            helper(a)
+
+            let helper2 = (arr) => {
+                let res = [];
+                for(let i = 0; i< a.length;i ++) {
+                    let item = a[i];
+                    for(let j =0;j < item.length; j ++) {
+                        console.log(res[j], '--------res jjj');
+                        res[j] = [...res[j] || [], item[j]]
+                    }
+                }
+                console.log(res, '-------YYYY');
+            }
+            helper2(a)
+        })()
+    </script>
+</body>
+
+</html>

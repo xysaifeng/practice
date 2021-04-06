@@ -22,7 +22,7 @@
             width: 300px;
             height: 300px;
             border: 1px solid;
-            position: relative;
+            /* position: relative; */
         }
         #child {
             margin: 0 auto;
@@ -72,7 +72,7 @@
         // console.log(child.offsetTop); // 100
 
         // 2.如果box元素没有position: relative，则child元素的offsetTop = 111;
-        console.log(child.offsetTop); // 111
+        console.log(child.offsetTop); // 111 = 100 + 1 + 10
 
         console.log(child.getBounding);
 
