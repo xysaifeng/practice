@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var obj = {
+            s:1,
+            a: {
+                e: 12
+            },
+            b: {
+                c: {
+                    d: 9
+                }
+            },
+            // ee: [1,2,3],
+            // hh: [7,8,9],
+            // f: {
+            //     g: [4,5,6]
+            // },
+            // hack: {
+            //     g: [{aa: '1'},{'bb': 2},6]
+            // },
+            // h: [
+            //     {name: 'tom', age: 199}
+            // ],
+            bnfs: [,,{
+                addr: [
+                    {
+                        arr1: [
+                            {arr2: 12}
+                        ]
+                    }
+                ]
+            }],
+            // ee: [1, 2, 3],
+            // hh: [7, 8, 9],
+        }
+
+        var arrs = [], arr = [], oldArr = [];
+        let isArr = false;
+        function get(obj, newObj, arr) {
+            // debugger
+            let p = getKey(obj, arr)
+            for (let k in p) {
+                let c = p[k]
+
+                if (typeof c === 'object') {
+                    // console.log(c, '===c 1');
+                    // console.log(arr, '========arr 1');
+                    get(c, newObj, arr)
+                } else {
+                    console.log(c,isArr, '=====cccc');
+                    console.log(arr, '==========arr 2');
+                    let ks = arr.join('.')
+                    console.log('ks:========= ', ks);
+                    newObj[ks] = c
+                    if (isArr) {
+                        arr.pop()
+                    } else {
+                        arr.length = 0
+                    }
+
+                }
+            }
+            function getKey(obj, arr) {
+                return new Proxy(obj, {
+                    get(target, key, receiver) {
+                        console.log(key, target, '---');
+                        arr.push(key)
+
+                        // isArr = Array.isArray(target) && oldArr !== target
+                        // oldArr = target
+                        if (Array.isArray(target)) {
+                            if (oldArr !== target) {
+                                isArr = true
+                            } else {
+                                isArr = false
+                            }
+
+                            oldArr = target
+                        }
+                        return Reflect.get(target, key, receiver)
+                    },
+                    set(target, key, val, receiver) {
+                        console.log('set====');
+                        return Reflect.set(target, key, val, receiver)
+                    }
+                })
+            }
+            return newObj
+        }
+        // get(obj)
+        let newObj = {}
+        console.log('get(obj): ', get(obj, newObj, arr));
+
+    </script>
+</body>
+
+</html>

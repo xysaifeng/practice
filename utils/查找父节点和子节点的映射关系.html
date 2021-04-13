@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>根据子节点id查找父节点id</h3>
+    <script>
+        const treeData = [
+            {
+                title: 'Node1',
+                value: '1',
+                children: [
+                    {
+                        title: 'Child Node1',
+                        value: '3',
+                    },
+                ],
+            },
+            {
+                title: 'Node33',
+                value: '33',
+                children: [
+                    {
+                        title: 'Node33',
+                        value: '34',
+                        children: [
+                            {
+                                title: 'Child Node1',
+                                value: '35',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                title: 'Node2',
+                value: '2',
+                children: [
+                    {
+                        title: 'Child Node3',
+                        value: '4',
+                    },
+                    {
+                        title: 'Node3',
+                        value: '5',
+                        children: [
+                            {
+                                title: 'Child Node6',
+                                value: '7',
+                            },
+                            {
+                                title: 'Child Node7',
+                                value: '8',
+                                children: [
+                                    {
+                                        title: 'Child Node6',
+                                        value: '9',
+                                    },
+                                    {
+                                        title: 'Child Node7',
+                                        value: '10',
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        title: 'Child Node5',
+                        value: '6',
+                    },
+                ],
+            },
+        ];
+        let arr = []
+
+        function getData(data, key = '') {
+            for (let i = 0; i < data.length; i++) {
+                let o = data[i]
+                if (o.children) {
+                    let val = key ? key + '-' + o.value : o.value
+                    o.key = val
+                    getData(o.children, val)
+                } else {
+                    o.key = key + '-' + o.value
+                }
+            }
+        }
+        getData(treeData)
+        console.log('treeData: ', treeData);
+
+
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>获取固定#包裹内容</h3>
+    <div>#中国⼈⺠财产保险股
+        份有限公司
+         个⼈住院医疗保险条款（2020⽔滴保专⽤版）#</div>
+    <script>
+        // var str = '考虑将案件水电费#加上了甲方##dad#nim# '
+        // var str = '#加上了甲方###'
+        // var str = '#中国⼈⺠财产保险股份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）#'
+        // var str = '中国⼈⺠财产保险股份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）'
+        var str = `#中国⼈⺠财产保险股
+        份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）#`
+        // var r = /\f/
+        // var r = /\t/
+        // var r = /\r/
+        // var r = /\0/
+        console.log(str, '-----str 1111');
+        var r = /\s/
+        console.log(r.test(str), '=======990000');
+        // str = str.replace(/(\n|\r|\r\n|\s)/gm, '')
+        // str = str.replace(/(\n)/, '') // #中国⼈⺠财产保险股        份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）#
+        // str = str.replace(/(\n)/g, '') // #中国⼈⺠财产保险股        份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）#
+        // str = str.replace(/(\n)/gm, '') // #中国⼈⺠财产保险股        份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）#
+
+        // str = str.replace(/(\t)/gm, '') // origin
+        // str = str.replace(/(\f)/gm, '') // origin
+
+        // str = str.replace(/(\s)/, '') // #中国⼈⺠财产保险股        份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）#
+        str = str.replace(/(\s)/g, '') // #中国⼈⺠财产保险股份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）#
+        // str = str.replace(/(\s)/gm, '') // #中国⼈⺠财产保险股份有限公司个⼈住院医疗保险条款（2020⽔滴保专⽤版）#
+        console.log(str, '-----str 2222');
+
+        function sliceSearchKey(searchKey) {
+            console.log('searchKey: 111111111', searchKey);
+            searchKey = searchKey.replace(/(\n|\r|\r\n|\s)/gm, '')
+            console.log('searchKey: 2222222222', searchKey);
+            let noMatch = '';
+            let matchArr = []
+            if (!searchKey) {
+                return {
+                    noMatch,
+                    matchArr
+                }
+            }
+            let r = /#(.*?)#/g
+            let s = searchKey.replace(r, function () {
+                matchArr.push(arguments[1])
+                return arguments[1]
+            })
+            console.log(matchArr, '------m');
+            matchArr = matchArr.filter(Boolean)
+            matchArr.forEach(s => {
+                console.log(s,'===sss');
+                s = `#${s}#`
+                searchKey = searchKey.replace(s, '').trim()
+            })
+            noMatch = searchKey;
+            console.log(searchKey, '======searchKey');
+            return {
+                noMatch,
+                matchArr
+            }
+        }
+
+        // console.log(sliceSearchKey(str));
+    </script>
+</body>
+
+</html>
