@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="left">
+            <p>Enter some text</p>
+            <input id='ins' type="text">
+            <br>
+            <button id='copyBtn'>copy</button>
+        </div>
+        <div class="right">
+            <p>your text will bi pasted</p>
+            <input id='out' type="text">
+            <br>
+            <button id='pasteBtn'>copy</button>
+        </div>
+    </div>
+
+    <script>
+        if (navigator.clipboard && navigator.clipboard.read && navigator.clipboard.write) {
+            console.log(999);
+            copyBtn.onclick = function () {
+                performCopy()
+            }
+            pasteBtn.onclick = function () {
+                performPaste()
+            }
+        } else {
+            console.log('error');
+        }
+
+        async function performCopy(e) {
+            console.log(e, '----e');
+            // e.preventDefault()
+            try {
+                let val = ins.value;
+                console.log('val: ', val);
+                // let res = await navigator.clipboard.writeText(val)
+                navigator.clipboard.writeText(val).then(function () {
+                    /* clipboard successfully set */
+                    console.log('ok----');
+                }, function () {
+                    /* clipboard write failed */
+                    console.log('err---');
+                })
+            } catch (error) {
+                console.log('error: ', error);
+
+            }
+        }
+        async function performPaste(e) {
+            console.log(e, '----e 2');
+            // e.preventDefault()
+            try {
+                let val = ins.value;
+                console.log('val: ', val);
+                let text = await navigator.clipboard.readText()
+                console.log(text, '-----ok');
+                out.value = text
+            } catch (error) {
+                console.log('error: 2d', error);
+
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let json = "{\"id\":\"6\",\"no\":\"0000000000\",\"name\":\"admin\",\"orgName\":\"中国大地财产保险股份有限公司\",\"orgCode\":\"31000000\",\"roleId\":\"4\",\"roleName\":\"管理员\",\"status\":1,\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MjAyNjk0MTQsImlhdCI6MTYxOTY2NDYxNCwianRpIjoiOTFmY2I2ZjctYTNmNS00MjNjLWEwYWQtMTFmNDQ3ZDI3MGJkIn0.NrP07xh8q8YctKjphynfl9380sRPrVFlmPcT5QGwSpU\",\"menuDTOList\":[{\"id\":\"1\",\"name\":\"竞品综合查询\",\"type\":1,\"childList\":[{\"id\":\"3\",\"parentId\":\"1\",\"name\":\"综合查询\",\"type\":1,\"childList\":[]}]},{\"id\":\"2\",\"name\":\"用户系统管理\",\"type\":1,\"childList\":[{\"id\":\"4\",\"parentId\":\"2\",\"name\":\"角色管理\",\"type\":1,\"childList\":[]},{\"id\":\"6\",\"parentId\":\"2\",\"name\":\"日志管理\",\"type\":1,\"childList\":[]}]}]}";
+        let info = JSON.parse(json)
+        console.log(info);
+        let menu = info.menuDTOList
+        let namelist = []
+        flat(menu, namelist)
+        function flat(menu, namelist) {
+            menu.forEach(m => {
+                namelist.push(m.name)
+                if (m.childList) {
+                    flat(m.childList, namelist)
+                }
+            });
+        }
+        console.log(namelist, '----namelist');
+
+        const asyncRouterMap = [
+            {
+                path: '/',
+                name: 'Index',
+                component: 'BasicLayout',
+                redirect: '/blank',
+                children: [
+                    {
+                        path: '/query',
+                        name: 'Query',
+                        redirect: '/query/all',
+                        component: 'RouteView',
+                        meta: { title: '竞品综合查询', keepAlive: true, icon: 'allQuery', permission: ['dashboard'] },
+                        children: [
+                            {
+                                path: '/query/all',
+                                name: 'QueryAll',
+                                redirect: '/query/posts',
+                                hideChildrenInMenu: true,
+                                component: () => import('@/views/queryAll'),
+                                meta: { title: '综合查询', keepAlive: true, permission: ['dashboard'] },
+                                children: [
+                                    {
+                                        path: '/query/posts',
+                                        name: 'Posts',
+                                        hidden: true,
+                                        isRoute: true,
+                                        component: () => import('@/views/queryAll/Posts'),
+                                        meta: { title: '图谱', keepAlive: false, permission: ['dashboard'] }
+                                    },
+                                    {
+                                        path: '/query/item',
+                                        name: 'Item',
+                                        hidden: true,
+                                        isRoute: true,
+                                        component: () => import('@/views/queryAll/Item'),
+                                        meta: { title: '图谱', keepAlive: false, permission: ['dashboard'] }
+                                    },
+                                    {
+                                        path: '/query/disease',
+                                        name: 'Disease',
+                                        hidden: true,
+                                        isRoute: true,
+                                        component: () => import('@/views/queryAll/Disease'),
+                                        meta: { title: '图谱', keepAlive: false, permission: ['dashboard'] }
+                                    },
+                                    {
+                                        path: '/query/duty',
+                                        name: 'Duty',
+                                        hidden: true,
+                                        isRoute: true,
+                                        component: () => import('@/views/queryAll/Duty'),
+                                        meta: { title: '图谱', keepAlive: false, permission: ['dashboard'] }
+                                    },
+                                    {
+                                        path: '/query/atlas',
+                                        name: 'QueryAtlas',
+                                        hidden: true,
+                                        isRoute: true,
+                                        component: () => import('@/views/queryAll/components/Atlas'),
+                                        meta: { title: '图谱', keepAlive: false, permission: ['dashboard'] }
+                                    },
+                                    {
+                                        path: '/query/postsDetail',
+                                        name: 'PostsDetail',
+                                        hidden: true,
+                                        isRoute: true,
+                                        component: () => import('@/views/queryAll/components/PostsDetail'),
+                                        meta: { title: '图谱', keepAlive: false, permission: ['dashboard'] }
+                                    },
+                                    {
+                                        path: '/query/itemContrast',
+                                        name: 'ItemContrast',
+                                        hidden: true,
+                                        isRoute: true,
+                                        component: () => import('@/views/queryAll/components/ItemContrast'),
+                                        meta: { title: '图谱', keepAlive: false, permission: ['dashboard'] }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        path: '/userManagement',
+                        name: 'userManagement',
+                        redirect: '/userManagement/roles',
+                        component: 'RouteView',
+                        meta: { title: '系统管理', keepAlive: true, icon: 'system', permission: ['dashboard'] },
+                        children: [
+                            {
+                                path: 'roles',
+                                name: 'Roles',
+                                component: () => import('@/views/userManagement/roles'),
+                                meta: { title: '角色管理', keepAlive: false, permission: ['dashboard'] }
+                            },
+                            {
+                                path: 'users',
+                                name: 'Users',
+                                component: () => import('@/views/userManagement/users'),
+                                meta: { title: '用户管理', keepAlive: false, permission: ['dashboard'] }
+                            },
+                            {
+                                path: 'log',
+                                name: 'Log',
+                                component: () => import('@/views/userManagement/log'),
+                                meta: { title: '日志管理', keepAlive: false, permission: ['dashboard'] }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                path: '*',
+                redirect: '/404',
+                hidden: true
+            }
+        ]
+        let route = getRoute(asyncRouterMap, namelist)
+        console.log('route: ', route);
+        function hasPermission(namelist, route) {
+            if (route.meta?.title) {'aaa'
+                console.log(route.meta?.title, 'aaa');
+                if (namelist.includes(route.meta.title) || route.isRoute) {
+                    console.log(123);
+                    return true
+                } else {
+                    console.log(456);
+                    return false
+                }
+            }
+            console.log('bbb');
+            return true
+        }
+        function getRoute(asyncRouterMap, namelist) {
+            const route = asyncRouterMap.filter(r => {
+                if (hasPermission(namelist, r)) {
+                    console.log(111);
+                    if (r.children && r.children.length) {
+                        r.children = getRoute(r.children, namelist)
+                    }
+                    return true
+                } else {
+                    console.log(2222);
+                    return false
+                }
+            })
+            return route
+        }
+
+        function getRoute2(asyncRouterMap, namelist) {
+            const route = asyncRouterMap.filter(r => {
+                if (!r.meta?.title) {
+                    if (r.children && r.children.length) {
+                        r.children = getRoute(r.children, namelist)
+                    }
+                    return true
+                } else {
+                    if (namelist.includes(r.meta.title)) {
+                        if (r.children && r.children.length) {
+                            r.children = getRoute(r.children, namelist)
+                        }
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+            })
+            return route
+        }
+    </script>
+</body>
+
+</html>

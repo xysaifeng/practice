@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		#box {
+			width: 500px;
+			height: 500px;
+			margin: 0 auto;
+			position: relative;
+			background-color: orange;
+		}
+		#box1 {
+			width: 250px;
+			height: 250px;
+			margin: 0 auto;
+			background-color: purple;
+		}
+		#box2 {
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 200px;
+			right: 100px;
+			background-color: blue;
+		}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<span>box</span>
+		<div id="box1">
+			<span>box1</span>
+			<div id="box2">
+				<span>box2</span>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		// 此时， box2 是相对于box来定位的， 而在节点关系中，box1是box2的parentNode.
+		// 获取元素
+		var box1 = document.getElementById("box1");
+		var box2 = document.getElementById("box2");
+		// 获取定位父元素
+		console.log(box2.offsetParent)
+		// 获取box2到box的左边距离
+		console.log("offsetLeft属性值:" + box1.offsetLeft)  // 125
+		console.log("offsetLeft属性值:" + box2.offsetLeft)  // 300
+		// 距离自己定位父元素的左边距离
+		// 获取box2到box的上边距离
+		console.log("offsetTop属性值:" + box1.offsetTop) // 22
+		console.log("offsetTop属性值:" + box2.offsetTop)    // 200
+		// 距离自己定位父元素的上边距离
+	</script>
+</body>
+</html>

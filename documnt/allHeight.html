@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *, html,body {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        #paraph {
+            width: 200px;
+            height: 30px;
+            padding: 5px;
+            margin: 5px;
+            border: 5px solid rosybrown;
+        }
+        #line {
+            color: red;
+        }
+        .box {
+            height: 500px;
+            border: 1px solid;
+            margin-bottom: 2px;
+        }
+        .box1 {
+            border-color: red;
+        }
+        .box2 {
+            border-color: purple;
+        }
+        .box3 {
+            border-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h3 id='title'>元素的xxHeight属性</h3>
+    <div class="container">
+        <p id='paraph'>wo</p>
+        <span id='line'>men</span>
+        <div class="box box1">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque iste ab natus enim pariatur optio quia magnam recusandae corrupti maxime, tempore consequuntur ut nostrum, laboriosam odit minima architecto animi velit!
+        </div>
+        <div class="box box2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque iste ab natus enim pariatur optio quia magnam recusandae corrupti maxime, tempore consequuntur ut nostrum, laboriosam odit minima architecto animi velit!
+        </div>
+        <div class="box box3">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque iste ab natus enim pariatur optio quia magnam recusandae corrupti maxime, tempore consequuntur ut nostrum, laboriosam odit minima architecto animi velit!
+        </div>
+    </div>
+    <script>
+        // 1.Element.clientHeight
+        // 这个属性是只读属性，对于没有定义CSS或者内联布局盒子的元素为0，
+        // 否则，它是元素内部的高度(单位像素)，包含内边距，但不包括水平滚动条、边框和外边距。
+        // clientHeight = height + padding - 水平滚动条高度 (如果存在) 
+        let paraph = document.getElementById('paraph')
+        let line = document.getElementById('line')
+        console.log('paraph.clientHeight: ', paraph.clientHeight); // 40 = 30 + 5 + 5
+        console.log('paraph.clientHeight: ', line.clientHeight); // 0 内联元素为0
+
+
+        console.log('paraph.getBoundingClientRect: ', paraph.getBoundingClientRect().height); // 50 标准盒子模型
+        // console.log('paraph.clientHeight: ', paraph.getBoundingClientRect()); // 30 怪异模式下
+        // console.log('paraph.clientHeight: ', line.getBoundingClientRect()); // 
+
+        console.log('paraph.offsetHeight: ', paraph.offsetHeight) // 标准盒子模型:50 怪异模式下:30
+
+
+        // 网页被卷起来的高度/宽度（即浏览器滚动条滚动后隐藏的页面内容高度）
+        console.log(document.documentElement.scrollTop);
+        // 网页工作区域的高度和宽度 
+        console.log(document.documentElement.clientHeight); 
+        789
+        // 元素距离文档顶端和左边的偏移值
+        console.log(title.offsetTop); // 0
+        console.log(title.offsetHeight); // 26
+        console.log(paraph.offsetTop); // 31 = 26 + 5
+
+        // 获取页面元素距离浏览器工作区顶端的距离
+        // 等于 元素距离文档顶端的偏移值 - 网页被卷起来的高度
+        // el.offsetTop - document.documentElement.scrollTop
+
+    </script>
+</body>
+</html>

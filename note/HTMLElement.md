@@ -1,5 +1,5 @@
 ### HTMLElement一些属性
-* offsetHeight：元素的像素高度,高度包含该元素的垂直内边距和边框，且是一个整数。 不包含:before或:after等伪类元素的高度   
+* offsetHeight：元素的**像素**高度,高度包含该元素的垂直内边距和边框，且是一个整数。 不包含:before或:after等伪类元素的高度   
 
 * clientHeight：元素内部的高度，包含内边距，但不包括水平滚动条、边框和外边距 【clientHeight 可以通过 CSS height + CSS padding - 水平滚动条高度 (如果存在)来计算.】   
 

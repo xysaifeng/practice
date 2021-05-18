@@ -1,9 +1,9 @@
-
-
-
-
-
+// 炜哥的code
 let demo = {
+    name: 'tom',
+    age: {
+        y: 19
+    },
     "bnfs":[
         null,//0  null
         null,
@@ -47,12 +47,8 @@ function getPath(obj) {
     return paths
 }
 
-
-console.log(JSON.stringify(getPath(demo)));
-
-
+// console.log(JSON.stringify(getPath(demo)));
 var paths = ["bnfs",2,"addr",0,"ar1",0,"ar11",0,"ar112",0,"ar1121"]
-
 
 function getFieldValue(path,obj) {
     let res
@@ -63,10 +59,6 @@ function getFieldValue(path,obj) {
 }
 
 // console.log(getFieldValue(paths));
-
-
-
-
 
 let aa = {
     a:1,
@@ -79,7 +71,12 @@ let aa = {
         f:{
             g:'5'
         }
-    }
+    },
+    arr: [
+        2,
+        {id: 1},
+        3
+    ]
 }
 
 function getFlat(obj) {
@@ -99,7 +96,7 @@ function getFlat(obj) {
     return res
 }
 
-// console.log(getFlat(aa));
+console.log(getFlat(aa));
 
 
 

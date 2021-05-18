@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr3 = [
+            100,
+            {id: 0, name: 'tom', age: 19},
+            {id: 1, name: 'jery', age: 20}
+        ]
+        let obj = {
+            a1: 'a',
+            gf: {
+                b1: 'b',
+                c1: 'c',
+                // f: {
+                //     c1: 'c',
+                //     s: {
+                //         d1: 'd'
+                //     }
+                // }
+            },
+            d1: 'ddddddd'
+        }
+        let map = {}
+        let flag = 0
+        function helper(data, arr = [], p = '') {
+            if (Array.isArray(data)) {
+                console.log('========3');
+                data.forEach((item, i) => {
+                    if (typeof item === 'object') {
+                        // helper(item, o)
+                    }
+                })
+            } else {
+                for(let k in data) {
+                    let item = data[k]
+                    console.log(k,item, '-------4');
+                    if (typeof item === 'object') {
+                        flag ++
+                        console.log(k, '----k');
+                        helper(item, arr, k)
+                    }
+                    if( flag > 0)  flag --
+                    console.log(p, 'p=============== 1');
+                    p = p ? p + '.' + k : k
+                    console.log(p, 'p======= 2');
+                    map[p] = item
+                    if (!p.includes('.')) {
+                        console.log(p, '=============p---');
+                        p = ''
+                    }
+                }
+            }
+            return map
+        }
+
+        function reactive(data, o) {
+            return new Proxy(data, {
+                get(target, key, receiver) {
+                    console.log(key,'------get key');
+                    arr.push(key)
+                    return Reflect.get(target, key)
+                },
+                set(target, key, value, receiver) {
+                    console.log(key,value, '------set key');
+                    return Reflect.set(target, key, value)
+                }
+            })
+        }
+        function reactive2(data, o) {
+            if (Array.isArray(data)) {
+                data.forEach((item, i) => {
+                    if (typeof item === 'object') {
+                        data[i] = reactive(item)
+                    }
+                })
+            } else {
+                for(let k in data) {
+                    if (typeof data[k] === 'object') {
+                        data[k] = reactive(data[k])
+                    }
+                }
+            }
+            return new Proxy(data, {
+                get(target, key, receiver) {
+                    console.log(key,'------get key');
+                    return Reflect.get(target, key)
+                },
+                set(target, key, value, receiver) {
+                    console.log(key,value, '------set key');
+                    return Reflect.set(target, key, value)
+                }
+            })
+        }
+       
+        let obj2 = {
+            s:1,
+            a: {
+                e: 12
+            },
+            b: {
+                c: {
+                    d: 9
+                }
+            },
+            f: {
+                g: [4,5,6]
+            },
+            hack: {
+                g: [{aa: '1'},{'bb': 2},6]
+            },
+            h: [
+                {name: 'tom', age: 199}
+            ],
+            bnfs: [,,{
+                addr: [
+                    {
+                        arr1: [
+                            {arr2: 12}
+                        ]
+                    }
+                ]
+            }]
+        }
+        // let state = reactive(obj)
+        let newObj = {}, arr = []
+        let o1 = helper(obj, arr)
+        console.log('o1: ', o1);
+        // state.a1 = 1
+        // state.gf.b1 = 2
+        // state.gf.f.c1 = 3
+        // state.gf.f.s.d1= 4
+
+        // let state = reactive(arr)
+        // state[0] = 100,
+        // state[1].name = 'go',
+        // state[2].id = 2,
+
+        // console.log(obj);
+        // console.log(state);
+
+    </script>
+</body>
+</html>

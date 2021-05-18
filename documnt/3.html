@@ -2,6 +2,21 @@
 <html lang="en">
     <head>
         <title>elementFromPoint example</title>
+        <style>
+            .box {
+                position: relative;
+                width: 400px;
+                height: 400px;
+                border: 1px solid red;
+            }
+            .circle {
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                background: rgba(0,0,0,.1);
+                top: 60px;
+            }
+        </style>
 
         <script>
             // Document.elementFromPoint()，返回当前文档上处于指定坐标位置最顶层的元素，坐标是相对于包含该文档的浏览器窗口的左上角为原点来计算的，通常x和y坐标都应为正数。
@@ -10,6 +25,7 @@
             // x, y是坐标数值，不需要单位如px.
             function changeColor(newColor) {
                 elem = document.elementFromPoint(2, 2);
+                console.log('elem: ', elem);
                 elem.style.color = newColor;
             }
         </script>
@@ -20,5 +36,9 @@
         <p id="para1">Some text here</p>
         <button onclick="changeColor('blue');">blue</button>
         <button onclick="changeColor('red');">red</button>
+        <div class="box">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione quos debitis quisquam? Illum dolorum, quibusdam fugit explicabo nostrum, quis possimus deserunt eos saepe sit vero officiis sed? Dolores, aspernatur obcaecati!
+            <div class="circle"></div>
+        </div>
     </body>
 </html>
