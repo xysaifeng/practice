@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="left">
+            <p>Enter some text</p>
+            <input id='ins' type="text">
+            <br>
+            <button id='copyBtn'>copy</button>
+            <!-- <input type=button value=拷贝 onclick="document.execCommand('Copy')"> -->
+        </div>
+        <div class="right">
+            <p>your text will bi pasted</p>
+            <input id='out' type="text">
+            <br>
+            <button id='pasteBtn'>paste</button>
+        </div>
+    </div>
+    <div>
+        <span id="copyBtn2" class="iconfont icon-fuzhi"
+            style="font-size: 14px;margin-left: 45%;color:#4cd3e9;cursor:pointer;"
+            onclick="selectElementContents()">一键复制</span>
+    </div>
+    <table id="result">
+        <thead>
+            <tr>
+                <th>
+                    div
+                </th>
+                <th>
+                    age
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div>tom</div>
+                </td>
+                <td><div>19</div></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        copyBtn.onclick = function () {
+            performCopy()
+        }
+        pasteBtn.onclick = function () {
+            performPaste()
+        }
+
+        async function performCopy(e) {
+            try {
+                let val = ins.value;
+                if (!navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(val).then(function () {
+                        /* clipboard successfully set */
+                        console.log('copy ok----');
+                    }, function () {
+                        /* clipboard write failed */
+                        console.log('copy err---');
+                    })
+                } else if (document.execCommand('copy')) {
+                    console.log(222);
+                    var input = document.createElement('input');
+                    document.body.appendChild(input)
+                    input.value = val
+                    input.select()
+                    document.execCommand('copy')
+                    console.log('复制成功');
+                    document.body.removeChild(input)
+                } else {
+                    console.log('浏览器不支持复制操作！');
+                }
+            } catch (error) {
+                console.log('error: ', error);
+
+            }
+        }
+        async function performPaste(e) {
+            try {
+                let text = await navigator.clipboard.readText()
+                console.log(text, '-----ok');
+                out.value = text
+            } catch (error) {
+                console.log('error: 2d', error);
+
+            }
+        }
+
+        //js实现复制到剪贴板，带格式复制
+        function selectElementContents() {
+            // https://blog.csdn.net/weixin_44305208/article/details/109038735?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-0&spm=1001.2101.3001.4242
+            let el = document.getElementById('result');
+            var body = document.body, range, sel;
+
+            if (document.createRange && window.getSelection) {
+                range = document.createRange();
+                sel = window.getSelection();
+                sel.removeAllRanges();
+                try {
+                    range.selectNodeContents(el);
+                    sel.addRange(range);
+                } catch (e) {
+                    range.selectNode(el);
+                    sel.addRange(range);
+                }
+                document.execCommand("copy");
+                //取消文本选中状态
+                window.getSelection().empty();
+                console.log('成功复制到剪贴板！');
+                // alert("成功复制到剪贴板");
+            }
+        }
+
+    </script>
+</body>
+
+</html>

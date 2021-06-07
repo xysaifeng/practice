@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .container {
+
+        }
+        .box {
+            width: 200px;
+            height: 180px;
+            border: 1px solid red;
+            overflow: scroll;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .box li {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background: cyan;
+            transition: all .6s ease;
+            color: #fff;
+        }
+        .box li:not(:last-child) {
+            margin-bottom: 10px;
+        }
+        .box li:hover {
+            background: darkorange;
+        }
+        #last.show {
+            color: red;
+            background: deepskyblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul class="box" id='box'>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li id='four'>4</li>
+            <li id='last'>5</li>
+        </ul>
+    </div>
+    <script>
+        let options = {
+            root: document.getElementById('box'),
+            rootMargin: '0%',
+            threshold: [1],
+        }
+        // console.log(options.root, '--r');
+        let observer = new IntersectionObserver(handler, options)
+        let target = document.getElementById('last')
+        observer.observe(target)
+        function handler(entries, instance) {
+            console.log('entries: ', entries);
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('show')
+                } else {
+                    e.target.classList.remove('show')
+                }
+            });
+        }
+    </script>
+</body>
+</html>

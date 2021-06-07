@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <p align="center">复制操作</p>
+        <p>
+        <div class="js-copyText" id='text' contenteditable='false'>你好，我是文本125</div>
+        <!-- <textarea class="js-copyText" id='text' rows="3" value="">你好，我是文本哈哈哈哈</textarea> -->
+        <button class="js-textareacopybtn" data-copy=".js-copyText">文本复制</button>
+        </p>
+        <p>
+            <textarea rows="5"></textarea>
+        </p>
+    </div>
+    <script src="./index.js"></script>
+    <script>
+        copy.coptText(".js-textareacopybtn", function (flag) {
+
+            /**
+             * flag 为true的时候，表示赋值成功，false表示赋值失败，自行处理
+             */
+            return flag ? console.log("文字已复制到剪贴板中") : alert("请长按选中复制")
+        });
+
+    </script>
+</body>
+
+</html>

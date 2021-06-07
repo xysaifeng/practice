@@ -10,22 +10,155 @@
 
 <body>
     <div>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+        <div>
+            <input type="text">
+        </div>
+        <div contenteditable="true" id='p0'>
+            <p id='p1'>Lorem ipsum dolor sit amet <strong id='p2'>consectetur </strong>adipisicing <i id='p3'>elit.</i>
+            </p>
+        </div>
         <span>Tempore in cum expedita ducimus, quia at? </span>
-        <div>Excepturi pariatur, ullam numquam porro nostrum ducimus, quia facilis nihil architecto perspiciatis beatae
+        <div id='p5'>Excepturi pariatur, <strong>ullam</strong> numquam porro nostrum ducimus, quia facilis nihil architecto
+            perspiciatis
+            beatae
             est dolore.</div>
+        <div class="table">
+            <table id='table' border style="border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>tem</div>
+                        </td>
+                        <td>99</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="demo">
+            <!-- <p id="p"><b>Use the buttons below</b> to select or deselect the contents of this paragraph.</p> -->
+            <div id="p">
+                <div>  晚八点  <br> </div>
+                <div>吃鸡   </div>
+                <div>  来不了</div>
+            </div>
+            <button id="select-button">Select paragraph</button>
+            <button id="deselect-button">Deselect paragraph</button>
+        </div>
     </div>
 
     <script>
+        // https://developer.mozilla.org/zh-CN/docs/Web/API/Window/getSelection
         window.addEventListener('mouseup', select)
-
+        function select11() {
+            // Selection.deleteFromDocument() 从页面中删除选区中的内容。
+            var s = window.getSelection();
+            s.deleteFromDocument()
+        }
         function select() {
+            // Selection.containsNode() 判断某一个 Node 是否为当前选区的一部分。
+            var s = window.getSelection();
+            console.log(s.containsNode(p3, true));
+            // console.log(s.containsNode(p3, false));
+        }
+        function select9() {
+            // Selection.addRange() 向选区（Selection）中添加一个区域（Range）
+            var strongs = document.getElementsByTagName("strong");
+            console.log('strongs: ', strongs);
+            var s = window.getSelection();
+            console.log('s: ', s);
+            if (s.rangeCount > 0) s.removeAllRanges();
+            for (var i = 0; i < strongs.length; i++) {
+                var range = document.createRange();
+                console.log('range: ', range);
+                range.selectNode(strongs[i]);
+                // Chrome只能选中一个
+                s.addRange(range);
+            }
+        }
+        function select8() {
+            // Selection.removeRange() 将一个区域从选区中移除。
+            var s = window.getSelection();
+            let r = s.getRangeAt(0)
+            console.log(r);
+            console.log(r+'');
+            r.setStart(p2, 0)
+            r.setEnd(p2, 1)
+            // s.removeRange(r)
+        }
+        function select7() {
+            // Selection.selectAllChildren()把指定元素的所有子元素设为选中区域，并取消之前的选中区域。
             var selObj = window.getSelection();
             console.log('selObj: ', selObj);
-            console.log('selObj: ', selObj+'');
-            var range = selObj.getRangeAt(0);
-            console.log('range: ', range+'');
+            selObj.selectAllChildren(document.getElementById('table'))
+            // selObj.selectAllChildren(document.getElementById('p0'))
         }
+        function select6() {
+            // Selection.collapseToStart() 方法的作用是取消当前选区，并把光标定位在原选区的最开始处，如果此时光标所处的位置是可编辑的，且它获得了焦点，则光标会在原地闪烁。
+            // Selection.collapseToEnd() 方法的作用是取消当前选区，并把光标定位在原选区的最末尾处，如果此时光标所处的位置是可编辑的，且它获得了焦点，则光标会在原地闪烁。
+            var selObj = window.getSelection();
+            console.log('selObj: ', selObj);
+            // selObj.collapseToStart()
+            selObj.collapseToEnd()
+        }
+        function select5() {
+            // Selection.modify() 方法可以通过简单的文本命令来改变当前选区或光标位置。
+            var selObj = window.getSelection();
+            console.log('selObj: ', selObj);
+            // 使当前选区往语言书写方向扩大一个单词（word）的选择范围
+            selObj.modify('extend', 'backward', 'word')
+        }
+        function select4() {
+            // extend fn
+            // Selection.extend(node, offset) 方法*移动*选中区的焦点到指定的点(eg:选中abcdefg，锚点是a,焦点是g,移动选中区的焦点到指定的点:意思是原本的焦点为g,现在移动至node节点内)。选中区的锚点不会移动。选中区将从锚点开始到新的焦点，不管方向
+            // offset:在chrome中我理解为将焦点落在node的开头（0）还是结尾（1），超过1则报错
+            var selObj = window.getSelection();
+            console.log('selObj: ', selObj);
+            selObj.extend(document.getElementById('p2'), 0)
+        }
+        function select3() {
+            // collapse fn
+            var selObj = window.getSelection();
+            console.log('selObj: ', selObj);
+            selObj.collapse(document.getElementById('p0'), 2)
+        }
+
+        function select2() {
+            var selObj = window.getSelection();
+            console.log('selObj: ', selObj);
+            console.log('selObj: ', selObj + '');
+            console.log('selObj:2 ', String(selObj));
+            var range = selObj.getRangeAt(0);
+            console.log('range:--obj ', range);
+            console.log('range: ', range + '');
+        }
+
+        (function () {
+            const p = document.getElementById('p');
+            const selectButton = document.getElementById('select-button');
+            const deselectButton = document.getElementById('deselect-button');
+            selectButton.addEventListener('click', function() {
+                let s = window.getSelection()
+                s.removeAllRanges()
+                let range = document.createRange()
+                // let node = document.getElementById('p')
+
+                // range.selectNode(p)
+                range.selectNodeContents(p)
+                console.log(range, '---rr');
+                s.addRange(range)
+            })
+            deselectButton.addEventListener('click', function() {
+                let s = window.getSelection()
+                console.log(s);
+                s.removeAllRanges()
+            })
+        })()
 
     </script>
 </body>
