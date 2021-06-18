@@ -55,4 +55,27 @@ build/   表示忽略 build/目录下的所有文件，过滤整个build文件�
 3.git commit -m 'description'   
 4.git push  
 
+### 八、git pull 提示Not possible to fast-forward，无法提交也无法更新[link](https://blog.csdn.net/dingyi4815313/article/details/114068189)
+出现这个错误提示的原因是，你和其他人修改了同一个文件，而且别人比你先提交。所提此时你在本地执行git pull和git push都无法完成。
+
+1、此时你需要执行下面命令（--rebase顾名思义，重新校准基础版本，将本地的基础版本更新为git上的基础版本）【注意执行这个命令之前你需要将本地代码全部暂存
+```
+// master指的是当前修改的分支，请修改当前你所修改的分支名称（不然会出人命的0.0）
+git pull origin dev-real --rebase
+```
+2、一般情况下执行完这个，如果没有冲突，后面就可以正常进行更新和提交操作了。
+
+3、但是如果代码有冲突（别人和你修改了同一行代码，导致git不能自动合并），你会发现执行完之后本地版本变成了：develop|REBASE 1/157，类似于这样的，说明rebase失败了，命令会提示哪些文件没有rebase成功，你需要手动将这些冲突合并。
+
+4、等待所有冲突文件修改完成，暂存所有文件。
+
+5、执行命令: 
+```
+git rebase --continue
+```
+6、如果依然存在冲突文件，重复步骤3、4、5，直到所有冲突修改完毕就可以了，最后就能正常提交更新了。
+
+说在最后，步骤1的rebase命令，一定要注意，网上给出的都是git pull origin master --rebase，指的是将本地基础版本修改为远程的master最新版本，如果你本地修改的是develop或者其他分支，就会导致代码错乱，此时需要恢复rebase操作请移步[这里](https://blog.csdn.net/dingyi4815313/article/details/114078534)
+
+
 ### git相关知识[参考](https://www.yiibai.com/git/git_rebase.html)
