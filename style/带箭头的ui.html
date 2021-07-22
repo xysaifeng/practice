@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    .author-info-articles {
+      padding: 4px 4px;
+      width: 200px;
+      background: cadetblue;
+    }
+
+    .author-info-articles__archives.article-meta {
+      display: block;
+      overflow: hidden;
+      /* margin-bottom: 4px; */
+      padding: 2px 6px;
+      height: 34px;
+      background: #49b1f5;
+      color: #fff;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      -ms-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .pull-left {
+      float: left;
+    }
+
+    .pull-right {
+      float: right;
+      position: relative;
+      /* margin: -0.2rem -0.4rem; */
+      top: -38px;
+      width: 60px;
+      height: 38px;
+      background: #fff;
+      color: #49b1f5;
+      text-align: center;
+      line-height: 1.8rem;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      -ms-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
+
+    }
+
+    .pull-right::after {
+      position: absolute;
+      top: 0px;
+      left: -12px;
+      width: 0;
+      height: 0;
+      border-top: 19px solid transparent;
+      border-right: 12px solid #fff;
+      border-bottom: 19px solid transparent;
+      content: "";
+    }
+  </style>
+</head>
+
+<body>
+  <div class="author-info-articles">
+    <a href="#" class="author-info-articles__archives article-meta">
+      <span href="#" class="pull-left">文字</a>
+      <span href="#" class="pull-right">22</a>
+    </a>
+  </div>
+</body>
+
+</html>

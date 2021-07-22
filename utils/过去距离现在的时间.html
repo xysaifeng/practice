@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h3>time</h3>
+  <script>
+    let r = getT2()
+    console.log(r);
+
+
+    function getT2() {
+      // let t = 1625400377887
+      let t = 1622813232000
+      let d = new Date(t)
+      console.log('d: ', d.toLocaleDateString());
+      console.log('d: ', d.toLocaleTimeString());
+      let cc = new Date()
+      let c = + cc
+      console.log('c: ', cc.toLocaleDateString());
+      console.log('c: ', cc.toLocaleTimeString());
+      let i = c - t
+      let s = i / (60 * 1000)
+      console.log(s);
+      console.log(60*24, '---------60*24');
+      if (s < 1) {
+        return '1分钟内'
+      } else if (s < 60) {
+        return parseInt(s) + '分钟前'
+      } else if (s < 60*24) {
+        return parseInt(s / 60)+'小时前'
+      } else if (s < 24 * 60 * 30) {
+        return parseInt(s / (24 * 60)) + '天前'
+      } else {
+        console.log(s, parseInt(s / (24 * 60 * 30)));
+        return parseInt(s / (24 * 60 * 30)) + '月前'
+      }
+    }
+    function getT() {
+      let t = 1625313912000
+      let d = new Date(t)
+      console.log('d: ', d.toLocaleDateString());
+      console.log('d: ', d.toLocaleTimeString());
+      let cc = new Date()
+      let c = + cc
+     
+      console.log('c: ', cc.toLocaleDateString());
+      console.log('c: ', cc.toLocaleTimeString());
+      t = t / 1000
+      c = c/ 1000
+      console.log(c, '--c');
+      let i = c - t
+      let s = i / (60 * 1000)
+      console.log(s);
+      console.log(60*24, '---------60*24');
+      let timeDiff = c - t
+      console.log('timeDiff: ', timeDiff);
+      let day = parseInt(timeDiff / (86400))
+      let hour = parseInt((timeDiff % 86400) / 3600)
+      var minute = parseInt((timeDiff % 3600) / 60);
+      console.log(day+ ': ' + hour+': ' + minute);
+      if (minute < 1) {
+        return '1分钟内'
+      } else if (minute < 60) {
+        return minute + '分钟前'
+      } else if (hour < 24) {
+        return hour+'小时前'
+      } else {
+        return day + '天前'
+      }
+    }
+
+
+  </script>
+</body>
+</html>
