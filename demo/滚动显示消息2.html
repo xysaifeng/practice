@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .box {
+      padding: 0 20px;
+      border: 1px solid blue;
+      width: 18%;
+      height: 204px;
+      height: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #demo {
+      margin: 0px;
+      /* padding: 20px; */
+      border: 1px solid red;
+      list-style: none;
+      /* width: 100%; */
+      position: absolute;
+      overflow: hidden;
+      top: 100%;
+      /* transform: translateY(-1px); */
+    }
+
+    #demo li {
+      line-height: 24px;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>例1: 3秒一次</h3>
+  <div class="box" id='box'>
+    <ul class="_container" id="demo">
+      <li>我是第一个出现的</li>
+      <li>我是第二个出现的</li>
+      <li>我是第三个出现的</li>
+      <li>我是第四个出现的</li>
+      <li>我要开始循环了(第五个)</li>
+    </ul>
+  </div>
+  <script>
+
+
+    const element = document.getElementById('demo');
+    element.steps = 0
+    let cloneEl = element.cloneNode(true)
+    cloneEl.classList.add('9999')
+    cloneEl.steps = 0
+    cloneEl.trigger = false
+      console.log('cloneEl: ', cloneEl);
+      let box = document.getElementById('box')
+      console.log('box: ', box);
+      box.appendChild(cloneEl)
+
+    let start;
+    let steps = 0
+    let c = null
+
+    function step(timestamp) {
+      // if (start === undefined)
+        // start = timestamp;
+      
+        element.steps -= .5
+      // const elapsed = timestamp - start;
+
+      //这里使用`Math.min()`确保元素刚好停在200px的位置。
+      // element.style.transform = 'translateY(' + Math.min(0.1 * elapsed, 200) + 'px)';
+      element.style.transform = 'translateY(' + element.steps + 'px)';
+
+      if (Math.abs(element.steps) >= 24 + 122) { // 在两秒后停止动画
+        element.steps = 0
+      }
+      c = window.requestAnimationFrame(step);
+
+      // if (element.steps < -162) {
+      //   cloneEl.trigger =  true
+      //   cloneEl.steps -= .5
+      //   cloneEl.style.transform = 'translateY(' + cloneEl.steps + 'px)';
+      //   if ((cloneEl.steps * -1) >= 162 + 162) { // 在两秒后停止动画
+      //     cloneEl.steps = -1
+      //   }
+      //   console.log(element.steps, '======element.steps');
+      // } else if (cloneEl.trigger) {
+      //   cloneEl.steps -= .5
+      //   cloneEl.style.transform = 'translateY(' + cloneEl.steps + 'px)';
+      //   if ((cloneEl.steps * -1) >= 162 + 162) { // 在两秒后停止动画
+      //     cloneEl.steps = -1
+      //   }
+      // }
+    }
+
+    c = window.requestAnimationFrame(step);
+
+    element.addEventListener('mouseenter', function() {
+      console.log(11);
+      window.cancelAnimationFrame(c)
+    })
+    // element.addEventListener('mouseleave', function() {
+    element.addEventListener('click', function() {
+      console.log(22);
+      c = window.requestAnimationFrame(step);
+    })
+
+
+
+  </script>
+</body>
+
+</html>
