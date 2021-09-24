@@ -10,12 +10,18 @@
     <button id='download'>download</button>
     <script>
         download.onclick = function() {
-            let a = document.createElement('div');
-            a.download = 'movie.mp4';
+            // let a = document.createElement('div');
+            let a = document.createElement('a');
+            a.download = '3movie.mp4';
             a.href = 'movie.mp4';
             document.body.appendChild(a);
             a.click();
             a.remove();
+
+            // a.href = 'movie.mp4';
+            // a.download = 'movie'
+            // a.click();
+
             // setTimeout(() => {
             //     a.remove(); // ok
             //     // document.body.removeChild(a); 

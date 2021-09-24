@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    // 数据去重
+    const arr = [3,4,2,2,4,5,6,7,2,78,9]
+    const res = arr.filter((e,i, a) => a.indexOf(e) === i)
+
+    const res2 = []
+    arr.forEach((e,i, a) => {
+      if (!res2.includes(e)) {
+        res2.push(e)
+      }
+    })
+    // console.log('res:2 ', res2);
+
+
+    // 创建一个计数器对象或Map
+    const str = 'kapilalipak'
+
+    function helper(str) {
+      str = str.split('')
+      return str.reduce((acc, e) => {
+        acc[e] = acc[e] + 1 || 1
+        return acc
+      }, {})
+    }
+    function helper2(str) {
+      const o = {}
+      for (const char of str) {
+        o[char] = o[char] + 1 || 1
+      }
+      return o
+    }
+    function helper3(str) {
+      const countMap = new Map()
+      for (const char of str) {
+        if (countMap.has(char)) {
+          countMap.set(char, countMap.get(char) + 1)
+        } else {
+          countMap.set(char, 1)
+        }
+      }
+      return countMap
+    }
+
+    console.log(helper3(str));
+
+
+  </script>
+</body>
+</html>

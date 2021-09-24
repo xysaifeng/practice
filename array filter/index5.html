@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let selectd = [{
+      id: 4,
+      checked: true,
+      children: [{id: 5, tagChecked: true},{id: 6, tagChecked: true}, ]
+    }]
+
+    let source = [{
+      checked: false,
+      id: 4,
+      children: [{id: 5, tagChecked: false},{id: 6, tagChecked: false},{id: 7, tagChecked: false}, ]
+    }, {
+      checked: false,
+      id: 11,
+      children: [{id: 5, tagChecked: false},{id: 6, tagChecked: false}, ]
+    }, {
+      checked: false,
+      id: 12,
+      children: [{id: 1, tagChecked: false},{id: 2, tagChecked: false},{id: 3, tagChecked: false}, ]
+    }]
+
+    const list = [];
+    selectd.forEach(m => {
+      source.forEach(n => {
+        if (m.id === n.id) {
+          n.checked = m.checked
+          list.push(n)
+          if (m.children.length && n.children.length) {
+            m.children.forEach(j => {
+              n.children.forEach(k => {
+                if (k.id === j.id) {
+                  k.tagChecked = j.tagChecked
+                }
+              })
+            })
+          }
+        }
+      })
+    })
+
+    console.log(list);
+  </script>
+</body>
+</html>

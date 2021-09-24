@@ -50,7 +50,14 @@
       <li>我是第四个出现的</li>
       <li>我要开始循环了(第五个)</li>
     </ul>
+    
   </div>
+  <p>
+    <button id='btn'>cache</button>
+    <div>
+      
+    </div>
+  </p>
   <script>
 
 
@@ -60,10 +67,10 @@
     cloneEl.classList.add('9999')
     cloneEl.steps = 0
     cloneEl.trigger = false
-      console.log('cloneEl: ', cloneEl);
-      let box = document.getElementById('box')
-      console.log('box: ', box);
-      box.appendChild(cloneEl)
+    console.log('cloneEl: ', cloneEl);
+    let box = document.getElementById('box')
+    console.log('box: ', box);
+    box.appendChild(cloneEl)
 
     let start;
     let steps = 0
@@ -71,9 +78,9 @@
 
     function step(timestamp) {
       // if (start === undefined)
-        // start = timestamp;
-      
-        element.steps -= .5
+      // start = timestamp;
+
+      element.steps -= .5
       // const elapsed = timestamp - start;
 
       //这里使用`Math.min()`确保元素刚好停在200px的位置。
@@ -104,15 +111,34 @@
 
     c = window.requestAnimationFrame(step);
 
-    element.addEventListener('mouseenter', function() {
+    element.addEventListener('mouseenter', function () {
       console.log(11);
       window.cancelAnimationFrame(c)
     })
     // element.addEventListener('mouseleave', function() {
-    element.addEventListener('click', function() {
+    element.addEventListener('click', function () {
       console.log(22);
       c = window.requestAnimationFrame(step);
     })
+
+    const cache = {
+      booth: ''
+    }
+
+    const getBooth = () => {
+      return cache.booth || JSON.parse(localStorage.getItem('cache'))
+    }
+
+    function cacheFn() {
+      setTimeout(() => {
+        
+        localStorage.setItem('cache', JSON.stringify(cache))
+      }, 200)
+    }
+
+    btn.onclick = cacheFn
+
+    console.log('getBooth(): ', getBooth());
 
 
 
