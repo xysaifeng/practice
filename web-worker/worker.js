@@ -10,7 +10,7 @@ onmessage = function(e) {
       postMessage('Please write two numbers');
     } else {
       const workerResult = 'Result: ' + result;
-      console.log('Worker: Posting message back to main script');
+      console.log('Worker: Posting message back to main script', workerResult);
       postMessage(workerResult);
     }
   }

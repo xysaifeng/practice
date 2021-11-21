@@ -1,3 +1,4 @@
+
 const first = document.querySelector('#number1');
 const second = document.querySelector('#number2');
 
@@ -36,7 +37,7 @@ if (window.Worker) {
     // 用于处理从worker回传的消息，在主线程中，必须以myWorker.onmessage的方式调用，反之，在脚本worker.js中，只需要定义onmessage
     myWorker.onmessage = function (e) {
         result.textContent = e.data;
-        console.log('Message received from worker =======');
+        console.log('Message received from worker =======', e.data);
     }
 
     myWorker.onerror = function(e) {

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // args是数组 arguments是类数组对象
+    function fn(...args) {
+      console.log(arguments);
+      console.log(args, '--');
+    }
+    // 箭头函数里不能使用argments对象
+    // this指向外层作用域
+    const fn2 = (...args) => {
+      console.log(arguments);
+    }
+    // fn(1,2,3)
+
+
+    // foreach
+    let ratings = [5, 4, 5];
+    let sum = 0;
+    let sumFunction = async function (a, b) {
+      return a + b;
+    }
+    // ratings.forEach(async function (rating) {
+    //   sum = await sumFunction(sum, rating);
+    //   console.log(sum);
+    // })
+    //  console.log(sum);
+
+    // 中断foreach
+    // 1.抛出异常
+    // const a = [1, 2, 3, 4, 5, 6];
+    // function breakFn(a) {
+    //   try {
+    //     a.forEach((e) => {
+    //       if (e == 3) {
+    //         throw new Error(e);
+    //       }
+    //       console.log(e);
+    //     });
+    //   } catch (error) {
+    //     console.log('error: ', error);
+    //   }
+
+    // }
+    // const d = breakFn(a)
+
+    // 2、使用判断跑空循环
+    // const a = [1, 2, 3, 4, 5, 6];
+    // function breakFn(a) {
+    //   a.forEach(function (e) {
+    //     if (!this.flag) {
+    //       if (e == 3) {
+    //         this.flag = true;
+    //         return
+    //       }
+    //       console.log(e);
+    //     }
+    //   }, {});
+    // }
+    // const d = breakFn(a)
+
+    // 3.修改索引
+    const a = [1, 2, 3, 4, 5, 6];
+    function breakFn(a) {
+      a.forEach(function (e,i,arr) {
+        if (e == 3) {
+          arr.length = 0
+          // a = a.splice(0)
+          return
+        }
+        console.log(e);
+      });
+    }
+    const d = breakFn(a)
+
+  </script>
+</body>
+
+</html>
