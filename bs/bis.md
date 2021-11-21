@@ -33,7 +33,7 @@ const curry = function(fn) {
     return fn(...args)
   }
 }
-const myFn = curry(fn);
+const myFn = cu`rry(fn);
 // const r = myFn(1)(2)(3)(4)
 const r = myFn(1)(2,3)(4)
 console.log('r3 : ', r );
