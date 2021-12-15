@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #test {
+      white-space:pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='app'>
+    <ul id='ul'>
+      <li ></li>
+    </ul>
+
+    <div id="test"></div>
+  </div>
+
+  <script>
+
+    const str = '1.GTIN格式错误！\n2.CAS格式错误！';
+    test.innerHTML = str
+    // test.textContent = str
+    /**
+     * 0: {name: '9 三全26鲜食（北新泾店）', address: '1', all: '三全26鲜食（北新泾店）8长宁区新渔路144号'}
+      1: {name: '1 10 三全鲜食（北新泾店）', address: '11长宁区新渔路44号', all: '10 三全鲜食（北新泾店）1长宁区新渔路144号'}
+      2: {name: '5 2 三全鲜食（北新泾店）', address: '51长宁区新1渔路44号', all: '2 三全鲜食（北新泾店）5长宁区新渔路144号'}
+      3: {name: '4 三全鲜食13（北新泾店）', address: '4长1宁区新渔路144号', all: '三全鲜食13（北新泾店）4长宁区新渔路144号'}
+      4: {name: '3 三全鲜食12（北新泾店）', address: '3长宁区新111渔路144号', all: '三全鲜食12（北新泾店）3长宁区新渔路144号'}
+      5: {name: '7 三全25 鲜食（北新泾店）', address: '7长宁区01新渔路144号', all: '三全25 鲜食（北新泾店）7长宁区新渔路144号'}
+      6: {name: '2 11 三全鲜食（北新泾店）', address: '2长宁区新渔路144号', all: '11 三全鲜食（北新泾店）2长宁区新渔路144号'}
+      7: {name: '6 24 三全鲜食（北新泾店）', address: '6长宁区新渔路41号', all: '24 三全鲜食（北新泾店）6长宁区新渔路144号'}
+      8: {name: '8 三全26鲜食（北新泾店）', address: '8长宁22区新渔路号111', all: '三全26鲜食（北新泾店）8长宁区新渔路144号'}
+     */
+
+    let arr = [
+      { name: '1 10 三全鲜食（北新泾店）', address: '/aa. ( 长 $ 宁区新渔路44号;', all: '10 三全鲜食（北新泾店）1长宁区新渔路144号' },
+      { name: '2 11 三全鲜食（北新泾店）', address: ';Aba [] 长宁 % 区新渔路a44号', all: '11 三全鲜食（北新泾店）2长宁区新渔路144号' },
+      { name: '3 三全鲜食12（北新泾店）', address: '.3长 \\ 宁区新 ^ aaa渔路a44号', all: '三全鲜食12（北新泾店）3长宁区新渔路144号' },
+      { name: '4 三全鲜食13（北新泾店）', address: '(4长A - 宁区新渔 & 路a44号', all: '三全鲜食13（北新泾店）4长宁区新渔路144号' },
+      { name: '5 2 三全鲜食（北新泾店）', address: '\\5a长 * 宁区新A渔路44号![', all: '2 三全鲜食（北新泾店）5长宁区新渔路144号' },
+      { name: '6 24 三全鲜食（北新泾店）', address: '!6长 / 宁区新渔路4A号', all: '24 三全鲜食（北新泾店）6长宁区新渔路144号' },
+      { name: '7 三全25 鲜食（北新泾店）', address: ')7长宁 [ 区0a新渔路a44号&', all: '三全25 鲜食（北新泾店）7长宁区新渔路144号' },
+      { name: '8 三全26鲜食（北新泾店）', address: '8长宁22 ] 区新渔路号aAa/\\.', all: '三全26鲜食（北新泾店）8长宁区新渔路144号' },
+      { name: '9 三全26鲜食（北新泾店）', address: 'a # )]', all: '三全26鲜食（北新泾店）8长宁区新渔路144号;' }
+    ]
+    const limit = 20;
+    const sorter = createFilter(';', arr);
+    function createFilter(queryString, a) {
+      let arr = [];
+      // let specialSymbols = ['(', ')', '$', '+', '*', '^','.','!', '[', ']', '\\']
+      const specialReg = /\(|\)|\$|\+|\*|\^|\.|\!|\[|\]|\\/g;
+      for(let item of a) {
+        if(item.address === queryString) {
+          arr.push(item);
+        }
+        if (arr.length > limit - 1) break;
+      }
+      for (let item of a) {
+        if (item.address.toLowerCase().indexOf(queryString.toLowerCase()) === 0 && item.address !== queryString) {
+          arr.push(item);
+        }
+        if (arr.length > limit - 1) break;
+      }
+      let str = queryString.toLowerCase();
+      if (arr.length < limit) {
+        const tempArr = [];
+        // str = specialSymbols.includes(str) ? `(\\${str})` : str;
+        str = str.replace(specialReg, '\\$&');
+        let reg = new RegExp(`^(?!${str}).*(${str}).*(?<!${str})$`);
+        console.log('reg: ', reg);
+        for (let item of a) {
+          if (tempArr.length > 999) {
+            break
+          };
+          if (reg.test(item.address.toLowerCase())) {
+            // 最多放1000条
+            tempArr.push(item)
+          }
+        }
+        const len = limit - arr.length;
+        tempArr.sort((a,b) => a.address.toLowerCase().indexOf(str) - b.address.toLowerCase().indexOf(str));
+        arr = [...arr, ...tempArr.slice(0,len)];
+      }
+      if(arr.length < limit) {
+        str = str.replace(specialReg, '\\$&');
+        // str = specialSymbols.includes(str) ? `(\\${str})` : str;
+        let reg2 = new RegExp(`(.+)(${str})$`);
+        console.log('reg2: ', reg2);
+        for (let item of a) {
+          if(reg2.test(item.address.toLowerCase())) {
+            arr.push(item)
+          }
+          if(arr.length > limit -1) break;
+        }
+      }
+      console.log(arr, '---------');
+
+      return arr
+    }
+
+    setContent(sorter)
+    function setContent(list) {
+      let li = ''
+      list.forEach(item => {
+        li += `<li >${item.address}</li>`
+      });
+      ul.innerHTML = li
+    }
+
+
+
+  </script>
+</body>
+
+</html>

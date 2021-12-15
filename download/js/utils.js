@@ -47,6 +47,20 @@ function getBlob(url) {
      * 保存 blob
      * filename 想要保存的文件名称
      */
+//  blob 一定是blob的实例 形如：Blob {size: 1648770, type: 'application/octet-stream'}
+// *** axios 调接口需在请求里添加 responseType: 'blob' ***
+/**
+ * 
+ *export function SkuAttachment_downloadAttachment(json){
+    return request({
+      responseType: 'blob',
+        url:"/parameter/api/SkuAttachment/downloadAttachment",
+        method:'get',
+        params: json
+    })
+    }
+ */
+// https://www.cnblogs.com/art-poet/p/13730640.html
 function saveAs(blob, filename) {
   if (window.navigator.msSaveOrOpenBlob) {
     navigator.msSaveBlob(blob, filename);
