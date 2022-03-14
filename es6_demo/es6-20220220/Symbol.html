@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Symbol</title>
+</head>
+
+<body>
+  <script>
+
+
+    // 由于以 Symbol 值作为键名，不会被常规方法遍历得到。
+    // 我们可以利用这个特性，为对象定义一些非私有的、但又希望只用于内部的方法
+    let size = Symbol('size');
+    class Collection {
+      constructor() {
+        this[size] = 0
+      }
+
+      add(item) {
+        this[this[size]] = item;
+        this[size]++
+      }
+
+      static sizeof(instance) {
+        return instance[size]
+      }
+    }
+
+    // const c = new Collection()
+    // console.log(Collection.sizeof(c)); // 0
+    // c.add({ o: 1 })
+    // console.log(c);
+    // c.add({ o: 2 })
+    // console.log(c);
+    // console.log(Collection.sizeof(c)); // 2
+
+    (() => {
+      class MyClass {
+        [Symbol.hasInstance](foo) {
+          console.log('foo: ', foo);
+          return foo instanceof Array;
+        }
+      }
+
+      const res = [1, 2, 3] instanceof new MyClass() // true
+      console.log('res: ', res);
+    })()
+  </script>
+</body>
+
+</html>

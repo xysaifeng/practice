@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>function extention</title>
+</head>
+
+<body>
+  <div>
+    <button onclick="handleClick()">clcik</button>
+  </div>
+  <div>
+    <input type="text" id='name' value=" 13" readonly>
+  </div>
+  <script>
+
+    function handleClick() {
+      let el = document.getElementById('name')
+      console.log('el.value: ', el.value);
+      el.value = 23
+    }
+
+    // ES2016规定只要函数参数使用了默认值、解构赋值、或者扩展运算符，那么函数内部就不能显式设定为严格模式，否则会报错。
+    // function fn(val ='12') { // ok
+    //   return val
+    // }
+    // function fn(val ='12') {
+    //   'use strict' // SyntaxError: Illegal 'use strict' directive in function with non-simple parameter list
+    //   return val
+    // }
+
+    // 'use strict'
+    // function fn(val = 070) { // SyntaxError : Octal literals are not allowed in strict mode.(严格模式下不允许使用八进制文字。)
+    //   return val
+    // }
+    // console.log('fn(): ', fn());
+
+
+    // 管道机制（pipeline）的例子，即前一个函数的输出是后一个函数的输入。
+    // const plus = (a) => a +1;
+    // const mult = (b) => b *2;
+    // const pipeline  = (...funcs) => val => funcs.reduce((a, f) => f(a), val)
+    // const addThenMult = pipeline(plus, mult)
+    // const res = addThenMult(5)
+    // console.log('res: ', res);
+
+
+    // 尾递归
+    // function factorial(n) {
+    //   if (n === 1) return 1;
+    //   debugger
+    //   return n * factorial(n - 1);
+    // }
+    // const res = factorial(5) // 120
+    // console.log('res: ', res);
+
+    // 尾递归 只保留一个调用记录
+    // function factorial(n, total) {
+    //   debugger
+    //   if (n === 1) return total;
+    //   return factorial(n - 1, n * total);
+    // }
+    // factorial(5, 1) // 120
+
+    // function Fibonacci(n) {
+    //   if (n <= 1) { return 1 };
+    //   return Fibonacci(n - 1) + Fibonacci(n - 2);
+    // }
+    // console.log(Fibonacci(50) ); // 非常耗时
+
+
+    function Fibonacci2(n, ac1 = 1, ac2 = 1) {
+      if (n <= 1) { return ac2 };
+      return Fibonacci2(n - 1, ac2, ac1 + ac2);
+    }
+    // console.log(Fibonacci2(100));
+
+
+    // 蹦床函数并不是真正的尾递归优化，下面的实现才是。
+    function tco(f) {
+      var value;
+      var active = false;
+      var accumulated = [];
+
+      return function accumulator() {
+        accumulated.push(arguments);
+        console.log('accumulated: ', JSON.stringify(accumulated));
+        if (!active) {
+          active = true;
+          while (accumulated.length) {
+            console.log('accumulated:2 ', JSON.stringify(accumulated));
+            value = f.apply(this, accumulated.shift());
+            console.log('value: ', value);
+          }
+          console.log(value, '============ value  2');
+          active = false;
+          return value;
+        }
+      };
+    }
+
+    var sum = tco(function (x, y) {
+      if (y > 0) {
+        return sum(x + 1, y - 1)
+      }
+      else {
+        return x
+      }
+    });
+
+    console.log(' sum(1, 100000): ',  sum(1, 3));
+
+
+  </script>
+</body>
+
+</html>

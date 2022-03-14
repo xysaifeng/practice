@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>position.sticky</title>
+  <style>
+    .outer {
+      height: 200px;
+      width: 200px;
+      overflow: scroll;
+      border: 1px solid red;
+
+    }
+
+    .box {
+      height: 100%;
+      list-style: none;
+      margin: 0;
+      padding: 0
+    }
+
+    li {
+      height: 32px;
+      line-height: 32px;
+      background: #B8C1C8;
+      border-bottom: 1px solid #989EA4;
+      border-top: 1px solid #717D85;
+      color: #FFF;
+      font: bold 18px/21px Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 2px 0 0 12px;
+    }
+
+    .card {
+      position: sticky;
+      top: 0px;
+      left: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="outer">
+    <ul class="box">
+      <li class="card">lor</li>
+      <li >23</li>
+      <li class="">222</li>
+      <li >444</li>
+      <li class="">222</li>
+      <li class="">222</li>
+      <li class="">222</li>
+      <li class="">222</li>
+      <li class="">222</li>
+      <li class="">222</li>
+      <li class="">222</li>
+      <li class="">222</li>
+    </ul>
+  </div>
+</body>
+
+</html>

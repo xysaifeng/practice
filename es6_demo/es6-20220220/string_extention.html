@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字符串新增方法</title>
+</head>
+<body>
+  <div id='app'>
+    <div id='box'></div>
+  </div>
+  <script>
+    const s = String.raw`Hi\u000A!`;
+    console.log(s);
+    // box.innerHTML = s;
+    box.textContent = s;
+
+  </script>
+</body>
+</html>

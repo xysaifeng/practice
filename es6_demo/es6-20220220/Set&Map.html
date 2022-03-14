@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set&Map</title>
+</head>
+
+<body>
+  <script>
+
+    // Set
+    // function Fn(a, b) {
+    //   if(!new.target?.name) throw new Error('必须使用new调用！')
+    //   this.a = a;
+    //   this.b = b
+    //   // return this
+    // }
+    // const r = new Fn(1,2)
+    // console.log('r: ', r);
+
+    const foo = new WeakSet()
+    class Foo {
+      constructor(a, b) {
+        foo.add(this)
+        this.a = a;
+        this.b = b;
+      }
+
+      method() {
+        if (!foo.has(this)) {
+          throw new TypeError('Foo.prototype.method 只能在Foo的实例上调用！')
+        }
+        console.log(this.a);
+      }
+    }
+
+    // const res = new Foo('a', 'b')
+    // console.log(res);
+    // res.method()// a
+    // const m = res.method;
+    // console.log(m());// TypeError
+
+
+
+    // WeakRef
+    function getImage(key) {
+      return {
+        key: key
+      }
+    }
+
+    function makeWeakCached(f) {
+      const cache = new Map()
+      return key => {
+        const ref = cache.get(key)
+        console.log('ref: ', ref);
+        if (ref) {
+          const cached = ref.deref()
+          if (cached) return cached
+        }
+
+        const fresh = f(key)
+        console.log('fresh: ', fresh);
+        cache.set(key, new WeakRef(fresh))
+        return fresh
+      }
+    }
+
+    // const getImageCached = makeWeakCached(getImage)
+    // const res = getImageCached('name')
+    // console.log(res, '===res');
+    // const res2 = getImageCached('name')
+    // console.log(res2, '===res2');
+
+
+    // FinalizationRegistry
+    const registry = new FinalizationRegistry(heldValue => {
+      console.log('heldValue: ', heldValue);
+    });
+
+    let theObject = { test: 'FinalizationRegistry' }
+    registry.register(theObject, "some value");
+
+
+    // enhancer makeWeakCached
+    var freshOuter = {}
+    const cleanup = new FinalizationRegistry(key => {
+      console.log('key:1111 ', key);
+      // const ref = cache.get(key);
+      // console.log('ref: cleanup', ref);
+      // if (ref && !ref.deref()) cache.delete(key);
+    });
+
+    function makeWeakCached2(f) {
+      const cache = new Map();
+      // const cleanup = new FinalizationRegistry(key => {
+      //   const ref = cache.get(key);
+      //   console.log('ref: cleanup', ref);
+      //   if (ref && !ref.deref()) cache.delete(key);
+      // });
+
+      return key => {
+        const ref = cache.get(key);
+        console.log(ref, 'ref');
+        if (ref) {
+          const cached = ref.deref();
+          console.log('cached: ', cached);
+          if (cached !== undefined) return cached;
+        }
+
+        freshOuter = f(key);
+        // console.log('fresh: ', freshOuter);
+        cache.set(key, new WeakRef(freshOuter));
+        // cleanup.register(freshOuter, key);
+        return JSON.parse(JSON.stringify(freshOuter));
+      };
+    }
+
+    const getImageCached2 = makeWeakCached2(getImage);
+    const res = getImageCached2('name')
+    console.log(res, '===res');
+    cleanup.register(freshOuter, 'name');
+    console.log('freshOuter: ', freshOuter, res.key);
+    // const res2 = getImageCached2('name')
+    // console.log(res2, freshOuter, '===res2');
+
+    setTimeout(() => {
+      // freshOuter = null
+    }, 2000);
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    Number.prototype[Symbol.iterator] = function* () {
+      let i = 0;
+      // console.log(this.toPrecision(3));
+      // console.log(this.valueOf());
+      // console.log(this.toString());
+      let num = this.valueOf();
+      while (i < num) {
+        yield i++;
+      }
+    }
+    // console.log([...5])
+
+    let arrayLike = {
+      '0': 'a',
+      '1': 'b',
+      '2': 'c',
+      length: 3
+    };
+
+    var arr = Array.from(arrayLike)
+    console.log('arr: ', arr);// ['a', 'b', 'c']
+
+
+
+
+  </script>
+</body>
+
+</html>
