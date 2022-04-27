@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque aperiam nam assumenda nobis, voluptatum quis debitis
+    quam, ut dicta mollitia consectetur porro placeat dolor eligendi ea harum? Eaque, repellendus excepturi.
+  </div>
+  <script>
+
+    // https://juejin.cn/post/7029319401178398728
+    // https://juejin.cn/post/7034682307667558437
+    window.addEventListener("keydown", function (e) {
+      console.log('e: ', e);
+      if (e.metaKey && e.code == "KeyZ") {
+        console.log(9999);
+        // e.preventDefault();
+      }
+    });
+
+
+    // https://blog.csdn.net/weixin_30569001/article/details/96927253
+    // https://www.cnblogs.com/chuliangjiu/p/6627320.html
+
+    // var keyCodeArry = [];
+    // document.onkeydown = function (ev) {
+    //   var oEvent = ev || event;
+    //   keyCode = oEvent.keyCode;
+    //   keyCodeArry = addKeyCodeArry(keyCode, keyCodeArry);
+    //   console.log(keyCodeArry);
+    // }
+    // document.onkeyup = function (ev) {
+    //   var oEvent = ev || event;
+    //   keyCode = oEvent.keyCode;
+    //   keyCodeArry = deletKeyCodeArry(keyCode, keyCodeArry);
+    //   console.log(keyCodeArry);
+    // }
+    // function addKeyCodeArry(num, arr) {
+    //   var check = 0;
+    //   for (var i = 0; i < arr.length; i++) {
+    //     if (arr[i] == num) {
+    //       check = 1;
+    //     }
+    //   }
+    //   if (check == 0) {
+    //     arr.push(num);
+    //   }
+    //   return arr;
+    // }
+    // function deletKeyCodeArry(num, arr) {
+    //   for (var i = 0; i < arr.length; i++) {
+    //     if (arr[i] == num) {
+    //       arr.splice(i, 1);
+    //     }
+    //   }
+    //   return arr;
+    // }
+  </script>
+</body>
+
+</html>

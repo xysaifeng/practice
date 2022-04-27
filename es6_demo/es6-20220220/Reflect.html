@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reflect</title>
+</head>
+
+<body>
+
+  <script>
+    'use strict';
+
+    // demo 1
+    // var t = {}
+    // var p = new Proxy(t, {
+    //   get(t, k, r) {
+    //     return Reflect.get(t, k, r) ? Reflect.get(t, k, r) : 1
+    //   },
+    //   set(t, k, v, r) {
+    //     const res = Reflect.set(t, k, v, r)
+    //     if (res) {
+    //       console.log('property ' + k + ' on ' + JSON.stringify(t) + ' set to ' + v);
+    //     }
+    //     return res
+    //   }
+    // })
+    // p.age = 12
+    // console.log(p.ages);
+
+
+    // demo2：如果 Proxy对象和 Reflect对象联合使用，前者拦截赋值操作，后者完成赋值的默认行为，
+    // 而且传入了receiver，那么Reflect.set会触发Proxy.defineProperty拦截。
+    // let p = {
+    //   a: 'a'
+    // };
+    // let handler = {
+    //   set(target, key, value, receiver) {
+    //     console.log('set');
+    //     // const res = Reflect.set(target, key, value, receiver)
+    //     const res = Reflect.set(target, key, value)
+    //     console.log('res: ', res);
+    //     return res
+    //   },
+    //   defineProperty(target, key, attribute) {
+    //     console.log('defineProperty', key, attribute);
+    //     Reflect.defineProperty(target, key, attribute);
+    //   }
+    // };
+
+    // let obj = new Proxy(p, handler);
+    // obj.b = 'b';
+    // console.log('obj: ', obj);
+
+
+    // demo3 Reflect.construct方法等同于new target(...args)，这提供了一种不使用new，来调用构造函数的方法。
+    // function Greeting(name) {
+    //   console.log(arguments, '===a');
+    //   this.name = name;
+    // }
+    // // new 的写法
+    // // const instance = new Greeting('张三');
+    // // console.log(instance);
+
+    // const instance = Reflect.construct(Greeting, ['tom', 'jack'])
+    // console.log('instance: ', instance);
+
+
+    // demo4:Reflect.defineProperty方法基本等同于Object.defineProperty，用来为对象定义属性。
+    // const p = new Proxy({}, {
+    //   defineProperty(target, prop, descriptor) {
+    //     console.log(descriptor);
+    //     return Reflect.defineProperty(target, prop, descriptor);
+    //   }
+    // });
+
+    // p.foo = 'bar';
+
+
+    // demo5:使用 Proxy 实现观察者模式
+    // 观察者模式（Observer mode）指的是函数自动观察数据对象，一旦对象有变化，函数就会自动执行
+   
+    function observable(obj) {
+      return new Proxy(obj, {
+        get(t, k) {
+          // fns.forEach(fn => Reflect.apply(fn, null, []))
+          // fns.forEach(fn =>fn())
+          console.log(JSON.stringify(t),k, 'ggg');
+          return Reflect.get(...arguments)
+        },
+        set(t, k, v) {
+          // fns.forEach(fn => Reflect.apply(fn, null, []))
+          // const res = Reflect.set(...arguments)
+          const res = Reflect.set(t, k, v)
+          console.log('res: ', res);
+          // fns.forEach(fn =>fn())
+          queuedObservers.forEach(fn => fn())
+          return res
+        }
+      })
+    }
+
+    const queuedObservers = new Set()
+    // const fns = []
+    function observe(fn) {
+      // if(!fns.includes(fn)) return fns.push(fn)
+      // console.log(fns, '===fns');
+      queuedObservers.add(fn)
+    }
+    const person = observable({
+      name: 'tom',
+      age: 12
+    })
+    function print() {
+      console.log(`${person.name}, ${person.age}`)
+    }
+    function print2() {
+      console.log(`${person.name}, ${person.age} P2`)
+    }
+    observe(print)
+    observe(print2)
+    person.name = 'jack'
+
+
+
+  </script>
+</body>
+
+</html>

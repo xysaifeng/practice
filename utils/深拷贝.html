@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>深拷贝</title>
+</head>
+
+<body>
+  <script>
+
+    function deepClone2(obj) {
+      let res = {}
+      function getType(obj) {
+        return Object.prototype.toString.call(obj).replace(new RegExp(/\[|\]|object/g), '')
+      }
+      const type = getType(obj)
+      console.log('type: ', type);
+
+      if (type === 'Object') {
+        for (const key in obj) {
+          if (Reflect.has(obj, key)) {
+            res[key] = deepClone(obj[key])
+          }
+        }
+      } else if (type === 'Array') {
+        obj.forEach((e, i) => {
+          res[i] = deepClone(e)
+        });
+      } else if (type === 'Date') {
+        res = new Date(obj)
+      } else if (type === 'RegExp') {
+        res = new RegExp(obj)
+      } else if (type === 'Map') {
+        res = new Map(obj)
+      } else if (type === 'Set') {
+        res = new Map(Set)
+      } else if (type === 'WeakMap') {
+        res = new WeakMap(Set)
+      } else if (type === 'WeakSet') {
+        res = new WeakSet(Set)
+      } else if (type === 'Error') {
+        res = new Error(Set)
+      } else {
+        res = obj
+      }
+      return res
+    }
+
+    // 代码优化1
+    function deepClone3(obj) {
+      let res = {}
+      function getType(obj) {
+        return Object.prototype.toString.call(obj).replace(new RegExp(/\[|\]|object /g), '')
+      }
+      const type = getType(obj)
+      console.log('type: ', type);
+      const reference = ["Set", "WeakSet", "Map", "WeakMap", "RegExp", "Date", "Error"];
+      if (type === 'Object') {
+        for (const key in obj) {
+          if (Reflect.has(obj, key)) {
+            res[key] = deepClone(obj[key])
+          }
+        }
+      } else if (type === 'Array') {
+        obj.forEach((e, i) => {
+          res[i] = deepClone(e)
+        });
+      } else if (reference.includes(type)) {
+        console.log(res, type, '----');
+        // res = new [type](obj) // error
+        res = new obj.constructor(obj)
+      } else {
+        console.log('普通：', obj);
+        res = obj
+      }
+      return res
+    }
+    // 代码优化2
+    function getType(obj) {
+      return Object.prototype.toString.call(obj).replace(new RegExp(/\[|\]|object /g), '')
+    }
+    const reference = ["Set", "WeakSet", "Map", "WeakMap", "RegExp", "Date", "Error"];
+    function deepClone4(obj) {
+      //通过 obj 的原型创建对象
+      // let cloneObj = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj))
+      // console.log('cloneObj: ', cloneObj);
+      // return cloneObj
+
+      let newObj = {}
+      for (let key of Reflect.ownKeys(obj)) {
+        let val = obj[key]
+        // console.log('val: ',key, val);
+        const type = getType(val)
+        // console.log('type: ', type);
+        if (reference.includes(type)) {
+          // console.log('------a');
+          newObj[key] = new val.constructor(val)
+        } else if (typeof (val) === 'object' && val !== null) {
+          // console.log('------b', val);
+          newObj[key] = deepClone(val)
+
+        } else {
+          newObj[key] = val
+          // console.log('key val: 2========', key,  val);
+        }
+      }
+      return newObj
+    }
+
+    const map = new Map();
+    map.set("key", "value");
+    map.set("ConardLi", "coder");
+
+    const set = new Set();
+    set.add("ConardLi");
+    set.add("coder");
+
+    const target = {
+      field1: 1,
+      field2: undefined,
+      field3: {
+        child: "child",
+      },
+      field4: [2, 4, 8],
+      empty: null,
+      map,
+      set,
+      bool: new Boolean(true),
+      num: new Number(1),
+      num2: Number(2),
+      str: new String(2),
+      symbol: Object(Symbol(1)),
+      symbol2: Symbol(2),
+      date: new Date('2022/04/05'),
+      reg: /\d+/,
+      error: new Error(),
+      func1: () => {
+        let t = 0;
+        console.log("coder", t++);
+      },
+      func2: function (a, b) {
+        return a + b;
+      },
+    };
+
+    // 代码优化3
+    const nomalType = ['number', 'string', 'boolean',]
+    function deepClone5(obj) {
+      let res = null
+      if (reference.includes(obj?.constructor?.name)) {
+        console.log(obj, '====o');
+        res = new obj.constructor(obj);
+      } else if (Array.isArray(obj)) {
+        res = []
+        obj.forEach((e, i) => {
+          res[i] = deepClone(e)
+        })
+      } else if (typeof obj === 'object' && obj !== null) {
+        res = {}
+        // Object.keys(obj).forEach(key => {
+        //   console.log(key, obj[key], '=====888');
+        //   res[key] = deepClone(obj[key])
+        //   console.log('deepClone(obj[key]): ', deepClone(obj[key]));
+        // })
+        if (nomalType.includes(typeof (obj.valueOf()))) {
+          res = new obj.constructor(obj)
+          console.log('res:111 ', res);
+        } else {
+          console.log(obj, '000');
+          for (let key in obj) {
+            if (Reflect.has(obj, key)) {
+              res[key] = deepClone(obj[key])
+            }
+          }
+        }
+
+      } else {
+        res = obj
+      }
+      return res
+    }
+
+    // 代码优化4
+    function deepClone(obj, hash = new WeakMap()) {
+      if (hash.has(obj)) {
+        return obj
+      }
+      let res = null
+      if (reference.includes(obj?.constructor?.name)) {
+        res = new obj.constructor(obj);
+        hash.set(obj, res)
+      } else if (Array.isArray(obj)) {
+        res = []
+        obj.forEach((e, i) => {
+          res[i] = deepClone(e)
+        })
+        hash.set(obj, res)
+      } else if (typeof obj === 'object' && obj !== null) {
+        res = {}
+        // Object.keys(obj).forEach(key => {
+        //   console.log(key, obj[key], '=====888');
+        //   res[key] = deepClone(obj[key])
+        //   console.log('deepClone(obj[key]): ', deepClone(obj[key]));
+        // })
+        if (nomalType.includes(typeof (obj.valueOf()))) {
+          res = new obj.constructor(obj)
+          hash.set(obj, res)
+        } else if(typeof obj.valueOf() === 'symbol') {
+          res = obj
+        } else {
+          // for (let key in obj) {
+          //   if (Reflect.has(obj, key)) {
+          //     res[key] = deepClone(obj[key])
+          //   }
+          // }
+          Object.keys(obj).forEach(key => {
+            res[key] = deepClone(obj[key])
+          })
+          hash.set(obj, res)
+        }
+      } else {
+        res = obj
+      }
+      return res
+    }
+
+    var s = 1
+    var s = false
+    var s = 'false'
+    var s = null // type: Null
+    var s = undefined // type: Undefined
+    var s = { name: 'tom', age: 12, info: { class: '1班', hobby: ['swimming', 'run'] } } // 
+    var s = new Date('2022-04-19')
+    // console.log('s: ', s);
+    var s = new Map([[{ key: 'key' }, { value: 1 }]])
+    // const deep = deepClone(s)
+    // console.log('deep: ', deep);
+
+    const deep = deepClone(target)
+    console.log('deep: ', deep);
+    // target.symbol = Object(Symbol(66))
+
+    target.num =new Number(10)
+
+    // target.field4.push(5)
+
+    console.log('deep: 2', deep);
+
+    // structuredClone不能克隆symbol和function
+    // console.log(structuredClone(target));
+  </script>
+</body>
+
+</html>

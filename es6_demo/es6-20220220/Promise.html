@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promise</title>
+</head>
+
+<body>
+  <script>
+    'use strict';
+
+    // demo1: p1和p2都是 Promise 的实例，但是p2的resolve方法将p1作为参数，即一个异步操作的结果是返回另一个异步操作。
+    // 注意，这时p1的状态就会传递给p2，也就是说，p1的状态决定了p2的状态。如果p1的状态是pending，那么p2的回调函数就会等待p1的状态改变；
+    // 如果p1的状态已经是resolved或者rejected，那么p2的回调函数将会立刻执行。
+    // const p1 = new Promise((_, reject) => {
+    //   setTimeout(() => {
+    //     reject(new Error('fail'))
+    //   }, 3000);
+    // })
+    // const p2 = new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     console.log(222);
+    //     resolve(p1)
+    //   }, 1000);
+    // })
+    // p2.then(res => console.log(res, '===res'))
+    // .catch(err => console.log(err, '====err')) // Error: fail
+
+
+    // demo2
+    // var someAsyncThing = function () {
+    //   return new Promise(function (resolve, reject) {
+    //     // 下面一行会报错，因为x没有声明
+    //     resolve(x + 2);
+    //   });
+    // };
+    // someAsyncThing().then(function () {
+    //   return someOtherAsyncThing();
+    // }).catch(function (error) {
+    //   console.log('oh no', error);
+    //   // 下面一行会报错，因为 y 没有声明
+    //   y + 2;
+    // }).then(function () {
+    //   console.log('carry on');
+    // }).catch(function (error) {
+    //   console.log('carry no', error);
+    // }).finally(() => {
+    //   console.log(44);
+    // });
+    // setTimeout(() => {
+    //   console.log(123);
+    // }, 0);
+
+    // 3.finally的实现
+    // Promise.prototype.finally = function(cb) {
+    //   const p = this.constructor
+    //   return this.then(
+    //     value => P.resolve(cb()).then(() => value),
+    //     reason => P.resolve(cb()).then(() => { throw reason }),
+    //   )
+    // }
+
+
+    // demo4:【注意】如果作为参数的 Promise 实例，自己定义了catch方法，那么它一旦被rejected，并不会触发Promise.all()的catch方法。
+    // const p1 = new Promise(resolve => {
+    //   resolve('hello')
+    // }).then(res => res)
+    // .catch(e => e)
+    // const p2 = new Promise(resolve => {
+    //   throw new Error('报错了')
+    // }).then(res => res)
+    // .catch(e => e)
+
+    // Promise.all([p1, p2])
+    // .then(res => console.log(1,res))
+    // .catch(e => console.log(2,e,))
+
+
+    // demo5:Promise.any
+    async function any() {
+      try {
+        const p1 = new Promise((_, resolve) => {
+          setTimeout(() => {
+            resolve('hello')
+          }, 2000);
+        })
+        const p2 = new Promise((_, resolve) => {
+          setTimeout(() => {
+            resolve('hello2')
+          }, 1200);
+        })
+        const p3 = new Promise((_, resolve) => {
+          setTimeout(() => {
+            resolve('hello3')
+          }, 1300);
+        })
+
+        var rejected = Promise.reject(-1);
+        var alsoRejected = Promise.reject(Infinity);
+
+        // const res = await Promise.any([p1, p2, p3])
+        // console.log('res: ', res);
+        Promise.any([rejected, alsoRejected,]).catch(err => {
+          console.log(err, '===err');
+        })
+      } catch (error) {
+        console.log('err:', error);
+      }
+    }
+    // any()
+
+
+    // demo6 Promise.reject
+    // var p = Promise.reject('出错了');
+    // // 等同于
+    // var p = new Promise((resolve, reject) => reject('出错了'))
+    // p.then(null, function (s) {
+    //   console.log(s, '====s')
+    // }).catch(e => console.log(e, 'e'));
+
+    // 待复习
+    // demo7 Generator 函数与 Promise 的结合
+    function getFoo() {
+      return new Promise(resolve => {
+        resolve('foo')
+      })
+    }
+    const g = function* () {
+      try {
+        const foo = yield getFoo()
+        console.log('foo: ', foo);
+      } catch (error) {
+        console.log('error: ', error);
+      }
+    }
+
+    function run(generator) {
+      const it = generator()
+      console.log('it: ', it);
+      function go(result) {
+        console.log('result: 11', result);
+        if(result.done) {
+          console.log('result done', result);
+          return result.value
+        }
+        return result.value.then(function(value) {
+          console.log('value: ', value);
+          const v = it.next(value)
+          console.log('v: ', v);
+          return go(v)
+        }, function (error) {
+          console.log('error: 2', error);
+          return go(it.throw(error))
+        })
+      }
+
+      go(it.next(123))
+    }
+
+    run(g)
+
+  </script>
+</body>
+
+</html>

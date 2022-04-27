@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    'use strict';
+    // https://juejin.cn/post/7083145771461115941
+    // 2. 去除数字之外的所有字符
+    // var str = 'yanxioa 123 - dfasd 9923 '
+    // var numbers = str.replace(/\D/g, '')
+    // console.log('numbers:'+numbers+'AA');// numbers:1239923AA
+
+    // 4. 将十进制转换为二进制或十六进制
+    // var num = 16
+    // var binaryNum = num.toString(2)
+    // var num16 = num.toString(16)
+    // console.log(binaryNum, '=binaryNum'); // 10001
+    // console.log(num16, '=num16'); // 10
+
+    // 9-1. 判断回文字符串
+    // const isReverse = (str1, str2) => {
+    //   const normalize = (str) =>
+    //     str.toLowerCase()
+    //     .normalize('NFD')
+    //     .split('')
+    //     .reverse()
+    //     .join('')
+    //     return normalize(str1) === str2
+    // }
+    // console.log(isReverse('margana', 'anagram'));
+
+    // 17. 从 RGB 转换为 HEX
+      function reg2Hex(r, g, b) {
+        const toHex = (num) => {
+          const hex = num.toString(16)
+          console.log('hex: ', hex);
+          return hex.length === 1 ? `0${hex}` : hex
+        }
+        return `#${toHex(r)}${toHex(g)}${toHex(b)}`
+      }
+      // console.log( reg2Hex(46, 32, 67));// #2e2043
+      console.log( reg2Hex(255, 0, 0));// #2e2043
+
+    
+  </script>
+</body>
+
+</html>
