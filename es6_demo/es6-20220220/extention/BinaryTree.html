@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // https://zhuanlan.zhihu.com/p/109720018
+    // https://www.php.cn/js-tutorial-455348.html
+    'use strict'
+    // https://blog.csdn.net/Jack_lzx/article/details/114777880
+    const bt = {
+      val: 1,
+
+      left: {
+        val: 2,
+        left: {
+          val: 4,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 5,
+          left: {
+            val: 8,
+            left: null,
+            right: null,
+          },
+          right: {
+            val: 9,
+            left: null,
+            right: null,
+          },
+        },
+      },
+
+      right: {
+        val: 3,
+        left: {
+          val: 6,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 7,
+          left: null,
+          right: null,
+        },
+      },
+    };
+    console.log(bt);
+    // 遍历方法
+    // 1、先序遍历
+    // ①.访问根节点 ②.对根节点左子树进行先序遍历，③.对根节点右子树进行先序遍历，
+    // a、递归版：递归先序遍历： 根 - 左 - 右
+    const preorderTraversal = root => {
+      const res = [];
+      const preOrder = root => {
+        if (!root) {
+          return
+        };
+        res.push(root.val); // 根
+        preOrder(root.left); // 左
+        preOrder(root.right); // 右
+      };
+      preOrder(root);
+      return res;
+    };
+    // console.log(preorderTraversal(bt));
+    // b、非递归版：递归先序遍历： 根 - 左 - 右
+    const preorderTraversal2 = root => {
+      if (!root) return []
+      const res = [];
+      const stack = [root]
+      while (stack.length) {
+        // n是栈顶元素，栈顶元素出栈
+        const n = stack.pop()
+        console.log('n: ', n);
+        // 访问栈顶元素
+        res.push(n.val)
+        // 栈顶右节点入栈（因为使用的pop方法，所以右节点先入栈）
+        n.right && stack.push(n.right)
+        // 栈顶左节点入栈
+        n.left && stack.push(n.left)
+      }
+      return res
+    }
+    // console.log(preorderTraversal2(bt)); //  [1, 2, 4, 5, 8, 9, 3, 6, 7]
+    const preorderTraversal3 = root => {
+      if (!root) return []
+      const res = [];
+      const stack = [root]
+      while (stack.length) {
+        const n = stack.shift()
+        res.push(n.val)
+        n.left && stack.push(n.left)
+        n.right && stack.push(n.right)
+      }
+      return res
+    }
+    // console.log(preorderTraversal3(bt)); //  [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    // 2、中序遍历
+    // ①.对根节点左子树进行先序遍历 ②.访问根节点 ③.对根节点右子树进行先序遍历
+    // a、递归版：递归中序遍历：左 - 根 -  右
+    const bt2 = {
+      val: 1,
+      left: {
+        val: 2,
+        left: {
+          val: 4,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 5,
+          left: {
+            val: 8,
+            left: null,
+            right: null,
+          },
+          right: {
+            val: 9,
+            left: null,
+            right: null,
+          },
+        },
+      },
+      right: {
+        val: 3,
+        left: {
+          val: 6,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 7,
+          left: null,
+          right: null,
+        },
+      },
+    };
+    const inorderTraversal = root => {
+      const res = [];
+      // debugger
+      const inOrder = root => {
+        if (!root) return
+        inOrder(root.left) // 左
+        res.push(root.val) // 根
+        inOrder(root.right) // 右
+      }
+      inOrder(root)
+      return res
+    }
+    var s = 's'
+    // console.time(s)
+    // console.log(inorderTraversal(bt));
+    // console.timeLog(s, '2')
+    // console.timeEnd(s)
+    // b、非递归版：递归中序遍历：左 - 根 -  右
+    const inorderTraversal2 = root => {
+      if (!root) return []
+      const res = [];
+      const stack = []
+      let p = root
+      // debugger
+      while(stack.length || p) {
+        while(p) {
+          stack.push(p)
+          p = p.left
+        }
+        const n = stack.pop()
+        res.push(n.val)
+        p = n.right
+      }
+      return res
+    }
+    // console.time(s)
+    // console.log(inorderTraversal2(bt));
+    // console.timeEnd(s)
+
+    // 3、后序遍历
+    // ①.对根节点左子树进行先序遍历 ②.对根节点右子树进行先序遍历 ③.访问根节点 
+    // a、递归版：递归中序遍历：左 - 右 - 根
+    const postorderTraversal = root => {
+      const res = [];
+      // debugger
+      const inOrder = root => {
+        if (!root) return
+        inOrder(root.left) // 左
+        inOrder(root.right) // 右
+        res.push(root.val) // 根
+      }
+      inOrder(root)
+      return res
+    }
+    console.log(postorderTraversal(bt), 'hou');
+    // b、非递归版：递归中序遍历：左 - 右 - 根
+    function postorderTraversal2(root) {
+      if (!root) return []
+      const res = [];
+      const stack = [root]
+      // debugger
+      while(stack.length) {
+        const n = stack.pop()
+        res.unshift(n.val)
+        n.left && stack.push(n.left)
+        n.right && stack.push(n.right)
+      }
+      return res
+    }
+    console.log('postorderTraversal2(bt): ', postorderTraversal2(bt));
+  </script>
+</body>
+
+</html>

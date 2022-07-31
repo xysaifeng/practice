@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iterator</title>
+</head>
+
+<body>
+  <script>
+    'use strict';
+
+    // dmeo1
+    var it = makeIterator(['a', 'b', 'c'])
+    function makeIterator(array) {
+      var nextIndex = 0;
+      return {
+        next() {
+          return nextIndex < array.length ? { value: array[nextIndex++], done: false } : { value: undefined, done: true }
+        }
+      }
+    }
+    // console.log(it.next());
+    // console.log(it.next());
+    // console.log(it.next());
+    // console.log(it.next());
+
+
+    // demo2 给对象添加iterator
+    var obj = {
+      [Symbol.iterator]: function () {
+        let idx = 1;
+        return {
+          next() {
+            return idx < 10 ? {
+              value: idx++, done: false
+            } : {
+              value: idx, done: true
+            }
+          }
+        }
+      }
+    }
+    // for(let item of obj) {
+    //   console.log(item, '==item');
+    // }
+
+
+    // demo3：一个对象如果要具备可被for...of循环调用的 Iterator 接口，
+    // 就必须在Symbol.iterator的属性上部署遍历器生成方法（原型链上的对象具有该方法也可）。
+    class RangeIterator {
+      constructor(start, stop) {
+        this.value = start
+        this.stop = stop
+      }
+      [Symbol.iterator]() { return this }
+      next() {
+        return this.value < this.stop ? { value: this.value++, done: false } : { value: undefined, done: true }
+      }
+    }
+
+    function range(start, stop) {
+      return new RangeIterator(start, stop)
+    }
+    // for(let item of range(0, 3)) {
+    //   console.log(item);
+    // }
+
+    // dmeo4: 下面是通过遍历器实现“链表”结构的例子。
+    function Obj(value) {
+      this.value = value
+      this.next = null
+    }
+    Object.prototype[Symbol.iterator] = function () {
+      const iteraotr = { next: next }
+
+      let current = this
+      function next() {
+        // debugger
+        if (current) {
+          let value = current.value
+          current = current.next
+          return {
+            value: value
+          }
+        } else {
+          return { done: true }
+        }
+      }
+      return iteraotr
+    }
+    var one = new Obj(1)
+
+    var two = new Obj(2)
+    var three = new Obj(3)
+    one.next = two
+    two.next = three
+    // console.log('one: ', one);
+    // for(let val of one) {
+    //   console.log(val); // 1 2 3
+    // }
+
+    // demo5: 下面是另一个为对象添加 Iterator 接口的例子。
+    var obj = {
+      data: ['hello', 'world'],
+      [Symbol.iterator]() {
+        let _this = this
+        // console.log('_this: ', _this);
+        let nextIndex = 0
+        return {
+          next() {
+            return nextIndex < _this.data.length ?
+              { value: _this.data[nextIndex++], done: false } :
+              { done: true, value: undefined }
+          }
+        }
+      }
+    }
+    // for(let val of obj) {
+    //   console.log(val, '---v');
+    // }
+
+
+    // demo6: 下面是另一个类似数组的对象调用数组的Symbol.iterator方法的例子。
+    var o = {
+      0: 'a',
+      1: 'b',
+      2: 'c',
+      length: 3,
+      [Symbol.iterator]: Array.prototype[Symbol.iterator]
+    }
+    for (let val of o) {
+      // console.log(val, '===v');
+    }
+    var [x, y] = o; // 6-1:解构会默认调用Symbol.iterator方法。
+    // console.log('x, y: ', x, y);
+    // console.log([...o]);// 6-2:扩展运算符（...）也会调用默认的 Iterator 接口。
+
+    // 6-3: yield* 后面跟的是一个可遍历的结构，它会调用该结构的遍历器接口
+    var genetator = function* () {
+      yield 1;
+      yield* [2, 3, 4];
+      yield 5
+    }
+    var it = genetator()
+    // console.log('it: ', it.next());
+    // console.log('it: ', it.next());
+    // console.log('it: ', it.next());
+    // console.log('it: ', it.next());
+    // console.log('it: ', it.next());
+    // console.log('it: ', it.next());
+    // for(let v of genetator()) {
+    //   console.log(v, 'v'); // 1 2 3 4 5
+    // }
+    // 6-4: 其他场合， 由于数组的遍历会调用遍历器接口，所以任何接受数组作为参数的场合，其实都调用了遍历器接口。下面是一些例子
+    // for...of Array.from() Map(), Set(), WeakMap(), WeakSet()（比如new Map([['a',1],['b',2]])）
+    // Promise.all() Promise.race()
+
+    // demo7: 字符串的 Iterator 接口
+    var str = 'hi'
+    var it = str[Symbol.iterator]()
+    // console.log('it: ', it.next());
+    // console.log('it: ', it.next());
+    // console.log('it: ', it.next());
+
+    // demo8: 可以覆盖原生的Symbol.iterator方法，达到修改遍历器行为的目的。
+    // str必须是new String过的, String(str)也不行， 因为str必须是字符串对象
+    var s = new String('his')
+    s[Symbol.iterator] = function () {
+      return {
+        _first: true,
+        next: function () {
+          console.log(123);
+          if (this._first) {
+            this._first = false
+            return { value: 'toms', done: false }
+          }
+          return { done: true, value: undefined }
+        }
+      }
+    }
+    // console.log([...s]); // ['toms']
+
+    // demo9: Iterator 接口与 Generator 函数
+    // Symbol.iterator()方法的最简单实现，还是使用下一章要介绍的 Generator 函数。
+    let myIterable = {
+      [Symbol.iterator]: function* () {
+        yield 1,
+          // yield* 1, // 会返回undefined
+          yield 2,
+          // yield* 2, // 会返回undefined
+          yield 3;
+        // yield* 3; // 会返回undefined
+      }
+    }
+    //  或者采用下面的简洁写法
+    let myIterable2 = {
+      *[Symbol.iterator]() {
+        yield 1,
+          yield 2,
+          yield 3;
+      }
+    }
+    // console.log('myIterable.next(): ', myIterable.next()); // error
+    // console.log([...myIterable]); // [1,2,3]
+    // for(let v of myIterable2) {
+    //   console.log(v); // 1 2 3 
+    // }
+
+
+    // demo10: 遍历器对象的 return()，throw()
+    // return()方法的使用场合是，如果for...of循环提前退出（通常是因为出错，或者有break语句），就会调用return()方法。
+    function readFileSync(file) {
+      return {
+        [Symbol.iterator]() {
+          return {
+            next() {
+              console.log(1);
+              return { done: false, value: file }
+            },
+            return() {
+              console.log(file, '===2');
+              return { done: false }
+            }
+          }
+        }
+      }
+    }
+    const file = { filename: 'tom' }
+    // for(let item of readFileSync(file)) {
+    //   console.log(item);
+    //   break
+    // }
+    let i = 0
+    // for(let item2 of readFileSync(file)) {
+    //   console.log(item2);
+    //   i ++
+    //   if(i > 2) throw new Error('item2----')
+    // }
+
+
+    // demo11: 对于普通的对象，for...of结构不能直接使用，会报错，必须部署了 Iterator 接口后才能使用
+    // 一个方法是使用 Generator 函数将对象重新包装一下
+    var obj = { a: 1, b: 2, c: 3 }
+    function* entries(obj) {
+      for (let key of Object.keys(obj)) {
+        yield [key, obj[key]]
+      }
+    }
+    // for(let [key, value] of entries(obj)) {
+    //   console.log(key + ' => ' + value);
+    // }
+
+
+    // demo12: for awiat of
+    function print(num, timeout = 1000) {
+      return new Promise(r => {
+        setTimeout(() => {
+          r(num)
+        }, timeout);
+      })
+    }
+
+    async function myGenetator() {
+      for await (let item of [print(1, 2000), print(2, 1000), print(3, 3000)]) {
+        console.log(item);
+      }
+    }
+    async function myGenetator2() {
+      for (let item of [print(1, 2000), print(2, 1000), print(3, 3000)]) {
+        // console.log('item: ', item);
+       let v= await item
+        console.log(v);
+      }
+    }
+    // myGenetator()
+    myGenetator2()
+
+
+    // demo13
+    async function* streamAsyncIterator(stream) {
+      const reader = stream.getReader();
+      console.log('reader: ', reader);
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          console.log('done: ', done, value);
+          if (done) {
+            return;
+          }
+          yield value;
+        }
+      } finally {
+        reader.releaseLock();
+      }
+    }
+    // 从url获取数据并使用异步 generator 来计算响应值的大小
+    async function getResponseSize(url) {
+      let response = await fetch(url);
+      console.log('response: ', response);
+      // response = await response.json()
+      // console.log('response: ', response);
+      // Will hold the size of the response, in bytes.
+      let responseSize = 0;
+      // 使用for-await-of循环. 异步 generator 会遍历响应值的每一部分
+      for await (const chunk of streamAsyncIterator(response.body)) {
+        // Incrementing the total response length.
+        responseSize += chunk.length;
+      }
+
+      console.log(`Response Size: ${responseSize} bytes`);
+      // expected output: "Response Size: 1071472"
+      return responseSize;
+    }
+    // getResponseSize('https://jsonplaceholder.typicode.com/photos');
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // https://www.cnblogs.com/ives-xu/p/13666964.html
+    function createCol(n) {
+      const ordA = 'A'.charCodeAt(0)
+      console.log('ordA: ', ordA);
+      const ordZ = 'Z'.charCodeAt(0)
+      console.log('ordZ: ', ordZ);
+      const len = ordZ - ordA + 1
+      let str = ""
+      while (n >= 0) {
+        console.log(n % len, '--------n % len');
+        str = String.fromCharCode(n % len + ordA) + str // // 将输入数字转换成字母
+        console.log('str: ', str);
+        console.log(Math.floor(n / len), '---');
+        n = Math.floor(n / len) - 1 // 每次进行完需要重新floor向下取整，  -1是因为 A的unicode是0
+        console.log('n: ', n);
+      }
+      return str
+    }
+    console.log('createCol(25): ', createCol(27*26)); // AAA
+  </script>
+</body>
+
+</html>

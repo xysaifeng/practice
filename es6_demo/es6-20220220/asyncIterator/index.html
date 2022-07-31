@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>asyncIterator</title>
+</head>
+
+<body>
+  <script>
+    'use strict';
+
+
+    // demo1: it.next()方法必须是同步的,
+
+    // function idMaker() {
+    //   let index = 0
+    //   return {
+    //     next() {
+    //       return new Promise(r => {
+    //         setTimeout(() => {
+    //           r({ value: index++, done: false })
+    //         }, 1000);
+    //       })
+    //     }
+    //   }
+    // }
+    // let it = idMaker()
+    // it.next().then((r) => {
+    //   console.log(r, '--r');
+    // })
+
+
+    // demo2: 目前的解决方法是，将异步操作包装成 Thunk 函数或者 Promise 对象，
+    // 即next()方法返回值的value属性是一个 Thunk函数或者 Promise 对象，
+    // 等待以后返回真正的值，而done属性则还是同步产生的
+    function idMaker() {
+      let index = 0
+      return {
+        next() {
+          return {
+            value: new Promise(r => {
+              setTimeout(() => {
+                r(++index)
+              }, 1000);
+            }),
+            done: false
+          }
+        }
+      }
+    }
+
+    // const it = idMaker()
+    // it.next().value.then(e => console.log(e))
+    // it.next().value.then(e => console.log(e))
+    // it.next().value.then(e => console.log(e))
+
+
+
+    // demo3: 异步遍历的接口
+    function createAsyncIterable(arr) {
+      return {
+        [Symbol.asyncIterator]() {
+          let idx = 0
+          return {
+            next() {
+              return new Promise(r => {
+                setTimeout(() => {
+                  r({ value: arr[idx++], done: idx > arr.length ? true : false })
+                }, 1000);
+              })
+            }
+          }
+        }
+      }
+    }
+    // const ite = createAsyncIterable(['a', 'b'])
+    // // console.log('ite: ', ite);
+    // // console.log('ite.next(): ', ite.next());
+    // // console.log('ite.next(): ', ite.next());
+
+    // const asyncIterator = ite[Symbol.asyncIterator]()
+    // console.log('asyncIterator: ', asyncIterator);
+    // asyncIterator.next().then(r1 => {
+    //   console.log(r1, '---r1');//{value: 'a', done: false}
+    //   return asyncIterator.next()
+    // }).then(r2 => {
+    //   console.log(r2, '---r2');;//{value: 'b', done: true}
+    //   return asyncIterator.next()
+    // }).then(r3 => {
+    //   console.log(r3, '---r3');//{value: undefined, done: true}
+    //   return asyncIterator.next()
+    // })
+
+
+    // demo4:由于异步遍历器的next方法，返回的是一个 Promise 对象。因此，可以把它放在await命令后面。
+    async function fn() {
+      const ite = createAsyncIterable(['aa', 'bb'])
+      const asyncIterator = ite[Symbol.asyncIterator]()
+      console.log(await asyncIterator.next());
+      console.log(await asyncIterator.next());
+      console.log(await asyncIterator.next());
+    }
+    // fn()
+
+
+    // demo5:，异步遍历器的next方法是可以连续调用的，不必等到上一步产生的 Promise 对象resolve以后再调用。
+    // 这种情况下，next方法会累积起来，自动按照每一步的顺序运行下去
+    async function fn2() {
+      const ite = createAsyncIterable(['aa', 'bb'])
+      const asyncIterator = ite[Symbol.asyncIterator]();
+      const [{ value: a, }, { value: b }] = await Promise.all([asyncIterator.next(), asyncIterator.next()])
+      console.log('r: ', a, b);
+    }
+    // fn2()
+
+
+    // demo6:for...of循环用于遍历同步的 Iterator 接口。新引入的for await...of循环，
+    // 则是用于遍历异步的 Iterator 接口。
+    async function fn3() {
+      for await (let x of createAsyncIterable(['aa', 'bb'])) {
+        console.log(x);
+      }
+    }
+    fn3()
+
+
+
+
+  </script>
+</body>
+
+</html>

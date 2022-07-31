@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    'use strict'
+    var o = {
+      list: []
+    }
+    var a = [1,2,3]
+    
+    let data = a.map((e, i) => {
+      return {
+        ...o,
+        e,
+        i
+      }
+    })
+    console.log(data);
+    console.log(data[1].list === data[2].list); // true
+    data[1].list.push(11)
+  </script>
+</body>
+</html>

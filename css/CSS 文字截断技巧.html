@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 文字截断技巧</title>
+  <style>
+    .example {
+      /* box-orient 属性会将两个 <p> 段落布局到同一行 */
+      display: -webkit-box;
+      -webkit-box-orient: horizontal;
+    }
+
+    .single {
+      width: 100px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      border: 1px solid black;
+      padding: 5px;
+    }
+
+    .nine-word {
+      font-size: 15px;
+    }
+
+    .demo1,
+    .demo2,
+    .demo3 {
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .demo1,
+    .demo3 {
+      width: 150px;
+    }
+
+    .demo2 {
+      width: 149px;
+    }
+
+    .demo3:after {
+      content: '的';
+      /* opacity: 0; */
+    }
+
+    .multiple-line {
+      width: 400px;
+      text-align: justify;
+      word-break: break-all;
+      /* 设置子元素的排列方式，horizontal（默认值，水平排列），vertical（垂直排列） */
+      /* 必须结合的属性，设置或检索伸缩盒对象的子元素的排列方式 */
+      -webkit-box-orient: vertical;
+      /* ok */
+      -webkit-box-orient: block-axis;
+      /* 不行 */
+      /* -webkit-box-orient: inline-axis; */
+      /* 必须结合的属性，将对象作为弹性伸缩盒子模型显示。 */
+      display: -webkit-box;
+      /* 控制文本显示的行数 */
+      -webkit-line-clamp: 4;
+      /* 可选属性，可以用来多行文本的情况下，用省略号“…”隐藏超出范围的文本。 */
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      /* 这个方案的缺点 */
+      /* 1.支持的浏览器有限制：因为该属性是 webkit 的私有属性，所以只有 webkit 内核的浏览器才支持这个属性，像 Firefox，IE 等浏览器就无法支持该特性了。 */
+      /* 2.不能很方便的开发“点击展开”的交互：因为是否超过范围完全由浏览器判断，并没有向我们报告。所以我们很难去判断是否有超出。 */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- https://zhuanlan.zhihu.com/p/35713421 -->
+
+  <div class="example">
+    <p>I will be to the left of my sibling.</p>
+    <p>I will be to the right of my sibling.</p>
+  </div>
+
+  <!-- 1.单行截断 -->
+  <div class="single">I am a very long text.</div>
+
+  <!-- 2.单行最多展示九个字 -->
+  <!-- 需求 -->
+  <!-- 1.若字数小于等于 9，则展示九个字
+  2.若字数大于 9，则展示九个字加省略号。 -->
+
+  <!-- 这个需求和浏览器的实现不太一样。因为浏览器会将最后一个字符占据的空位用于放置省略号。
+假设我们每个字符大小都为 15 px。
+如果空位长度为 150px（能放下十个字符），则内容是十个字符的时候，会完全显示十个字符。
+如果空位长度为 145px （能放下九个字符），则内容是十个字符的时候，会展示八个字符 + 省略号。 -->
+
+  <!-- 我们可以利用伪元素，在后面添加多一个字体。 -->
+  <div class="nine-word">
+    <div class="demo1">一二三四五六七八九十</div>
+    <div class="demo2">一二三四五六七八九十</div>
+    <div class="demo3">一二三四五六七八九十</div>
+  </div>
+
+  <!-- 多行文本溢出截断 -->
+  <p class="multiple-line">
+    President Donald Trump has warned Syria's government the US is "locked and loaded" to strike again if it carries out
+    chemical attacks.
+
+    The warning came after the US, UK and France struck three Syrian sites in response to a suspected deadly chemical
+    attack in the town of Douma a week ago.
+
+    Syria denies any chemical use and says that attack was fabricated by rebels.
+
+    A UN Security Council vote brought by Syria's ally, Russia, to condemn the US-led strikes was rejected.
+
+    The wave of strikes represents the most significant attack against President Bashar al-Assad's government by Western
+    powers in seven years of Syria's civil war.
+
+    While Western powers have supported rebels from early on in the war, they have not intervened against Syria
+    directly.
+  </p>
+</body>
+
+</html>

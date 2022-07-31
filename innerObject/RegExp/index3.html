@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    'use strict'
+    var s = "66662321312341.2341234"
+    var s1 = "+66662321312341."
+    var s2 = "-666623213123411.1"
+    var s3 = "1.23457E+11"
+    var s4 = "734181234"
+    var s5 = "+66662321.312341.2341234"
+    var s6 = "-+000.1"
+
+
+    var r = /^(\+|\-|\d)\d*/
+    // console.log(r.test(s));
+    // console.log(r.test(s1));
+    console.log(r.test(s2));
+    // console.log(r.test(s3));
+    // console.log(r.test(s4));
+    // console.log(r.test(s5));
+
+
+    function isNumber(str) {
+      return /^(\+|\-|\d)\d+.?[0-9]*$/.test(str)
+      // return /^[0-9]+.?[0-9]*$/.test(num)
+    }
+    console.log('=======');
+    console.log(isNumber(s6));
+  </script>
+</body>
+
+</html>

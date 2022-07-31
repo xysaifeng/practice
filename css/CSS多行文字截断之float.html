@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 文字截断技巧</title>
+  <style>
+    section {
+      font-size: 15px;
+      overflow: hidden;
+      width: 500px;
+      position: relative;
+      border: 1px solid black;
+      margin: 10px;
+    }
+
+    p {
+      display: block;
+      margin: 0;
+      padding: 0;
+      line-height: 2;
+    }
+
+    .content-placeholder {
+      opacity: 0;
+      z-index: -1;
+      pointer-events: none;
+      max-height: 120px;
+    }
+
+    .display-area {
+      position: absolute;
+      height: 100%;
+    }
+
+    .display-area .placeholder {
+      float: left;
+      width: 1.5em;
+      content: '';
+      height: 100%;
+      max-height: 120px;
+    }
+
+    .display-area .content {
+      float: right;
+      margin-left: -1.5em;
+      width: 100%;
+    }
+
+    .display-area .ellipsis {
+      float: right;
+      height: 25px;
+      width: 1.5em;
+      position: relative;
+      left: 100%;
+      transform: translate(-100%, -100%);
+      text-align: right;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff 20%, #fff);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- https://zhuanlan.zhihu.com/p/35713421 -->
+
+  <!-- 使用 float 实现多行文本截断 -->
+  <section>
+    <div class="display-area">
+      <div class="placeholder"></div>
+      <p class="content">President Donald Trump has warned Syria's government the US is "locked and loaded" to strike
+        again if it carries out chemical attacks.
+
+        The warning came after the US, UK and France struck three Syrian sites in response to a suspected deadly
+        chemical attack in the town of Douma a week ago.
+
+        Syria denies any chemical use and says that attack was fabricated by rebels.
+
+        A UN Security Council vote brought by Syria's ally, Russia, to condemn the US-led strikes was rejected.
+
+        The wave of strikes represents the most significant attack against President Bashar al-Assad's government by
+        Western powers in seven years of Syria's civil war.
+
+        While Western powers have supported rebels from early on in the war, they have not intervened against Syria
+        directly.</p>
+      <div class="ellipsis">…</div>
+    </div>
+    <p class="content-placeholder">President Donald Trump has warned Syria's government the US is "locked and loaded" to
+      strike again if it carries out chemical attacks.
+
+      The warning came after the US, UK and France struck three Syrian sites in response to a suspected deadly chemical
+      attack in the town of Douma a week ago.
+
+      Syria denies any chemical use and says that attack was fabricated by rebels.
+
+      A UN Security Council vote brought by Syria's ally, Russia, to condemn the US-led strikes was rejected.
+
+      The wave of strikes represents the most significant attack against President Bashar al-Assad's government by
+      Western powers in seven years of Syria's civil war.
+
+      While Western powers have supported rebels from early on in the war, they have not intervened against Syria
+      directly.</p>
+  </section>
+
+  <section>
+    <div class="display-area">
+      <div class="placeholder"></div>
+      <p class="content">President Donald Trump has warned Syria's government the US is "locked and loaded" to strike
+        again if it carries out chemical attacks.</p>
+      <div class="ellipsis">…</div>
+    </div>
+    <p class="content-placeholder">President Donald Trump has warned Syria's government the US is "locked and loaded" to
+      strike again if it carries out chemical attacks.</p>
+  </section>
+
+
+</body>
+
+</html>

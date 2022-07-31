@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 文字截断技巧</title>
+  <style>
+    .name div {
+      margin: 10px 0;
+      width: 100px;
+      border: 1px solid red;
+      /* 不行好像也生效 */
+      text-align: justify;
+      text-align-last: justify
+    }
+
+    .name div:after {
+      /* content: '';
+      display: inline-block;
+      width: 100%; */
+    }
+
+    section {
+      font-size: 15px;
+      width: 150px;
+      overflow: hidden;
+      /* height: 22px; */
+    }
+
+    section div {
+      float: left;
+    }
+
+    .ellipsis {
+      transform: translate(900%, -100%);
+      background-color: lavender;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- https://zhuanlan.zhihu.com/p/65271639 -->
+  <div class="name">
+    <div>姓名</div>
+    <div>手机号码</div>
+    <div>账号</div>
+    <div>密码</div>
+  </div>
+  <!-- https://zhuanlan.zhihu.com/p/35713421 -->
+
+  <!-- 使用 float 模拟实现超出截断 -->
+
+  <!-- 使用 float 实现单行文本只展示九个字符 -->
+
+  <!-- 
+    我们利用 float ，将省略号和文本放在一个容器内。并且利用 translate 将省略号上移。
+    当文本未超出规定长度时，省略号在容器外，被遮盖无法看见。
+    当文本超出规定长度时，省略号被挤向下层，因为偏移，所以出现在目标视野内。
+  -->
+  <!--
+    这样编写的好处是， 省略号是一个 HTML 节点。我们可以监听该节点确认用户是否要展开图片。
+    这样子有利于我们实现相关交互 
+  -->
+  <section>
+    <div>一二三四五六七八九十</div>
+    <div class="ellipsis">…</div>
+  </section>
+  <section>
+    <div>一二三四五六七八九</div>
+    <div class="ellipsis">…</div>
+  </section>
+</body>
+
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>async</title>
+</head>
+
+<body>
+  <script>
+    'use strict'
+
+    //  demo1
+    async function getTitle(url) {
+      let response = await fetch(url);
+      let html = await response.text();
+      // console.log('html: ', html.slice(0, 500));
+      return html.match(/<title>([\s\S]+)<\/title>/i)[1];
+    }
+    // getTitle('https://es6.ruanyifeng.com/#docs/async').then(console.log).catch(e => console.log(e, ))
+    // getTitle('./array_extention.html').then(console.log).catch(e => console.log('eeee: ', e, )) // √ array_extention
+    // getTitle('array_extention.html').then(console.log).catch(e => console.log('eeee: ', e, ))//  √ array_extention
+    // getTitle('/array_extention.html').then(console.log).catch(e => console.log('eeee: ', e, )) // x
+
+
+    // demo2:await命令后面是一个thenable对象（即定义了then方法的对象），那么await会将其等同于 Promise 对象
+    class Sleep {
+      constructor(timeout) {
+        this.timeout = timeout
+      }
+      then(resolve, reject) {
+        // console.log('resolve: ', resolve);
+        // console.log('reject: ', reject);
+        const startTime = Date.now()
+        setTimeout(() => {
+          resolve(Date.now() - startTime)
+        }, this.timeout);
+      }
+    }
+    // (async () => {
+    //   const r = await new Sleep(1000)
+    //   console.log('r: ', r);
+    // })()
+
+    // demo3
+    function sleep(interval) {
+      return new Promise(resolve => {
+        setTimeout(resolve, interval);
+      })
+    }
+
+    async function oneToFiveSync() {
+      for (let i = 1; i <= 5; i++) {
+        console.log(i);
+        await sleep(1000)
+      }
+    }
+    // oneToFiveSync()
+
+    // demo4
+    function post(val) {
+      return new Promise(r => {
+        setTimeout(() => {
+          r(val)
+        }, 1000)
+      })
+    }
+
+    // function dbFn() {
+    //   let docs = ['a', 'b', 'c'];
+    //   let res = []
+    //   // 下面代码不会正常工作，原因是这时三个post()操作将是并发执行，也就是同时执行，而不是继发执行。
+    //   docs.forEach(async doc => {
+    //     const r = await post(doc)
+    //     console.log('r: ', r);
+    //     res.push(r)
+    //   })
+    //   console.log(res, '---res');
+    // }
+
+    // 正确的写法是采用for循环。
+    // async function dbFn() {
+    //   let docs = ['a', 'b', 'c'];
+    //   let res = []
+    //   for(let doc of docs) {
+    //     const r = await post(doc)
+    //     console.log(r)
+    //     res.push(r)
+    //   }
+    //   console.log(res, '---res');
+    // }
+
+    // 正确的写法2：是采用reduce
+    async function dbFn() {
+      let docs = ['a', 'b', 'c'];
+      let res = []
+      await docs.reduce(async (acc, doc) => {
+        console.log('acc: ', acc);
+        await acc
+        const r = await post(doc)
+        console.log('r: ', r);
+        res.push(r)
+      }, null)
+      console.log(res, '---res');
+      return res
+    }
+
+    // dbFn().then(d => {
+    //   console.log(d, '---d');
+    // })
+
+    // 如果确实希望多个请求并发执行，可以使用Promise.all方法。
+    // 当三个请求都会resolved时，下面两种写法效果相同。
+    async function dbFn2() {
+      let docs = ['a', 'b', 'c'];
+      let res = []
+      let promises = docs.map(e => post(e))
+      res = await Promise.all(promises)
+      console.log(res, '--res');
+    }
+    // 或者使用下面的写法
+    async function dbFn3() {
+      let docs = ['a', 'b', 'c'];
+      let res = []
+      let promises = docs.map(e => post(e))
+      for (let p of promises) {
+        const r = await p
+        console.log(r, 'r---');
+        res.push(r)
+      }
+      console.log('res: ', res);
+    }
+
+    // dbFn3()
+
+    // demo5: async 函数可以保留运行堆栈。
+    function fc() {
+      throw new Error('fc error')
+    }
+
+    // 下面代码中，post()运行的时候，a()是暂停执行，上下文环境都保存着。一旦post()或fc()报错，错误堆栈将包括a()。
+    const a = async () => {
+      let r = await post('99');
+      console.log('r: ', r);
+      // throw new Error('bao cuo le')
+      fc()
+    };
+
+    const a2 = () => {
+      post('99').then(function f2(d) {
+        console.log(d, '---d');
+        // throw new Error('bao cuo le')
+        fc()
+      })
+    };
+    // try {
+    //   a()
+    // } catch (error) {
+    //   console.log('error: ', error);
+    // }
+
+
+    // demo6: async 函数的实现原理
+    // async 函数的实现原理，就是将 Generator 函数和自动执行器，包装在一个函数里。
+    // async function fn(args) {
+    //   // ...
+    // }
+    // // 等同于
+    // function fn(args) {
+    //   return spawn(function* () {
+    //     // ...
+    //   });
+    // }
+    // 所有的async函数都可以写成上面的第二种形式，其中的spawn函数就是自动执行器。
+
+    function spawn(genF) {
+      return new Promise((resolve, reject) => {
+        var gen = genF()
+        function step(nextF) {
+          let next
+          try {
+            next = nextF()
+          } catch (error) {
+            return reject(error)
+          }
+          if (next.done) return resolve(next.value)
+
+          Promise.resolve(next.value).then(v => {
+            step(function () { return gen.next(v) })
+          }, function (e) {
+            step(function () { return gen.throw(e) })
+          })
+        }
+        step(function () { return gen.next(undefined) })
+      })
+    }
+
+    // test
+    var genFn = function* () {
+      yield 1;
+      yield 2;
+      return 4
+    }
+    // spawn(genFn).then(v => console.log(v, '---sv')) // 4
+
+
+    // demo7:与其他异步处理方法的比较, 通过一个例子，来看 async 函数与 Promise、Generator 函数的比较。
+    // eg:假定某个 DOM 元素上面，部署了一系列的动画，前一个动画结束，才能开始后一个。
+    // 如果当中有一个动画出错，就不再往下执行，返回上一个成功执行的动画的返回值。
+    // a.promise版本
+    function chainAnimationsPromise(el, animations) {
+      // 变量ret用来保存上一个动画的返回值
+      let ret = null
+      // 新建一个空的Promise
+      let p = Promise.resolve()
+      // 使用then方法，添加所有动画
+      for (let anim of animations) {
+        p = p.then(function (val) {
+          ret = val // val第一次为undefined，第二次为第一次的返回值（anim(el)），所以ret保存的是动画返回的上一个值
+          return anim(el)
+        })
+      }
+      // 返回一个部署了错误捕捉机制的Promise
+      return p.catch(e => {
+        // 处理内部错误，并忽略错误继续执行下一步
+      }).then(() => {
+        return ret
+      })
+    }
+    // 虽然 Promise 的写法比回调函数的写法大大改进，但是一眼看上去，
+    // 代码完全都是 Promise 的 API（then、catch等等），操作本身的语义反而不容易看出来。
+
+    // b.generator版本
+    function chainAnimationsPromise2(el, animations) {
+      return spawn(function* () {
+        let ret = null
+        try {
+          for (let anim of animations) {
+            ret = yield anim(el)
+          }
+        } catch (error) {
+          console.log('error: ', error);
+        }
+        return ret
+      })
+    }
+    // 上面代码使用 Generator 函数遍历了每个动画，语义比 Promise 写法更清晰，
+    // 用户定义的操作全部都出现在spawn函数的内部。这个写法的问题在于，必须有一个任务运行器，
+    // 自动执行 Generator 函数，上面代码的spawn函数就是自动执行器，它返回一个 Promise 对象，
+    // 而且必须保证yield语句后面的表达式，必须返回一个 Promise。
+
+    // c.await版本
+    async function chainAnimationsPromise3(el, animations) {
+      let ret = null
+      try {
+        for (let anim of animations) {
+          ret = await anim(el)
+        }
+      } catch (error) {
+        console.log('error: ', error);
+      }
+      return ret
+    }
+
+  </script>
+
+  <script  src="./extention/topAwait.mjs"></script>
+
+</body>
+
+</html>
