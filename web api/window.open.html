@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js 设置window.open打开新窗口的title</title>
+</head>
+
+<body>
+  <script>
+    // https://blog.csdn.net/yyXieDaiMa/article/details/125014844?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-125014844-blog-122323380.t5_landing_title_tags_v2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-125014844-blog-122323380.t5_landing_title_tags_v2&utm_relevant_index=2
+    //  方法一：缺陷：打开的新链接非同源时，不生效,生效的列子：https://blog.csdn.net/d_append/article/details/122323380
+    const newWindow = window.open(url)
+    newWindow.onload = () => {
+      newWindow.document.title = fileInfo.appendixName
+    }
+
+    // 方法二 缺陷：h5的android端不支持
+    function openWindow(url, title) {
+      const newWindow = window.open('about:blank', title);
+      newWindow.document.title = title;
+      let iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.style.width = '100%';
+      iframe.style.height = '100vh';
+      iframe.style.margin = '0';
+      iframe.style.padding = '0';
+      iframe.style.overflow = 'hidden';
+      iframe.style.border = 'none';
+      newWindow.document.body.style.margin = '0';
+      newWindow.document.body.appendChild(iframe);
+    }
+    openWindow(url, title)
+
+    // https://blog.csdn.net/ye987987/article/details/103579830
+  </script>
+</body>
+
+</html>

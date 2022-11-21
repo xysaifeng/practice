@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    'use strict';
+
+    // JSON.stringify的第二个参数还可以是一个函数，用来更改JSON.stringify()的返回值。
+    // function f(key, value) {
+    //   console.log('key, : ', key,);
+    //   console.log(', value: ', value,);
+    //   if (typeof value === "number") {
+    //     value = 2 * value;
+    //   }
+    //   return value
+    // }
+    // console.log(JSON.stringify({ a: 1, b: 2, c: '3' }, f));
+
+    // 注意，这个处理函数是递归处理所有的键。
+    // var obj = { a: { b: 1 } };
+    // function f(key, value) {
+    //   console.log("[" + key + "]:", value);
+    //   return value;
+    // }
+    // console.log(JSON.stringify(obj, f));
+
+
+    // 递归处理中，每一次处理的对象，都是前一次返回的值。
+    // var obj = { a: 1 };
+    // function f(key, value) {
+    //   if (typeof value === 'object') {
+    //     return { b: 2 };
+    //   }
+    //   return value * 2;
+    // }
+    // console.log('JSON.stringify(obj, f): ', JSON.stringify(obj, f)); //  {"b":4}
+
+
+    // 如果处理函数返回undefined或没有返回值，则该属性会被忽略。
+    // function f(key, value) {
+    //   if (typeof (value) === "string") {
+    //     return undefined
+    //   }
+    //   return value;
+    // }
+    // console.log('=== ', JSON.stringify({ a: "abc", b: 123 }, f));
+
+
+
+    // 参数对象的 toJSON() 方法
+    var user = {
+      firstName: '三',
+      lastName: '张',
+
+      get fullName() {
+        return this.lastName + this.firstName;
+      }
+    };
+
+    function fn(key, value) {
+      console.log('key is ' + key, ' and value is:', value);
+      return value
+    }
+
+    console.log('JSON.stringify(user): ', JSON.stringify(user, fn));
+
+
+  </script>
+</body>
+
+</html>

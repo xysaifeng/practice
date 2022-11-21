@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+
+    // 4.注释
+    // 由于历史上 JavaScript 可以兼容 HTML 代码的注释，所以<!--和-->也被视为合法的单行注释(在浏览器中可以，编辑器中会报错)
+    // var a = 1; < !--x=2;
+    // --> x=3;
+
+    let cleanup;
+    const onClean = function (fn) {
+      cleanup = fn
+    }
+
+    let i = 2000
+    async function watch() {
+      debugger
+      let f = false
+      onClean(() => {
+        f = true
+      })
+      console.log(f, '==f1');
+      i -= 1000
+      let r = await getData(i)
+      if (!f) {
+        console.log(r, f, i, '====1');
+      } else {
+        console.log(f, i, '====2');
+      }
+    }
+
+    watch()
+    debugger
+    cleanup()
+    debugger
+    watch()
+
+
+    function getData(timer) {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          resolve(timer)
+        }, timer);
+      })
+    }
+  </script>
+</body>
+
+</html>

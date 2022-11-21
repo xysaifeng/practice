@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // new 命令的原理
+    // 1.创建一个空对象，作为将要返回的对象实例。
+    // 2.将这个空对象的原型，指向构造函数的prototype属性。
+    // 3.将这个空对象赋值给函数内部的this关键字
+    // 4.开始执行构造函数内部的代码。
+
+    // new命令简化的内部流程，可以用下面的代码表示
+    function _new(/* 构造函数 */ constructor, /* 构造函数参数 */ params) {
+      var args = [].slice.call(arguments)
+      var constructor = args.shift()
+      var instance = Object.create(constructor.prototype)
+      var res = constructor.apply(instance, args)
+      console.log('res: ', res);
+      return (typeof res === "object" && res !== 'null') ? res : instance
+    }
+    function Person(name, age) {
+      this.name = name
+      this.age = age
+      return 2
+    }
+    const person = _new(Person, 'tom', 123)
+    console.log('person: ', person);
+
+
+    // new.target 
+    // 函数内部可以使用new.target属性。如果当前函数是new命令调用，new.target指向当前函数，否则为undefined。
+    function fn() {
+      console.log(new.target === fn);
+      console.log('new.target: ', new.target);
+    }
+    console.log(fn()); // false undefined
+    console.log(new fn()); // fn fn
+
+
+    // 使用这个属性，可以判断函数调用的时候，是否使用new命令。
+    function f() {
+      if (!new.target) {
+        throw new Error('请使用 new 命令调用！')
+      }
+      // ...
+    }
+    // f()
+
+  </script>
+</body>
+
+</html>

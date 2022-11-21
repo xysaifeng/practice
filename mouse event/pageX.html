@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      width: 2000px;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .left {
+      width: 100px;
+      height: 200px;
+      border: 1px solid purple;
+    }
+
+    .box {
+      width: 200px;
+      height: 200px;
+      border: 1px solid red;
+      overflow: auto;
+    }
+
+    .content {
+      width: 300px;
+      height: 50px;
+      border: 1px solid blue;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- <div class="left"></div> -->
+    <div id="box" class="box">
+      <div id="content" class="content"></div>
+    </div>
+  </div>
+
+  <script>
+    // [pageX/pageY、clientX/clientY、screenX/screenY的区别]https://blog.csdn.net/cai_niao5623/article/details/120791512
+    'use strict';
+    const box = document.getElementById('box');
+    const content = document.getElementById('content');
+
+    // box.addEventListener('mousedown', function (e) { console.log(e.pageX, e.pageY) })
+    document.addEventListener('mousedown', function (e) { console.log(e.pageX, e.pageY) })
+    document.addEventListener('mousedown', function (e) { console.log(e.clientX, e.clientX) })
+
+
+    // screenX/screenY：其实就是你的鼠标指针距离你电脑屏幕左侧边缘和上侧边缘的距离
+
+    // clientX/clientY：其实就是你的鼠标指针距离当前网页最左侧和最上侧的距离(不包含滚动条的距离)
+
+    // pageX/pageY：其实就是你的鼠标指针距离当前网页最最侧和最上侧的距离(包含滚动条的距离)
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    function async(arg, callback) {
+      console.log('参数为 ' + arg + ' , 1秒后返回结果');
+      setTimeout(function () { callback(arg * 2); }, 1000);
+    }
+    function final(value) {
+      console.log('完成: ', value);
+    }
+
+    // 
+    // async(1, function (val) {
+    //   async(2, function (val) {
+    //     async(3, function (val) {
+    //       async(4, function (val) {
+    //         async(5, function (val) {
+    //           async(6, final)
+    //         })
+    //       })
+    //     })
+    //   })
+    // })
+
+
+    // 串行执行:编写一个流程控制函数，让它来控制异步任务，一个任务完成以后，再执行另一个。这就叫串行执行
+    var items = [1, 2, 3, 4, 5, 6];
+    var results = [];
+    // function series(item) {
+    //   if (item) {
+    //     async(item, function (res) {
+    //       results.push(res)
+    //       return series(items.shift())
+    //     })
+    //   } else {
+    //     return final(results.at(-1))
+    //   }
+    // }
+    // series(items.shift())
+
+
+    // 并行执行:流程控制函数也可以是并行执行，即所有异步任务同时执行，等到全部完成以后，才执行final函数
+    // items.forEach(e => {
+    //   async(e, function (val) {
+    //     results.push(val)
+    //     if (results.length === items.length) {
+    //       final(results.at(-1))
+    //     }
+    //   })
+    // })
+    // 相比而言，上面的写法只要一秒，就能完成整个脚本。这就是说，并行执行的效率较高，比起串行执行一次只能执行一个任务，
+    // 较为节约时间。但是问题在于如果并行的任务较多，很容易耗尽系统资源，拖慢运行速度。因此有了第三种流程控制方式。
+
+
+    // 并行与串行的结合:所谓并行与串行的结合，就是设置一个门槛，每次最多只能并行执行n个异步任务，这样就避免了过分占用系统资源。
+
+    var limit = 2;
+    var runing = 0;
+    function setup() {
+      // console.log(runing, '===start runing');
+      while (runing < limit) {
+        const item = items.shift()
+
+        async(item, val => {
+          console.log(runing, val, '===cb runing');
+          results.push(val)
+          // debugger
+          runing--
+          // console.log(runing, results, '-----inner');
+          if (items.length) {
+            return setup()
+          } else if (runing === 0) {
+            return final(results.at(-1))
+          }
+        })
+        runing++
+        // console.log(runing, '===end runing');
+      }
+    }
+    setup()
+  </script>
+</body>
+
+</html>

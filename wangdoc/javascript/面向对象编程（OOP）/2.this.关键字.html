@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>this.关键字</title>
+</head>
+
+<body>
+  <script>
+    // Function.prototype.bind()
+
+    // bind结合call()方法使用
+    // 利用bind()方法，可以改写一些 JavaScript 原生方法的使用形式，以数组的slice()方法为例。
+    console.log([1, 2, 3].slice(0, 1));
+    // 等同于
+    // 这样做的本质是在[1, 2, 3]上面调用Array.prototype.slice()方法，因此可以用call方法表达这个过程，得到同样的结果。
+    console.log('Array.prototype.slice.call([1, 2, 3], 0, 1): ', Array.prototype.slice.call([1, 2, 3], 0, 1));
+
+    // call()方法实质上是调用Function.prototype.call()方法，因此上面的表达式可以用bind()方法改写。
+    var s = Function.prototype.call.bind(Array.prototype.slice)
+    console.log(s([1, 2, 3], 0, 1));// [1]
+    // 上面代码的含义就是，将Array.prototype.slice变成Function.prototype.call方法所在的对象，调用时就变成了Array.prototype.slice.call
+
+    // 如果再进一步，将Function.prototype.call方法绑定(到)Function.prototype.bind对象，就意味着bind的调用形式也可以被改写。
+    function f() {
+      console.log(this, '===this');
+      return this.v;
+    }
+    var o = { v: 12 }
+    var b = Function.prototype.call.bind(Function.prototype.bind)
+    console.log('b(f, o)(): ', b(f, o)());
+    // 上面代码的含义就是，将Function.prototype.bind方法绑定在Function.prototype.call上面，所以bind方法就可以直接使用，不需要在函数实例上使用。
+
+
+  </script>
+</body>
+
+</html>

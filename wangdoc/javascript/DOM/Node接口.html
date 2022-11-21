@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="box" id="box">
+    <div id="test">test</div>
+    <div>Lorem ipsum dolor sit,Eveniet possimus, rerum iure ad quo maiores fugit adipisci eum!</div>
+  </div>
+
+  <ul class="ul-box" id="ulBox">
+    <li class="item1">1</li>
+    <li class="item2">2</li>
+    <li class="item3">3
+      <div id="3-1">
+        3-1
+
+        3-1
+
+        </span>
+    </li>
+  </ul>
+  <div id="ulBoxCopy"></div>
+
+  <div id="removeBox">
+    <div>div1</div>
+    <span>
+      <span>span2</span>
+  </div>
+  </div>
+  <script>
+
+    function append() {
+      var div = document.getElementById('test');
+      setTimeout(() => {
+        // 如果参数节点是 DOM 已经存在的节点，appendChild()方法会将其从原来的位置，移动到新位置
+        // 返回值就是插入文档的子节点
+        const r = document.body.appendChild(div);
+        if (box.hasChildNodes()) {
+          for (let node of box.childNodes) {
+            // console.log(node);
+          }
+        }
+      }, 100);
+    }
+    append()
+
+    function DOMComb(parent, cb) {
+      // console.log('parent,: ', parent,);
+      if (parent.hasChildNodes()) {
+        for (let node = parent.firstChild; node; node = node.nextSibling) {
+          DOMComb(node, cb)
+        }
+      }
+      cb(parent, '=======parent2')
+    }
+    // DOMComb(box, console.log) 
+
+    function cloneNode() {
+      // ulBox.addEventListener('click', function() {
+      //   console.log('ulBox addEventListener');
+      // })
+      var cloneUl = document.querySelector('.ul-box').cloneNode(true)
+      setTimeout(() => {
+        ulBoxCopy.appendChild(cloneUl)
+      }, 1000);
+    }
+    cloneNode()
+
+    function removeChild() {
+      setTimeout(() => {
+        if (removeBox.firstElementChild) {
+          console.log('x');
+          removeBox.removeChild(removeBox.firstElementChild)
+        }
+      }, 2000);
+    }
+    // removeChild()
+
+
+    function replaceChild() {
+      setTimeout(() => {
+        var item1 = document.getElementsByClassName('item1')[0]
+        var item2 = document.getElementsByClassName('item2')[0]
+        var item3 = document.getElementsByClassName('item3')[0]
+        var span31 = document.getElementById('3-1')
+        console.log('span31: ', span31);
+
+        var newli = document.createElement('li')
+        newli.textContent = 'new li'
+        newli.classList.add('item22')
+        item2.parentNode.replaceChild(newli, item2)
+
+        // let h = newli.parentNode.contains(newli.parentNode) // true
+        // let h = newli.parentNode.contains(item2.parentNode) // false
+        // let h = item2.parentNode.contains(newli.parentNode) // 报错
+        // let h = newli.parentNode.contains(newli) // true
+        // let h = newli.parentNode.contains(item2) // false
+        // let h = newli.parentNode.contains(document.getElementById('3-1')) //  true
+        // console.log('h: ', h);
+
+        // var position = newli.compareDocumentPosition(newli) // 0 两个节点相同
+        // var position = newli.compareDocumentPosition(item3) // 4 参数节点在当前节点的后面
+        // var position = newli.compareDocumentPosition(span31) // 4 参数节点在当前节点的后面
+        var position = item3.compareDocumentPosition(item1) // 2 参数节点在当前节点的前面
+        // var position = item2.compareDocumentPosition(item1) // 35 参数节点在当前节点的前面 2 + 浏览器内部使用 32 + 两个节点不在同一个文档（即有一个节点不在当前文档） 1
+        // var position = item3.compareDocumentPosition(span31) // 20 参数节点在当前节点的后面 4 + 当前节点包含参数节点 16 
+        // var position = span31.compareDocumentPosition(item3) // 10 参数节点在当前节点的前面 2 + 参数节点包含当前节点 8
+        console.log('position: ', position);
+
+      }, 200);
+    }
+    //  replaceChild()
+
+
+
+    function compareNode() {
+      // setTimeout(() => {
+      //   var ulBox = document.getElementById('ulBox')
+      //   console.log('ulBoxCopy.isEqualNode(ulBox): ', ulBoxCopy.firstChild.isEqualNode(ulBox)); // true
+      //   console.log('ulBoxCopy.isSameNode(ulBox): ', ulBoxCopy.firstChild.isSameNode(ulBox)); // false
+      //   console.log('ulBoxCopy.isSameNode(ulBox): ', ulBox.isSameNode(ulBox)); // true
+      // }, 2200)
+      var p1 = document.createElement('p');
+      var p2 = document.createElement('p');
+      console.log('p1.isSameNode(p2): ', p1.isSameNode(p2)); // false
+      console.log('p1.isSameNode(p1): ', p1.isSameNode(p1)); // true
+      console.log('p1.isEqualNode(p1): ', p1.isEqualNode(p2)); // true
+    }
+    //  compareNode() 
+
+    function normalize() {
+      var span31 = document.getElementById('3-1')
+      // span31.normalize()
+      console.log(span31.childNodes);
+
+      var wrapper = document.createElement('div');
+
+      wrapper.appendChild(document.createTextNode('Part 1 '));
+      wrapper.appendChild(document.createTextNode('Part 2 '));
+      var s = document.createElement('s')
+      s.textContent = ' 9 '
+      wrapper.appendChild(s);
+      // console.log(wrapper.childNodes.length, '===wrapper.childNodes.length');
+      // wrapper.normalize()
+
+      document.body.appendChild(wrapper)
+    }
+    normalize()
+
+  </script>
+</body>
+
+</html>

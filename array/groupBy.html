@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    const products = [
+      { name: 'apples', category: 'fruits', a: 1 },
+      { name: 'oranges', category: 'fruits', a: 12 },
+      { name: 'potatoes', category: 'vegetables', a: 2 },
+      { name: 'potatoes2', category: '', a: 13 }
+    ];
+    function groupBy(array, f) {
+      let groups = [];
+      let indexList = [];
+      //给每一个项增加一个组名
+      let dataList = array.map(item => {
+        // item.groupName = f(item);
+        item.groupName = item[f];
+        return item;
+      });
+      console.log(dataList);
+      //排除重名
+      indexList = Array.from(new Set(dataList.map(item => item.groupName)));
+      console.log('indexList: ', indexList);
+      //根据组名分组
+      indexList.forEach(item => {
+        groups.push({
+          word: item,
+          list: dataList.filter(sitem => {
+            return sitem.groupName === item;
+          })
+        })
+      });
+      return groups;
+    }
+    // console.log(groupBy(products, 'category'));
+
+    Array.prototype.group = function (cb /* , thisArg */) {
+      var thisArg = arguments.length > 1 ? arguments[1] : undefined;
+      var boundFunction = cb.bind(thisArg)
+      var target = Object.create(null)
+      var len = this.length
+      var i = 0, value, key;
+      for (; len > i; i++) {
+        value = this[i]
+        key = boundFunction(value, i, this)
+        if (key in target) target[key].push(value)
+        else target[key] = [value]
+      }
+      return target
+    }
+
+    // console.log(products.group(e => e.a > 10 ? '大于' : '小于'));
+    console.log(products.group(e => e.category));
+  </script>
+</body>
+
+</html>

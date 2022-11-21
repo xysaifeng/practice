@@ -124,8 +124,88 @@
         console.log(x);
       }
     }
-    fn3()
+    // fn3()
 
+    // demo7:异步 Generator 函数
+    async function* gen() {
+      yield 'abc'
+      // throw new Error('err')
+    }
+    // const genObj = gen()
+    // genObj.next().then(r => {
+    //   console.log(r, '-r');
+    // }).catch(e => console.log('err: ', e))
+
+    // demo8:异步 Generator 函数
+    async function* map(it, func) {
+      const iter = it[Symbol.asyncIterator]()
+      // console.log('iter: ', iter);
+      while (true) {
+        const { value, done } = await iter.next()
+        console.log('value: ', value, done);
+        if (done) break
+        yield func(value)
+      }
+    }
+    // map(createAsyncIterable(['h', 'j']), r => {
+    //   console.log(r, '--r');
+    //   return r
+    // }).next()
+    const asgen = map(createAsyncIterable(['h', 'j']), r => {
+      console.log(r, '--r');
+      return r
+    });
+    // asgen.next().then(r => console.log(r, '-r1'))
+    // asgen.next().then(r => console.log(r, '-r2'))
+    // asgen.next().then(r => console.log(r, '-r3'))
+
+    // (async function () {
+    //   for await (let x of asgen) {
+    //     console.log(x, 'x');
+    //   }
+    // })()
+
+
+    // demo9:
+    function fetchRandom() {
+      const url = 'https://www.random.org/decimal-fractions/'
+        + '?num=2&dec=20&col=1&format=plain&rnd=new';
+      return fetch(url);
+    }
+
+    async function* asyncGenerator() {
+      console.log('start');
+      const res = await fetchRandom()
+      console.log('res: ', res);
+      yield 'result: ' + await res.text()
+      console.log('end');
+
+    }
+
+    // const ag = asyncGenerator()
+    // ag.next().then(({ value, done }) => {
+    //   console.log(value, done, '---ends');
+    // })
+
+
+
+    // demo10:异步 Generator 函数的执行器。
+    async function takeAsync(asyncIterable, count = Infinity) {
+      const result = []
+      const iterator = asyncIterable[Symbol.asyncIterator]()
+      while (result.length < count) {
+        const { value, done } = await iterator.next()
+        console.log('value: ', value);
+        if (done) break
+        result.push(value)
+      }
+      return result
+    }
+
+    async function fn() {
+      return await takeAsync(createAsyncIterable(['h', 'j']))
+    }
+    fn().then(r => console.log('r:', r))
 
 
 

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 构造函数的继承 
+    function Super(name, age) {
+      this.name = name
+      this.age = age
+    }
+    Super.prototype.say = function () {
+      console.log(this.name, this.age);
+    }
+    Super.prototype.run = function (speed) {
+      console.log(this.name + ' is runing ' + speed);
+    }
+    function Sub(name, age, sex) {
+      this.sex = sex
+      Super.call(this, name, age)
+    }
+
+    Sub.prototype = Object.create(Super.prototype)
+    Sub.prototype.eat = function () {
+      console.log(this.name, this.age, this.sex);
+    }
+    // Sub.prototype.constructor = Sub
+
+    // Object.setPrototypeOf(Sub.prototype, Super.prototype)
+    // Sub.prototype.__proto__ = Super.prototype
+
+
+    // var p = new Sub('tom', 12, 'man')
+    // console.log('p: ', p, p.constructor.name);
+    // p.say()
+    // p.eat()
+    // console.log(p instanceof Sub); // true
+    // console.log(p instanceof Super);// true
+    // Sub.prototype.run = function (speed) {
+    //   Super.prototype.run.call(this, speed)
+    //   console.log(this.name + ' runing in Sub ');
+    // }
+    // p.run('100km/h')
+
+
+
+    // 多重继承 # 
+    // JavaScript 不提供多重继承功能，即不允许一个对象同时继承多个对象。但是，可以通过变通方法，实现这个功能。
+    function M1() {
+      this.hello = 'hello';
+    }
+    M1.prototype.say = function () {
+      console.log(this.hello, '==h  in m1');
+      console.log(this.world, '===w  in m1');
+    }
+
+    function M2() {
+      this.world = 'world';
+    }
+    M2.prototype.talk = function () {
+      console.log(this.hello, '==h in m2');
+      console.log(this.world, '===w in m2');
+    }
+    function S() {
+      M1.call(this);
+      M2.call(this);
+    }
+
+    // Object.setPrototypeOf(S.prototype, M1.prototype)
+    // Object.assign(S.prototype, M2.prototype)
+
+    // // 继承 M1
+    S.prototype = Object.create(M1.prototype);
+    S.prototype.ss = 'ss'
+    // 继承链上加入 M2
+    Object.assign(S.prototype, M2.prototype);
+    // 指定构造函数
+    S.prototype.constructor = S;
+
+    var s = new S;
+    // console.log(s, '======s', s.constructor.name);
+    // console.log(s.constructor === S.prototype.constructor); // true
+    // console.log(s.__proto__.constructor === M1.__proto__.constructor);// fasle
+    // console.log('M1.__proto__.constructor: ', M1.__proto__.constructor.name); // Function
+    // console.log(s.__proto__.constructor === S);// true
+    // console.log(S.prototype.isPrototypeOf(s), 'S');// true
+    // console.log(M1.prototype.isPrototypeOf(s), 'M1');// true
+    // console.log(M2.prototype.isPrototypeOf(s), 'M2');// false
+    // console.log(M1.prototype.isPrototypeOf(S.prototype), 'M1 p');// true
+    // console.log(M2.prototype.isPrototypeOf(S.prototype), 'M2 p');// false
+
+    // console.log(M1.prototype.__proto__);
+    // console.log(s.__proto__.__proto__ === M1.prototype); // true
+    // console.log(Object.getPrototypeOf(M1.prototype));
+
+    // 上面代码中，子类S同时继承了父类M1和M2。这种模式又称为 Mixin（混入）。
+
+
+
+    // 模块(传统实现方式)
+
+  </script>
+</body>
+
+</html>
