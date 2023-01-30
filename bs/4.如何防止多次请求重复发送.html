@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .btn:hover {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <div>
+      <button class="btn" onclick="btnClick()">click</button>
+    </div>
+  </div>
+  <script>
+    // https://mp.weixin.qq.com/s?__biz=MjM5MDA2MTI1MA==&mid=2649132814&idx=1&sn=c74ff32da6f32c2f42fe5ac6ec1d1ca6&chksm=be58a8a3892f21b598a3b40f2121900f4663d368e8092c761e4730466e362a526315f45a9dfd&scene=27
+    // desc:在工作中，经常需要只发送一次请求，以防止用户重复点击。
+
+    function firstPromise(fn) {
+      // todo
+      let p = null
+      return function (...args) {
+        // return p ? p : (p = fn.apply(this, args).finally(() => p = null))
+        if (p) {
+          console.log(p, '===has p');
+          // return p
+          return Promise.resolve({ cancel: true })
+        } else {
+          console.log(args, '===args');
+          p = fn.apply(this, args).finally(() => {
+            p = null
+            console.log('---------f p');
+          })
+          console.log('p: ', p);
+          return p
+        }
+      }
+    }
+    let count = 1;
+    let promiseFn = (...args) => {
+      return new Promise(rs => {
+        console.log(args, '=======origin fn 1');
+        window.setTimeout(() => {
+          console.log(args, '=======origin fn2');
+          // rs(count++)
+          rs(args)
+        }, 1000)
+      })
+    }
+
+    let firstFn = firstPromise(promiseFn)
+    // firstFn(1, 2, 3).then((e) => console.log(e))
+    // firstFn(2, 3, 4).then((e) => console.log(e))
+    // firstFn(3, 4, 5).then((e) => console.log(e))
+
+    // setTimeout(() => {
+    //   firstFn().then(console.log) // 2
+    //   firstFn().then(console.log) // 2
+    //   firstFn().then(console.log) // 2
+    // }, 3000)
+
+
+
+    async function btnClick() {
+      const r = await firstFn(1, 2, 3)
+      console.log('r: ', r);
+    }
+
+  </script>
+</body>
+
+</html>

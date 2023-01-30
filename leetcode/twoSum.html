@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // https://leetcode.com/problems/two-sum/description/
+
+    // Input: nums = [3,2,7,11,15], target = 9
+    // Output: [0,1]
+    // Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+    /**
+     * @param {number[]} nums
+     * @param {number} target
+     * @return {number[]}
+     */
+    var twoSum1 = function (nums, target) {
+      let i = 0;
+      let len = nums.length
+      for (; i < len; i++) {
+        let c = nums[i]
+        let n = target - c;
+        if (nums.includes(n) && nums.includes(n, i + 1) > 0) {
+          return [i, nums.indexOf(n, i + 1)]
+        }
+        return []
+      }
+    };
+    var twoSum2 = function (nums, target) {
+      let i = 0;
+      let len = nums.length
+      for (; i < len; i++) {
+        let c = nums[i]
+        let n = target - c;
+        let k = nums.indexOf(n)
+        if (k > -1 && k !== i) {
+          return [i, k]
+        }
+      }
+    };
+    var twoSum3 = function (nums, target) {
+      let i = 0;
+      let len = nums.length
+      const r = []
+      for (; i < len; i++) {
+        let c = nums[i]
+        let n = target - c;
+        if (r.includes(c)) {
+          return [r.indexOf(c), i]
+        } else {
+          r.push(n)
+          console.log(JSON.stringify(r), '====r');
+        }
+      }
+    };
+    var twoSum4 = function (nums, target) {
+      const len = nums.length
+      for (let i = 0; i < len; i++) {
+        for (let j = i + 1; j < len; j++) {
+          if (nums[i] + nums[j] === target) {
+            return [i, j]
+          }
+        }
+      }
+      return [0, 0]
+    };
+    var twoSum = function (nums, target) {
+      const map = {}
+      for (let index = 0; index < nums.length; index++) {
+        const element = nums[index]
+        const complement = target - element
+        console.log(element, complement, '----out');
+        if (map[complement] !== undefined) {
+          console.log(complement, index, element, '=======complement');
+          return [map[complement], index]
+        } else {
+          console.log(element, index, '=====element');
+          map[element] = index
+          console.log(JSON.stringify(map), '====m');
+        }
+      }
+      return []
+    };
+
+    let r = twoSum4([3, 3,], 6)
+    // let r = twoSum4([3, 2, 4,], 6)
+    // let r = twoSum4([1, 2, 7, 11, 15], 9)
+    console.log('r: ', r);
+
+  </script>
+</body>
+
+</html>

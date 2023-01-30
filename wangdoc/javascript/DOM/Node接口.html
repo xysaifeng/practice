@@ -26,6 +26,8 @@
         </span>
     </li>
   </ul>
+  <a href="www.baidu.com" id="link1" name="link">百度1</a>
+  <a href="www.baidu.com" id="link2" name="link">百度2</a>
   <div id="ulBoxCopy"></div>
 
   <div id="removeBox">
@@ -49,7 +51,7 @@
         }
       }, 100);
     }
-    append()
+    // append()
 
     function DOMComb(parent, cb) {
       // console.log('parent,: ', parent,);
@@ -71,7 +73,7 @@
         ulBoxCopy.appendChild(cloneUl)
       }, 1000);
     }
-    cloneNode()
+    // cloneNode()
 
     function removeChild() {
       setTimeout(() => {
@@ -114,9 +116,9 @@
         // var position = span31.compareDocumentPosition(item3) // 10 参数节点在当前节点的前面 2 + 参数节点包含当前节点 8
         console.log('position: ', position);
 
-      }, 200);
+      }, 2000);
     }
-    //  replaceChild()
+    // replaceChild()
 
 
 
@@ -133,7 +135,7 @@
       console.log('p1.isSameNode(p1): ', p1.isSameNode(p1)); // true
       console.log('p1.isEqualNode(p1): ', p1.isEqualNode(p2)); // true
     }
-    //  compareNode() 
+    // compareNode()
 
     function normalize() {
       var span31 = document.getElementById('3-1')
@@ -144,15 +146,22 @@
 
       wrapper.appendChild(document.createTextNode('Part 1 '));
       wrapper.appendChild(document.createTextNode('Part 2 '));
-      var s = document.createElement('s')
-      s.textContent = ' 9 '
-      wrapper.appendChild(s);
-      // console.log(wrapper.childNodes.length, '===wrapper.childNodes.length');
-      // wrapper.normalize()
+      console.log(wrapper.childNodes, '===wrapper.childNodes.length');
+      wrapper.normalize()
+      console.log(wrapper.childNodes, '===wrapper.childNodes.length');
 
       document.body.appendChild(wrapper)
     }
-    normalize()
+    // normalize()
+
+    function getLinks() {
+      const links = document.links
+      // console.log(links);
+      console.log(links.namedItem('link'));
+      console.log(links.link === link2); // ture
+    }
+
+    getLinks()
 
   </script>
 </body>

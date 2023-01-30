@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <base href="www.baidu.com">
+
+  <style>
+    body {
+      border: 1px solid;
+      height: 800px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" id="box">
+    <span id="old">123</span>
+    <div class="form">
+      <form name="myForm">
+        <label for="ipt">
+          姓名
+          <input id="ipt">
+        </label>
+        <input type="button" value="add">
+      </form>
+    </div>
+
+    <main>
+      <a href="www.baidu.com">百度</a>
+      <a>百度2</a>
+      <img src="" alt="">
+    </main>
+
+  </div>
+
+  <script>
+    // HTML 的文档类型节点，一般写成<!DOCTYPE html>。如果网页没有声明 DTD，该属性返回null
+    // var dtd = document.doctype
+    // console.log(dtd); // null 文档类型(简写DTD)
+    // console.log(dtd); // <!DOCTYPE html>
+    // console.log(dtd.name) // html
+    // console.log(document.firstChild);
+    // console.log(document.firstChild == dtd); // true
+    // console.log(document.documentElement); // html
+    // console.log(document.head);
+    // console.log(document.body);
+
+    // setTimeout(() => {
+    //   var b = document.createElement('body')
+    //   b.classList.add('body-c')
+    //   b.innerHTML = '<p>1234</p>'
+    //   document.body = b
+    // }, 2000);
+
+    console.log(document.scrollingElement); // html
+    // document.scrollingElement.scrollTo(0, 100)
+    setTimeout(() => {
+      document.scrollingElement.scrollTop = 10 // 页面滚动距离浏览器顶部200px
+
+      // console.log(document.activeElement); // 返回获得当前焦点（focus）的 DOM 元素
+    }, 2000);
+
+    // var links = document.links;
+    // console.log('links: ', links);
+    // console.log(document.forms[0]);
+    // var imglist = document.images;
+    // console.log('imglist: ', imglist);
+
+    // console.log(document.scripts);
+    // console.log(document.styleSheets);
+
+    // console.log(document.myForm);
+    // console.log(document.myForm === document.forms.myForm); // true
+
+    // console.log(document.documentURI);
+    // console.log(document.URL);
+    // console.log(document.currentScript);
+
+  </script>
+
+  <script id="foo">
+    // console.log(
+    //   document.currentScript === document.getElementById('foo')
+    // ); // true
+
+
+    // setTimeout(() => {
+    //   var doc = document.implementation.createHTMLDocument('Tit')
+    //   console.log('doc: ', doc);
+    //   var p = doc.createElement('p');
+    //   p.innerHTML = 'hello world';
+    //   doc.body.appendChild(p);
+    //   // document.replaceChild(doc.documentElement, document.documentElement)
+    // }, 2000);
+
+    // setTimeout(() => {
+    //   var p = document.createElement('p');
+    //   p.innerHTML = 'hello world';
+    //   var old = document.getElementById('old')
+    //   var box = document.getElementById('box')
+    //   box.replaceChild(p, old)
+    // }, 2000);
+
+    // Element.replaceChildren
+    setTimeout(() => {
+      var p = document.createElement('p');
+      p.innerHTML = 'hello world';
+      var p2 = document.createElement('p');
+      p2.innerHTML = 'hello world2';
+      // document.body.replaceChildren()
+      // document.body.replaceChildren(p, p2)
+      // document.body.replaceChildren('<p>234</p>')
+    }, 2000);
+
+
+    setTimeout(() => {
+      // document.open()
+      // document.write('hello')
+      // document.close()
+      document.write('hello2')
+      document.write('<p>hello world</p>');
+      document.writeln(1);
+      document.writeln(2);
+    }, 2000);
+
+    document.addEventListener('DOMContentLoaded', function (e) {
+      console.log('----o');
+    })
+    window.addEventListener('load', function (e) {
+      console.log('----o2');
+    })
+
+  </script>
+
+  <script src="./outer.js" id="outer"></script>
+
+</body>
+
+</html>
