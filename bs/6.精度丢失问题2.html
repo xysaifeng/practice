@@ -85,7 +85,7 @@
      * @params number number 原始数据
      * @params precision number 精度
      */
-    function toFixed(number, precision) {
+    function toFixed1(number, precision) {
       var str = number + ''
       var last = str.slice(-1)
       if (last === '5') {
@@ -94,9 +94,9 @@
       }
       return (+str).toFixed(precision)
     }
-    var r = toFixed(1.335, 2)
+    var r = toFixed1(1.335, 2)
     // console.log('r: ', r);
-    // console.log(toFixed(1.3335, 3)); // 1.334 ok
+    // console.log(toFixed1(1.3335, 3)); // 1.334 ok
     // console.log(1.3335.toFixed(3)); // 1.333 error
 
     // 修复方式2: 先扩大再缩小法 (有bug)
@@ -109,7 +109,7 @@
       var r = parseInt(des, 10) / times
       return r + ''
     }
-    // console.log(toFixed(1.005, 2)); // 1.01 // ok
+    // console.log(toFixed1(1.005, 2)); // 1.01 // ok
     // console.log(toFixed2(1.005, 2)); // 1 // error
     // console.log(toFixed2(1.3335, 3)); // 1.334 // ok
     // console.log(1.005.toFixed(2)); // 1.00 error
@@ -248,7 +248,65 @@
     // console.log('floatObj.divide(3.25,3.153): ', floatObj.divide(2, 1.2));
 
 
+    //是否是纯数字
+    function isRealNum(val) {
+      if (val == null || val.toString().replace(/\s/g, "") === "") {
+        return false;
+      }
 
+      if (typeof val == "boolean") {
+        return false;
+      }
+
+      if (!isNaN(val)) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+    /**
+     * 做小数点的四舍五入计算
+     * @param {*} num
+     * @param {*} precision
+     */
+    function fixed(num, precision) {
+      if (!precision) {
+        precision = 2;
+      }
+      if (!isRealNum(num)) return num;
+      let s = num.toFixed(precision);
+      let index = s.indexOf('.');
+      let prefix = s.substring(0, index);
+      let suffix = s.substring(index + 1, s.length);
+      console.log('suffix: ', suffix);
+      if (suffix) {
+        for (let i = suffix.length - 1; i != 0; i--) {
+          //最末位不为0，直接break;
+          if (suffix.charAt(i) != '0' && i == suffix.length - 1) {
+            break;
+          } else {
+            suffix = suffix.substring(0, i);
+          }
+        }
+      }
+      return Number(prefix + '.' + suffix);
+    }
+
+    Number.prototype.tofixed = function (value) {
+      let precision = parseFloat(value);
+      if (typeof precision !== 'number' || Number.isNaN(precision)) {
+        throw new Error('请输入数字或者数字字符串～');
+      }
+      console.log(this, '---s');
+      return fixed(this, precision);
+    };
+
+    console.log(1.30.tofixed(2)); // 1.33
+    // console.log((130).tofixed(2)); // 1.33
+    console.log((1.335).toFixed(2)); // 1.33
+    console.log(toFixed1(1.335, 2));// 1.34
   </script>
 </body>
 

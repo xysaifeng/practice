@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOMContentLoaded</title>
+
+  <script type="text/javascript">
+    console.log(document.getElementById('ele')); // null
+  </script>
+
+  <style>
+    #ele {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- https://zhuanlan.zhihu.com/p/25876048 -->
+  <!-- https://juejin.cn/post/7063464864542359583 -->
+
+  <div id="ele">123</div>
+
+  <script type="text/javascript">
+    const el = document.getElementById('ele')
+    console.log(el, 1); // <div id="ele"></div>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('DOMContentLoaded', getComputedStyle(el).color, 2);
+    })
+
+    window.addEventListener('load', function () {
+      console.log('load');
+    })
+
+  </script>
+
+  <!-- async，则 HTML 文档构建不受影响，解析完毕后，DOMContentLoaded 触发，而不需要等待 async 脚本执行、样式表加载等等。 -->
+  <!-- 这里打印顺序：DOMContentLoaded=> 外部脚本=> load -->
+  <!-- 也可能是：外部脚本 => DOMContentLoaded=> load -->
+  <script async src="./index.js"></script>
+
+  <!-- defer，加载后续文档元素的过程将和 index.js 的加载并行进行（异步），但是 index.js 的执行要在所有元素解析完成之后，DOMContentLoaded 事件触发之前完成。 -->
+  <!-- 所以打印顺序： 外部脚本=> DOMContentLoaded=> load -->
+  <!-- <script defer src="./index.js"></script> -->
+
+</body>
+
+</html>

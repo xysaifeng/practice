@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      /* box-sizing: content-box; */
+    }
+
+    html {
+      overflow: hidden;
+    }
+
+    body {
+      height: 1000px;
+    }
+
+    #box {
+      position: relative;
+    }
+
+    .mask {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, .1);
+      opacity: .5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" id="box1">
+    <a name="1" href="">tom</a>
+  </div>
+  <div class="box" id="box">
+    <span id="old" class="old bar">123
+      <div name="1" class="ok baz" ng-click>ok</div>
+      <span class="new foo">456</span>
+      <span class="new Foo">789</span>
+    </span>
+    <div class="mask"></div>
+  </div>
+  <div id="target">
+    <input type="button" value="click">
+    <div>
+      <span>text</span>
+      <p class="p1">loemt</p>
+      <div>
+        <p class="p2">loemt</p>
+        <span>text</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    // console.log(document.defaultView === window); //true
+    // var doctype = document.doctype;
+    // console.log('doctype: ', doctype);
+    // console.log(doctype === document.firstChild);//true
+    // console.log(document.documentElement === doctype.nextSibling); // true
+
+    // console.log(document.scrollingElement);
+    // console.log(document.activeElement);
+  </script>
+
+  <script id="foo">
+    // console.log(
+    //   document.currentScript === document.getElementById('foo')
+    // ); // true
+    // console.log(document.currentScript, '===s');
+
+    // setTimeout(() => {
+    //   var doc = document.implementation.createHTMLDocument('Tit')
+    //   console.log('doc: ', doc);
+    //   var p = doc.createElement('p');
+    //   p.innerHTML = 'hello world';
+    //   doc.body.appendChild(p);
+    //   document.replaceChild(doc.documentElement, document.documentElement)
+    // }, 2000);
+
+    // setTimeout(() => {
+    //   var p = document.createElement('p');
+    //   p.innerHTML = 'hello world';
+    //   var old = document.getElementById('old')
+    //   var box = document.getElementById('box')
+    //   box.replaceChild(p, old)
+    // }, 2000);
+
+    // document.write('<p>hello world</p>');
+    // setTimeout(() => {
+      // document.open()
+      // document.write('hello')
+      // document.write('  world')
+      // document.write('<p>hello world</p>');
+      // document.close()
+      // document.write('hello2')
+      // document.write('<p>hello world</p>');
+      // document.writeln('<span>hello </span>');
+      // document.writeln('<span>world2 </span>');
+      // document.writeln(1);
+      // document.writeln(2);
+      // document.writeln(2);
+    // },);
+  </script>
+
+  <script>
+    // var el2 = document.querySelector('#old > [ng-click]');
+    // console.log('el2: ', el2);
+
+
+    // var box = document.getElementsByTagName('div')[1]
+    // var spans = box.getElementsByTagName('span')
+    // console.log('spans: ', spans);
+
+    // var els = document.getElementsByClassName('box')
+    // var els = document.getElementsByClassName('Foo new')
+    // console.log('els: ', els);
+
+
+    // var el = document.getElementsByName('1')[0]
+    // console.log('el: ', el);
+    // console.log('el.: ', el.getElementsByName); // undefined => 元素节点上不能调用getElementsByName
+
+
+    // document.elementFromPoint() 方法返回位于页面指定位置最上层的元素节点。
+    // document.elementFromPoint(50, 50); // 返回mask
+    // console.log('a: ', document.elementFromPoint(50, 50));
+    // document.elementsFromPoint()返回一个数组，成员是位于指定坐标（相对于视口）的所有元素。
+    // console.log('b: ', document.elementsFromPoint(50, 50));
+
+
+    // function escapeHtml(str) {
+    //   var div = document.createElement('div')
+    //   div.appendChild(document.createTextNode(str))
+    //   return div.innerHTML
+    // }
+    // var userWebsite = '" onmouseover="alert(\'derp\')" "'
+    // var profileLink = '<a href="' + escapeHtml(userWebsite) + '">Bob</a>'
+    // var profileLink2 = '<a href="' + userWebsite + '">Bob2</a>'
+    // console.log('profileLink2: ', profileLink2);
+    // console.log('profileLink: ', profileLink);
+    // var div = document.getElementById('target');
+    // div.innerHTML = profileLink;
+    // div.innerHTML = profileLink2;
+
+
+    // var attr = document.createAttribute('class')
+    // console.log('attr: ', attr);
+    // attr.value = 'tom'
+    // target.setAttributeNode(attr)
+    // var commont = document.createComment('this in a commont')
+    // target.appendChild(commont)
+
+
+    // var event = document.createEvent('Events')
+    // console.log('event: ', event);
+    // event.initEvent('mounted', true, true)
+    // document.addEventListener('mounted', function (e) {
+    //   console.log(e);
+    // }, false)
+
+    // var event2 = new Event('click2');
+    // document.addEventListener('click2', function (e) {
+    //   console.log(e, 'click2');
+    // }, true)
+
+    // setTimeout(() => {
+    //   // document.dispatchEvent(event)
+    //   document.dispatchEvent(event2)
+    // }, 2000);
+
+
+    // var el = document.getElementById('box1')
+    // console.log('el: ', el);
+    // var node = document.adoptNode(el)
+    // console.log('node: ', node);
+    // document.body.appendChild(node);
+
+    // var node = document.importNode(el, true)
+    // console.log('node: ', node);
+
+
+    // var nodeIterator = document.createNodeIterator(document.getElementById('box'), NodeFilter.SHOW_ELEMENT)
+    // var p = []
+    // var currentNode
+    // // console.log(nodeIterator[0]);
+    // var next = nodeIterator.nextNode()
+    // var prev = nodeIterator.previousNode()
+    // while (currentNode = nodeIterator.nextNode()) {
+    //   p.push(currentNode)
+    // }
+    // console.log(prev, next);
+    // console.log(p[0] === next, p[0] === prev); // true true
+
+    // const nodeIter = document.createNodeIterator(document.getElementById('target'), NodeFilter.SHOW_ELEMENT, {
+    //   acceptNode(node) {
+    //     // console.log('node: ', node);
+    //     // return NodeFilter.FILTER_ACCEPT
+    //     return node.nodeName.toLocaleLowerCase() === 'p' ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+    //   }
+    // })
+    // const pars = [];
+    // let currentNode;
+    // while (currentNode = nodeIter.nextNode()) {
+    //   pars.push(currentNode)
+    // }
+    // console.log(pars);
+
+
+    // var treeWalker = document.createTreeWalker(document.getElementById('box'), NodeFilter.SHOW_ELEMENT)
+    // console.log('treeWalker: ', treeWalker);
+    // var p = []
+    // while (treeWalker.nextNode()) {
+    //   p.push(treeWalker.currentNode)
+    // }
+    // console.log(p);
+
+
+
+
+  </script>
+</body>
+
+</html>

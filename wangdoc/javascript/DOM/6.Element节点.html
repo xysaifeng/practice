@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      /* box-sizing: border-box; */
+    }
+
+    #s {
+      /* opacity: 1; */
+      /* visibility: visible; */
+      /* visibility: hidden; */
+      display: none;
+    }
+
+    #ch {}
+
+    #ins {
+      width: 100px;
+      height: 20px;
+      padding: 10px;
+      margin: 10px;
+      overflow-x: hidden;
+      border: 1px solid brown;
+      display: inline-block;
+      overflow-y: auto;
+
+    }
+
+    #ins::before {
+      content: ' ';
+      width: 10px;
+      height: 4px;
+      display: block;
+    }
+
+    #parent {
+      padding: 10px;
+      border: 1px solid red;
+      position: relative;
+    }
+
+    #parent p {
+      margin: 0;
+
+    }
+
+    #child {
+      width: 100px;
+      height: 80px;
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid blueviolet;
+    }
+  </style>
+</head>
+
+<body>
+  <div dir="ltr">
+    <span id="s" contenteditable>
+      this is div
+    </span>
+    <div class="one two three" id="myDiv">myDiv</div>
+    <!-- <div id="dataSet" data-.=".">data-set</div> -->
+    <!-- <div id="dataSet" data-:=":">data-set</div> -->
+    <!-- <div id="dataSet" data-_="_">data-set</div> -->
+    <!-- <div id="dataSet" data-,=",">data-set</div> -->
+    <!-- <div id="dataSet" data-abc-def="abc">data-set</div> -->
+    <div id="dataSet" data-abc-1="abc">data-set</div>
+    <button draggable="true" id="btn" accesskey="o" tabIndex="2">点击</button>
+    <button id="btn2" accesskey="v" tabIndex="1">点击2</button>
+
+    <div>
+      <div id="insert">insert</div>
+    </div>
+    <div>
+      <div id="outer">
+        <div id="inner">inner</div>
+      </div>
+    </div>
+    <div class="ch" id="ch" a contenteditable="true">
+      clientHeight
+      <span id="ins">
+        <span>innerHTM1</span>
+        <span id="in2">innerHTM2</span>
+        <span>innerHTM3</span>
+      </span>
+    </div>
+
+    <div class="box" id="parent">
+      <div>
+        <div id="child">child1</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <blockquote id="outer2">
+      <p>Hello</p>
+      <div id="inner">
+        <p>World</p>
+      </div>
+    </blockquote>
+  </div>
+
+  <div id="example">
+    <p class="foo">1</p>
+    <p class="foo">2</p>
+    <!-- <p class="Foo"></p> -->
+  </div>
+  <article>
+    <div id="div-01">Here is div-01
+      <div id="div-02">Here is div-02
+        <div id="div-03" class="d3" data-abc-1="ok">Here is div-03</div>
+      </div>
+    </div>
+  </article>
+
+
+  <script>
+    const btn = document.getElementById('btn')
+    const myDiv = document.getElementById('myDiv')
+    // console.log('btn.accessKey: ', btn.accessKey);
+
+    const btn2 = document.getElementById('btn2')
+    const in2 = document.getElementById('in2')
+
+    btn2.onclick = function (e) {
+      // s.hidden = !s.hidden
+
+      // myDiv.classList.add('o')
+      // myDiv.classList.add('o', 's')
+      myDiv.classList.toggle('o',)
+
+      // in2.scrollIntoView(false)
+      in2.scrollIntoView(true)
+      e.preventDefault();
+      e.stopPropagation();
+
+      // myDiv.classList.remove('three', 'two')
+
+      // console.log(' myDiv.classList.contains): ', myDiv.classList.contains('o'));
+
+      // console.log('myDiv.classList.item(0): ', myDiv.classList + '');
+    }
+
+
+    // const dataSet = document.getElementById('dataSet')
+    // console.log(dataSet.dataset['.']);
+    // console.log(dataSet.dataset[':']);
+    // console.log(dataSet.dataset['_']);
+    // console.log(dataSet.dataset[',']); // , ok
+    // console.log(dataSet.dataset.abcDef); // abc ok
+    // console.log(dataSet.dataset['abc-def']); //  undefined
+    // console.log(dataSet.dataset['abc-1']); //  abc
+    // console.log(dataSet.dataset.abc1); //  undefined
+    // console.log(dataSet.getAttribute('data-abc-1')); //  abc
+    // dataSet.setAttribute('data-0-23-a', 'okd');
+    // console.log(dataSet.dataset['0-23-a']); //  undefined
+    // console.log(dataSet.dataset['023a']); //  undefined
+    // console.log(dataSet.dataset['023a']); //  undefined
+    // console.log(dataSet.getAttribute('data-0-23-a')); // okd
+
+
+    // var names = "<script>alert('23')<\/script>";
+    // var names = "<img src=x onerror=alert('ere')>";
+    // console.log('names: ', names);
+    // // insert.innerHTML = names
+    // insert.textContent = names
+  </script>
+
+  <script>
+    // outerHTML
+    var outer = document.getElementById('outer')
+    var inner = document.getElementById('inner')
+
+    // console.log('outer: ', outer.firstElementChild.nodeName); // DIV
+    // console.log('inner: ', inner.nodeName); // DIV
+
+    inner.outerHTML = '<p>hello</p>'
+    // console.log(outer.firstElementChild.nodeName, '==='); // P
+    // console.log(inner.nodeName); // DIV
+
+    // var div = document.createElement('div');
+    // div.outerHTML = '<p>test</p>';
+  </script>
+
+  <script>
+    // clientHeight
+    var ch = document.getElementById('ch')
+    var ins = document.getElementById('ins')
+    var child = document.getElementById('child')
+    // console.log(ch.clientHeight, ch.clientWidth);
+    console.log(ins.clientHeight, ins.clientWidth); // 44 = 24+p20 // 元素本身的高度+padding部分
+
+    console.log(ins.getBoundingClientRect());
+    console.log(ins.getClientRects());
+    // console.log(ins.clientTop, ins.clientLeft); // 44 = 24+p20
+    // console.log(ins.scrollHeight, ins.scrollWidth);
+    // console.log(ins.offsetParent.tagName); // Body
+    console.log(ins.offsetHeight, ins.offsetWidth); // 42 = 20+p20+b2 // 元素本身的高度+padding部分+border
+
+    // console.log(child.offsetParent);
+    // console.log(child.offsetTop); // 20 = parentPadding10+childMargin10
+
+    // 算出元素左上角相对于整张网页的坐标
+    function getElementPosition(e) {
+      var x = 0, y = 0;
+      while (e) {
+        x += e.offsetLeft
+        y += e.offsetTop
+        e = e.offsetParent
+      }
+      return { x, y }
+    }
+    const r = getElementPosition(child)
+    // console.log('r: ', r); // {x: 28, y: 242}
+
+    // console.log(ch.children);
+    // console.log(ch.childElementCount); // 1
+
+    // console.log(ch.hasAttribute('a')); // true
+    // console.log(ch.getAttributeNames()); //  ['class', 'id', 'a', 'contenteditable']
+    // console.log(ch.hasAttributes()); // true
+    // console.log(ch.removeAttribute('a',)); // true
+
+    var outer2 = document.getElementById('outer2');
+    // 浏览器执行querySelector方法时，是先在全局范围内搜索给定的 CSS 选择器，然后过滤出哪些属于当前元素的子元素。因此，会有一些违反直觉的结果
+    // console.log('outer2.querySelector(', outer2.querySelector('div p'));
+  </script>
+  <script>
+    var example = document.getElementById('example')
+    // var matches = example.getElementsByClassName('Foo')
+    var matches = example.getElementsByClassName('foo')
+    // console.log('matches: ', matches);
+    // 由于HTMLCollection实例是一个活的集合，document对象的任何变化会立刻反应到实例
+    for (var i = 0; i < matches.length; i++) {
+      matches[i].classList.remove('foo')
+      // debugger
+      // matches.item(i).classList.add('baz')
+    }
+    // console.log(matches);
+
+    var div03 = document.getElementById('div-03');
+    // console.log(div03.closest()); // error
+    // console.log(div03.closest('#div-02')); //  div-02
+    // console.log(div03.closest('div div')); //  div-03
+    // console.log(div03.closest('div')); //  div-03
+    // console.log(div03.closest('article > div')); //  div-01
+    // console.log(div03.closest(':not(div)')); //  article
+
+    // console.log(div03.matches('.d3')); // ture
+    // console.log(div03.matches('data-abc-1')); // false
+    // console.log(div03.matches('[data-abc-1=ok]')); // true
+
+    var event = new Event('patch')
+    div03.addEventListener('patch', function (e) {
+      console.log(e);
+    })
+    // setTimeout(() => {
+    //   div03.dispatchEvent(event)
+    // }, 2000);
+  </script>
+</body>
+
+</html>

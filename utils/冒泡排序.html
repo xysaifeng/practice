@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 示例: https://blog.csdn.net/zg0601/article/details/121292983
+    // 
+    var arr = [64, 34, 25, 12, 22, 11, 90];
+    var arr = [38, 26, 89, 56, 17, 44];
+
+    console.log(bubbleSort(arr)); // [11, 12, 22, 25, 34, 64, 90]
+
+    // 冒泡排序：依次比较相邻的两个数，如果不符合排序规则，则调换两个数的位置。先比较一轮一次，再用循环比较一轮多次，得到最大（或最小）的数排在最后一位，然后加循环比较多轮多次，得到最终的排序结果。
+    function bubbleSort2(arr) {
+      for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = 0; j < arr.length - 1; j++) {
+          if (arr[j] > arr[j + 1]) {
+            const temp = arr[j]
+            arr[j] = arr[j + 1]
+            arr[j + 1] = temp
+          }
+        }
+      }
+      return arr
+    }
+
+    function bubbleSort(arr) {
+      var len = arr.length;
+      debugger
+      for (var i = 0; i < len - 1; i++) {
+        for (var j = 0; j < len - i - 1; j++) {
+          if (arr[j] > arr[j + 1]) {
+            var temp = arr[j]
+            arr[j] = arr[j + 1]
+            arr[j + 1] = temp
+          }
+        }
+      }
+      return arr
+    }
+
+
+
+    // 选择排序：也是依次对相邻的数字进行两两比较。它们的不同之处在于选择排序不会每比较一次就调换位置，而是一轮比较完毕，找到最大（或最小）值之后，将其放在正确的位置，其他数的位置不变。
+    // 先假设数组第一位是最大（或最小）值，用该最值与数组其他值进行比较，若与排序规则不相符，则替换最值，第一轮排序在未排序序列中找到最大（或最小）值，存放在排序序列的起始位置；然后，再从剩余未排列元素中继续寻找最大（或最小）值，放到已排序列的末尾。以此类推，直到所有元素均排序完毕。
+    function selectSort2(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        let min = arr[i]
+        let temp = min
+        let idx
+        for (let j = i; j < arr.length; j++) {
+          if (min > arr[j + 1]) {
+            min = arr[j + 1]
+            idx = j + 1
+          }
+        }
+        arr[i] = min
+        if (idx < arr.length) {
+          arr[idx] = temp
+        }
+      }
+      return arr
+    }
+    function selectSort(arr) {
+      var min, temp
+      for (let i = 0; i < arr.length; i++) {
+        min = i
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[j] < arr[min]) {
+            min = j
+          }
+        }
+        temp = arr[i]
+        arr[i] = arr[min]
+        arr[min] = temp
+      }
+      return arr
+    }
+
+    // console.log(selectSort(arr)); // [11, 12, 22, 25, 34, 64, 90]
+
+  </script>
+</body>
+
+</html>

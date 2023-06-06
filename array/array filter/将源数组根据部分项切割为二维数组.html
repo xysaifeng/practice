@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    'use strict';
+
+    var editCols = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    var arr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    // var rightDisabledCols = [8, 20]
+    // var right = [8, 20]
+    // res: [[3, 4, 5, 6, 7], [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]]
+
+    // var rightDisabledCols = [19, 20]
+    var right = [19, 20]
+    // res: [[3, 4, 5, 6, 7, 8,9, 10, 11, 12, 13, 14, 15, 16, 17, 18]]
+
+    // var rightDisabledCols = [9, 10]
+    // var right = [9, 10]
+    // res: [[3, 4, 5, 6, 7, 8],[ 11, 12, 13, 14, 15, 16, 17, 18,19,20]]
+
+    var rightDisabledCols = [4, 5]
+    // var right = [4, 5]
+    // res: [[3],[  6, 7, 8,9,10 11, 12, 13, 14, 15, 16, 17, 18,19,20]]
+
+    // var rightDisabledCols = [3, 4]
+    // var right = [3, 4]
+    // res: [[ 5, 6, 7, 8,9,10 11, 12, 13, 14, 15, 16, 17, 18,19,20]]
+
+    function genList(source, part) {
+      const list = source.filter(e => !part.includes(e))
+      const arr = [];
+      const temp = []
+      let i = 0
+      let x = list[0]
+      for (; i <= list.length; i++) {
+        let curr = list[i]
+        if (curr - i === x) {
+          temp.push(curr)
+        } else {
+          arr.push([...temp])
+          temp.length = 0
+          temp.push(curr)
+          if (!curr) break
+          x = curr - i;
+        }
+      }
+      return arr
+    }
+    var res = genList(editCols, rightDisabledCols)
+    console.log('res: ', res);
+
+
+    // const fn = () => {
+    //   let editString = editCols.join(',')
+    //   return rightDisabledCols.reduce((prev, item) => {
+    //     const [arr, rest] = editString.split(item)
+    //     editString = rest
+    //     prev.push(arr.split(',').filter(Boolean))
+    //     return prev
+    //   }, [])
+    // }
+    // console.log(fn())
+
+
+    function fn() {
+      let res = [];
+      let pre = 0;
+      for (let item of rightDisabledCols) {
+        const index = editCols.findIndex((i) => i === item);
+        res.push(editCols.slice(pre, index));
+        pre = index + 1;
+      }
+      return res;
+    }
+
+
+
+    // const fn = () => {
+    //   let editString = editCols.join(',')
+    //   return rightDisabledCols.reduce((prev, item) => {
+    //     const [arr, rest] = editString.split(item)
+    //     editString = rest
+    //     const pushItem = arr.split(',').filter(Boolean)
+    //     if (pushItem.length) {
+    //       prev.push(pushItem)
+    //     }
+    //     return prev
+    //   }, [])
+    // }
+
+
+    function fn() {
+      let res = [];
+      let pre = 0;
+      let len = arr.length;
+      for (let j = 0; j < right.length; j++) {
+        let item = right[j];
+        let index = arr.findIndex((i) => i === item);
+
+        if (j + 1 >= right.length && pre < index && index < len - 1) {
+          // [3,5] 情况中 pre = 1  而 index 却指向 2 所以要先把 pre到index 的数据存起来
+          res.push(arr.slice(pre, index));
+          pre++;
+        }
+
+        if (index === pre) {
+          // [4,5]  剔除完4后 pre = 2 而 5 的index 也是 2
+          pre++;
+        }
+        if (j + 1 >= right.length && index < len - 1) {
+          // [4,5]  pre 经过上面后 变成 3 得保存 3到 len 的数据
+          index = len;
+        }
+
+        console.log(index, pre, "pre");
+        res.push(arr.slice(pre, index));
+        // 指向下一个节点
+        pre = index + 1;
+      }
+      return res;
+    }
+
+    // console.log(fn())
+
+
+  </script>
+</body>
+
+</html>

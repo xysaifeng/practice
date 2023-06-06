@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>监听动态插入的脚本</title>
+</head>
+
+<body>
+  监听动态插入的脚本
+
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log(123);
+
+      var targetNode = document.body
+      var observerOptions = {
+        childList: true,  // 观察目标子节点的变化，是否有添加或者删除
+        attributes: true, // 观察属性变动
+        subtree: true     // 观察后代节点，默认为 false
+      }
+      var observer = new MutationObserver(callback);
+      observer.observe(targetNode, observerOptions);
+      function callback(mutationList, observer) {
+        // console.log('mutationList, observer: ', mutationList, observer);
+        mutationList.forEach((mutation) => {
+          switch (mutation.type) {
+            case 'childList':
+              console.log(mutation);
+              const add = mutation.addedNodes[0]
+              console.log(add);
+              fetch(add.src).then(r => r.text()).then(r => {
+                console.log(r);
+              })
+              // import(add.src).then(d => {
+              //   console.log(d);
+              // })
+              /* 从树上添加或移除一个或更多的子节点；参见 mutation.addedNodes 与
+                 mutation.removedNodes */
+              break;
+            case 'attributes':
+              /* mutation.target 中某节点的一个属性值被更改；该属性名称在 mutation.attributeName 中，
+                 该属性之前的值为 mutation.oldValue */
+              break;
+          }
+        });
+      }
+
+      // 也可监听节点的新增
+      // document.addEventListener('DOMNodeInserted', function (e) {
+      //   console.log(e);
+      // })
+
+      setTimeout(() => {
+        const script = document.createElement('script')
+
+        script.src = './js/a.js'
+
+        document.body.append(script)
+
+      }, 2000);
+    })
+
+  </script>
+
+
+</body>
+
+</html>
