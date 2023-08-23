@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "type": "chrome",
+      "name": "http://demo/js/a.js",
+      "request": "launch",
+      "url": "http://demo/js/a.js"
+    }
+  ]
+}

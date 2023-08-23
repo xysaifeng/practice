@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+
+    }
+
+    .svg {
+      /* fill: blue; */
+      /* error */
+      background-color: #eee;
+    }
+
+    .red {
+      /* color: red; */
+      /* fill: red; */
+      /* fill: none; */
+      background-color: transparent;
+      fill: transparent;
+      stroke: black;
+      stroke-width: 3pt;
+      cursor: pointer;
+    }
+
+    .line1 {
+      stroke: rgba(0, 0, 0, .5);
+      stroke-width: 15
+    }
+
+    .text {
+      font-size: 19px;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .rect:hover {
+      stroke: #090;
+      fill: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <svg id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet" -->
+  <!-- <svg width="100%" height="100%"> -->
+
+  <!-- 如果只想展示 SVG 图像的一部分，就要指定viewBox属性。 -->
+  <!-- <svg width="100" height="100" viewBox="50 50 50 50">
+    <circle id="mycircle" cx="50" cy="50" r="50" />
+  </svg> -->
+
+
+  <svg width="450" height="460" class="svg">
+    <!-- <circle cx="30" cy="50" r="25" />
+    <circle cx="90" cy="50" r="25" class="red" onclick="fn()" />
+    <circle cx="150" cy="50" r="25" class="fancy" /> -->
+
+    <!-- 直线 -->
+    <!-- <line x1="10" y1="10" x2="200" y2="10" class="line1" style="" /> -->
+
+    <!-- 折线 -->
+    <!-- <polyline points="5,5 30,28 5,53" fill="none" stroke="black" stroke-width="15" /> -->
+
+    <!--矩形 -->
+    <!-- <rect x="50" y="50" height="100" width="200" style="stroke: #70d5dd; fill: pink" /> -->
+
+    <!-- 椭圆 -->
+    <!-- <ellipse cx="55" cy="55" rx="23" ry="50" stroke="black" stroke-width="5" fill="silver" /> -->
+
+    <!-- 多边形 -->
+    <!-- <polygon fill="green" stroke="orange" stroke-width="1" points="4,4 100,4 150,50 100,100 4,100 4,4" /> -->
+
+    <!-- 路径 -->
+    <!-- M：移动到（moveto）
+    L：画直线到（lineto）
+    Z：闭合路径 -->
+    <!-- <path d="
+      M 18,3
+      L 46,3
+      L 46,40
+      L 61,40
+      L 32,68
+      L 3,40
+      L 18,40
+      Z
+    "></path> -->
+
+    <!-- 文本 -->
+    <!-- <text x="50" y="25" stroke="red" fill="blue" class="text">Hello World</text> -->
+
+    <!-- <use>标签用于复制一个形状 -->
+
+    <!-- <circle id="myCircle" cx="20" cy="20" r="10" fill="red" />
+    <use href="#myCircle" x="0.4" y="21" /> -->
+
+    <!-- <g>标签用于将多个形状组成一个组（group），方便复用。 -->
+    <!-- <g id="myCircle">
+      <text x="25" y="20">圆形</text>
+      <circle cx="44" cy="50" r="20" />
+    </g>
+    <use href="#myCircle" x="100" y="0" fill="blue" /> -->
+    <!-- <use href="#myCircle" x="200" y="0" fill="white" stroke="blue" /> -->
+
+    <!-- <defs>标签用于自定义形状，它内部的代码不会显示，仅供引用。 -->
+    <!-- <defs>
+      <g id="myCircle">
+        <text x="25" y="20">圆形</text>
+        <circle cx="50" cy="50" r="20" />
+      </g>
+    </defs>
+    <use href="#myCircle" x="0" y="0" fill="blue" /> -->
+
+    <!-- <pattern>标签用于自定义一个形状，该形状可以被引用来平铺一个区域。 -->
+    <!-- patternUnits="userSpaceOnUse"表示<pattern>的宽度和长度是实际的像素值。然后，指定这个模式去填充下面的矩形。 -->
+    <!-- <defs>
+      <pattern id="dots" x="10" y="10" width="100" height="100" patternUnits="userSpaceOnUse">
+        <circle fill="#bee9e8" cx="50" cy="50" r="35" />
+      </pattern>
+    </defs>
+    <rect x="0" y="0" width="100%" height="100%" fill="url(#dots)" /> -->
+
+    <!-- <image>标签用于插入图片文件。 -->
+    <!-- <image xlink:href="img/u2731.png" width="100%" height="50%" /> -->
+
+    <!-- <animate>标签用于产生动画效果。 -->
+    <!-- <rect x="0" y="0" width="100" height="100" fill="#feac5e"> -->
+    <!-- <animate attributeName="x" from="-100" to="500" dur="4s" repeatCount="indefinite" /> -->
+    <!-- <animate attributeName="width" to="550" dur="2s" repeatCount="indefinite" /> -->
+    <!-- <animate attributeName="width" to="0" dur="2s" repeatCount="indefinite" /> -->
+    <!-- </rect> -->
+
+
+    <!-- <rect x="250" y="250" width="50" height="50" fill="#4bc0c8" class="rect" id="myRect">
+      <animateTransform attributeName="transform" type="rotate" begin="0s" dur="10s" from="0 200 200" to="360 400 400"
+        repeatCount="indefinite" />
+    </rect> -->
+
+
+
+    <mask id="myMask">
+      <rect fill="white" x="0" y="0" width="100%" height="100%" />
+      <rect id="circle1" width="44" height="44" x="28" y="28" style="fill: #000; cursor: pointer" />
+      <!-- <polygon fill="black" points="0.5,0.2 0.68,0.74 0.21,0.41 0.79,0.41 0.32,0.74" /> -->
+    </mask>
+
+    <!--
+    Punch a hole in a shape of a star inside the red circle,
+    revealing the yellow circle underneath
+    -->
+    <circle cx="50" cy="50" r="20" fill="yellow" />
+    <circle cx="50" cy="50" r="45" fill="red" mask="url(#myMask)" />
+
+    <!-- 
+
+    <mask id="myMask1" maskContentUnits="userSpaceOnUse">
+      <rect fill="black" x="0" y="0" width="100%" height="100%" />
+      <circle fill="white" cx="50" cy="50" r="35" />
+    </mask>
+
+    <mask id="myMask2" maskContentUnits="objectBoundingBox">
+      <rect fill="black" x="0" y="0" width="100%" height="100%" />
+      <circle fill="white" cx=".5" cy=".5" r=".35" />
+    </mask> -->
+
+    <!-- Some reference rect to materialized the mask -->
+    <!-- <rect id="r1" x="0" y="0" width="45" height="45" />
+    <rect id="r2" x="0" y="55" width="45" height="45" />
+    <rect id="r3" x="55" y="55" width="45" height="45" />
+    <rect id="r4" x="55" y="0" width="45" height="45" /> -->
+
+    <!-- The first 3 rect are masked with useSpaceOnUse units -->
+    <!-- <use mask="url(#myMask1)" xlink:href="#r1" fill="red" />
+    <use mask="url(#myMask1)" xlink:href="#r2" fill="red" />
+    <use mask="url(#myMask1)" xlink:href="#r3" fill="red" /> -->
+
+    <!-- The last rect is masked with objectBoundingBox units -->
+    <!-- <use mask="url(#myMask2)" xlink:href="#r4" fill="red" /> -->
+
+    <!-- <g class="layer" transform="translate(60,10)">
+      <circle r="5" cx="0" cy="105" />
+      <circle r="5" cx="90" cy="90" />
+      <circle r="5" cx="180" cy="60" />
+      <circle r="5" cx="270" cy="0" />
+
+      <g class="y axis">
+        <line x1="0" y1="0" x2="0" y2="120" />
+        <text x="-40" y="105" dy="5">$10</text>
+        <text x="-40" y="0" dy="5">$80</text>
+      </g>
+      <g class="x axis" transform="translate(0, 120)">
+        <line x1="0" y1="0" x2="270" y2="0" />
+        <text x="-30" y="20">January 2014</text>
+        <text x="240" y="20">April</text>
+      </g>
+    </g> -->
+  </svg>
+
+  <canvas id="canvas" width="500" height="500" background="red"></canvas>
+
+  <script>
+
+    var myRect = document.getElementById('myRect');
+
+    myRect?.addEventListener('click', function (e) {
+      console.log('myRect clicked - enlarging');
+      myRect.setAttribute('x', 150);
+
+      var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'))
+      // console.log('svgString: ', svgString);
+      // document.body.append(svgString)
+
+
+      var img = new Image();
+      var svg = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+      var DOMURL = self.URL || self.webkitURL || self;
+      var url = DOMURL.createObjectURL(svg);
+      console.log('url: ', url);
+      img.src = url;
+
+
+      img.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+      };
+    }, false);
+
+
+    function fn() {
+      console.log('rd');
+    }
+  </script>
+</body>
+
+</html>

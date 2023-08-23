@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta http-equiv="Content-Security-Policy" content="script-src  https://example.com/"> -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="script-src nonce-2726c7f26c"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+
+    }
+
+    .box {}
+
+    .drop-area {
+      width: 300px;
+      height: 300px;
+      border: 1px solid blueviolet;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <div class="drop-area" id="drop-area"></div>
+
+    <button onclick="upload()">upload</button>
+  </div>
+
+  <script nonce="2726c7f26c">
+
+    const el = document.getElementById('drop-area')
+    console.log('el: ', el);
+
+    el.addEventListener('dragover', e => {
+      e.preventDefault()
+    })
+
+    el.addEventListener('drop', async e => {
+      e.preventDefault()
+      for (const item of e.dataTransfer.items) {
+        console.log('item: ', item);
+        if (item.kind === 'file') {
+          console.log('item.kind: ', item.kind);
+          const entry = await item.getAsFileSystemHandle()
+          console.log('entry: ', entry);
+          if (entry.kind === 'file') {
+            // run code for if entry is a file
+          } else if (entry.kind === 'directory') {
+            // run code for is entry is a directory
+            console.log();
+          }
+        }
+      }
+    })
+
+
+    async function upload() {
+
+      const dirHandle = await window.showDirectoryPicker();
+
+      for await (const [key, value] of dirHandle.entries()) {
+        console.log({ key, value });
+      }
+
+      return
+      const pickerOpts = {
+        types: [
+          {
+            description: "Images",
+            accept: {
+              "image/*": [".png", ".gif", ".jpeg", ".jpg"],
+            },
+          },
+        ],
+        excludeAcceptAllOption: false,
+        multiple: false,
+      };
+
+      // // open file picker
+      const [fileHandle] = await window.showOpenFilePicker(pickerOpts)
+      console.log('fileHadnle: ', fileHandle);
+      // get file contents
+      const fileData = await fileHandle.getFile();
+      console.log('fileData: ', fileData);
+      writeFile(fileHandle, 'abc')
+    }
+
+    async function writeFile(fileHandle, contents) {
+      const writable = await fileHandle.createWritable()
+      console.log('writable: ', writable);
+
+      await writable.write(contents)
+
+      await writable.close()
+
+    }
+
+  </script>
+
+</body>
+
+</html>

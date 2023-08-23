@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拖拽实现-drag&drop</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    body {
+      color: #fff;
+      background-color: black;
+    }
+
+    main {
+      width: 100vh;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      place-items: center;
+      background-color: hsl(0, 0% 10%);
+    }
+
+
+
+    .box {
+      width: 100vh;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      margin-top: 55px;
+    }
+
+    .draggable {
+
+      width: 50vh;
+      height: 50vh;
+      background-color: lightskyblue;
+      border-radius: 12px;
+    }
+
+    .droppable {
+      position: relative;
+      width: 60vh;
+      height: 60vh;
+      border: 8px dashed lightskyblue;
+      border-radius: 22px;
+      padding: 20px;
+      display: grid;
+      place-items: center;
+    }
+
+    .droppable::before {
+      content: '请拖放到此区域';
+      position: absolute;
+      font-size: 2.2vw;
+      font-family: sans-serif;
+      font-weight: bold;
+      color: hsl(0, 0% 10%);
+      color: gray;
+
+    }
+
+    .dragover {
+      border: 8px dashed goldenrod;
+    }
+
+    .droped {
+
+      border: 8px dashed greenyellow;
+    }
+
+    .droped::before {
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- <h3>拖拽实现-drag&drop</h3>
+
+  <div>
+    <img src="../img/flow.pic.jpg" alt="">
+  </div> -->
+
+  <main>
+    <div class="box">
+      <div id="draggable" class="draggable" ondragend="handleDragend(event)" draggable="true"
+        ondragstart="handleDragStart(event)" ondrag="handleDrag(event)"> Lorem ipsum dolor sit amet consectetur
+        adipisicing elit. Neque, nemo veritatis nostrum assumenda quaerat dolore minima sint provident necessitatibus
+        omnis error sapiente, officia dolor totam doloremque, dolores iure magnam alias. </div>
+    </div>
+    <div id="droppable" class="droppable " ondragleave="handleDragleave(event)" ondragover="handleDragover(event)"
+      ondrop="handleDrop(event)"></div>
+  </main>
+
+
+  <script>
+    'use strict';
+
+    const draggable = document.getElementById('draggable')
+    const droppable = document.getElementById('droppable')
+
+
+    function handleDrag(e) {
+      console.log('handleDrag e: ', e);
+    }
+
+
+    function handleDragStart(e) {
+      // console.log('handleDragStart e: ', e);
+      // console.log('handleDragStart e: ', e.target.ownerDocument);
+      // console.log('handleDragStart e: ', e.target.ownerDocument.location.href);
+      e.dataTransfer.setData('test', e.target.id)
+      e.dataTransfer.setData('text/html', e.target.outerHTML)
+
+      console.log(e, '------');
+
+      // let img = new Image;
+      // img.src = '../img/flow.pic.jpg'
+      // e.dataTransfer.setDragImage(img, 10, 10)
+
+
+      // var canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
+      // canvas.width = canvas.height = 50;
+
+      // var ctx = canvas.getContext("2d");
+      // ctx.lineWidth = 4;
+      // ctx.moveTo(0, 0);
+      // ctx.lineTo(50, 50);
+      // ctx.moveTo(0, 50);
+      // ctx.lineTo(50, 0);
+      // ctx.stroke();
+
+      // var dt = event.dataTransfer;
+      // dt.setData('text/plain', 'Data to Drag');
+      // dt.setDragImage(canvas, 25, 25);
+
+    }
+
+
+    function handleDragend(e) {
+      console.log('handleDragend e: ', e);
+    }
+
+
+    function handleDragleave(e) {
+      console.log('handleDragleave e: ', e);
+
+      if (droppable.classList.contains('dragover')) {
+        droppable.classList.remove('dragover')
+      }
+    }
+
+    function handleDragover(e) {
+      console.log(2);
+      e.preventDefault();
+      droppable.classList.add('dragover')
+    }
+
+
+    function handleDrop(e) {
+      console.log('handleDrop e: ', e);
+      e.preventDefault()
+
+      const dragId = e.dataTransfer.getData('test')
+      const dragHTML = e.dataTransfer.getData('text/html')
+      // console.log('dragHTML: ', dragHTML); 
+
+      e.target.appendChild(document.getElementById(dragId))
+      e.dataTransfer.clearData()
+      e.target.classList.add('droped')
+
+    }
+
+    console.log(1);
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .login_btn {
+      width: 100px;
+      height: 40px;
+      background: #48D1CC;
+      text-align: center;
+      line-height: 40px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 0
+    }
+
+    .bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, .3);
+      display: none;
+      overflow: auto;
+    }
+
+    .login {
+      width: 512px;
+      height: 340px;
+      background: #F0FFFF;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      z-index: 99;
+      border: 1px solid red;
+      transform: translate(-50%, -50%);
+    }
+
+    .login_header {
+      width: 100%;
+      height: 40px;
+      background: #00BFF3;
+      line-height: 40px;
+    }
+
+    .login_header span {
+      float: right;
+      display: block;
+      margin-top: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+      font-family: 'arial';
+    }
+  </style>
+</head>
+
+<body>
+  <div id="content">
+    <button class="login_btn" onclick="loginLink();">
+      登 录
+    </button>
+    <div class="bg">
+      <div class="login">
+        <div class="login_header"><span onclick="closebtn();">X</span></div>
+        此弹层可以拖拽
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var bg = document.querySelector('.bg');
+    function loginLink() {
+      (bg.style.display = 'block')
+      setTimeout(() => {
+        addEvent()
+      }, 100);
+    }
+    function closebtn() {
+      bg.style.display = 'none';
+      loginDiv.style.left = 0
+      loginDiv.style.top = 0
+      document.removeEventListener('mousedown', domClick)
+    }
+    var loginDiv = document.querySelector('.login');
+
+    function addEvent() {
+      document.addEventListener('mousedown', domClick, true)
+    }
+
+    function domClick(e) {
+      if (!loginDiv.contains(e.target)) {
+        closebtn()
+      }
+    }
+
+    loginDiv.addEventListener('mousedown', function (e) {
+      const { top, left } = loginDiv.getBoundingClientRect()
+      const topDis = loginDiv.offsetTop - top
+      const leftDis = loginDiv.offsetLeft - left
+
+      // 鼠标点击位置和盒子边缘x,y方向距离（在点击后移动盒子过程中这个距离是不会改变的）
+      var relativeY = e.pageY - loginDiv.offsetTop;
+      var relativeX = e.pageX - loginDiv.offsetLeft;
+
+      function move(e) {
+        const xd = e.pageX - relativeX
+        const yd = e.pageY - relativeY
+        let top, left
+        if (xd < leftDis) {
+          left = leftDis + 'px'
+        } else if (xd > window.innerWidth - leftDis) {
+          left = window.innerWidth - leftDis + 'px'
+        } else {
+          left = xd + 'px';
+        }
+
+        if (yd < topDis) {
+          top = topDis + 'px'
+        } else if (yd > window.innerHeight - topDis) {
+          top = window.innerHeight - topDis + 'px'
+        } else {
+          top = yd + 'px';
+        }
+        loginDiv.style.left = left
+        loginDiv.style.top = top
+      }
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', function () {
+        document.removeEventListener('mousemove', move)
+      });
+
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h3>监听localStorage变化</h3>
+
+  <div>
+    <input type="button" value="add" onclick="addStore()">
+    <input type="button" value="get" onclick="getStore()">
+    <input type="button" value="清空" onclick="clearStore()">
+    <input type="button" value="清空不生效" onclick="close()">
+
+  </div>
+  <script>
+
+    'use strict';
+    const k1 = 'name'
+    const k2 = 'pwd'
+
+
+    function close() {
+      // 点击事件不生效的原因是：clear是js的document中的一个方法。
+      // 建议：在定义函数名称的时候，尽量避免使用clear，submit等关键字。
+      console.log(1);
+    }
+
+    function addStore() {
+      const r = parseInt(Math.random() * 10)
+      window.localStorage.setItem(k1, 'ton' + r)
+
+      // 2
+      // localStorageProxy[k1] = 'ton' + r
+
+    }
+
+    function getStore() {
+      // 2
+      console.log('localStorageProxy[k1]: ', localStorageProxy[k1]);
+
+    }
+
+    function clearStore() {
+      window.localStorage.clear()
+    }
+
+    // 监听localStorage的变化
+
+    // 1.原生storage事件监听，有局限，在一个页面下只有手动删除的时候会触发该事件，手动新增修改不会触发改事件，有局限性
+    // 事件在同一个域下的不同页面之间触发，即在 A 页面注册了 storge 的监听处理，只有在跟 A 同域名下的 B 页面操作 storage 对象，A 页面才会被触发 storage 事件
+    window.addEventListener('storage', function (e) {
+      console.log('e: ', e);
+      if (e.key === 'yourStorageKey') {
+        console.log('localStorage changed!', e.newValue);
+      }
+    });
+
+    // 2.Proxy对象代理localStorage
+    const localStorageProxy = new Proxy(localStorage, {
+      get(t, p, receiver) {
+        console.log('取值了');
+        return Reflect.get(t, p)
+      },
+      set(t, p, v, receiver) {
+        console.log('设置值了');
+        return Reflect.set(t, p, v,)
+      }
+    })
+
+    // 3.使用MutaionObserver监听localStorage变化 ---- 不可用（x）机器人给的错答案
+    // 虽然它的主要用途是监听DOM树的变化，但它也可以用来减少其他元素的变化，包括localStorage对象
+    const observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        console.log('mutation: ', mutation);
+      })
+    })
+    // observer.observe(window.localStorage, {
+    //   attributes: true,
+    //   attributeOldValue: true,
+    // })
+
+    // 4.定时器循环检测localStorage的变化
+    // 这种方法比较简单，但也有一些缺点，比如需要频繁地检测 localStorage 对象的变化，因此可能会有一定的性能问题，同时也无法监听具体哪个键值对发生了变化。
+    // let storage = JSON.stringify(localStorage)
+    // setInterval(function () {
+    //   if (JSON.stringify(localStorage) !== storage) {
+    //     console.log('storage: ', storage);
+    //     console.log('localStorage: ', JSON.stringify(localStorage));
+    //     console.log('storage changed----------');
+    //     storage = JSON.stringify(localStorage)
+    //   }
+    // }, 500)
+
+    // 5.重写localStorage的setItem方法，抛出自定义事件，再做监听。
+    // const originSetItem = window.localStorage.setItem
+    // window.localStorage.setItem = function (k, v) {
+    //   console.log(1);
+    //   var newSetItemEvent = new Event('newSetItemEvent')
+    //   newSetItemEvent.newValue = v
+    //   newSetItemEvent.oldValue = 12
+    //   newSetItemEvent.key = k
+    //   window.dispatchEvent(newSetItemEvent) // 抛出自定义事件
+    //   // originSetItem.apply(this, [k, v])
+    //   originSetItem.apply(this, arguments)
+    // }
+    // // 监听抛出的自定义事件
+    // window.addEventListener('newSetItemEvent', function (e) {
+    //   console.log(this === window, e); // true
+    // })
+
+  </script>
+</body>
+
+</html>

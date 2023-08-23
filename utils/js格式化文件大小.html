@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>js格式化文件大小，将传入的字节，转成B、KB、MB、GB、TB等的两种方法：</div>
+  <script>
+
+    // 方法一：
+    function size2str2(size) {
+      var data = ''
+      if (size < 0.1 * 1024) { // 如果小于0.1kb转化成B
+        data = size.toFixed(2) + 'B'
+      } else if (size < 0.1 * 1024 * 1024) {// 如果小于0.1M转化成KB
+        data = (size / 1024).toFixed(2) + 'KB'
+      } else if (size < 0.1 * 1024 * 1024 * 1024) {// 如果小于0.1GB转化成MB
+        data = (size / 1024 / 1024).toFixed(2) + 'MB'
+      } else { // 其他转化成GB
+        data = (size / 1024 / 1024 / 1024).toFixed(2) + 'GB'
+      }
+      // data = data.replace(/\.[^1-9]0?/, '') // 不满足
+      console.log('data: ', data);
+      data = data.replace(/\.(\d+)/, function (match, p1, p2) {
+        const s = p1.replace(/0+$/, '')
+        return s ? `.${s}` : ''
+      })
+      return data
+    }
+
+    // 方法二： => 不太准
+    function size2str(a, b) {
+      if (a == 0) return '0B'
+      var c = 1024;
+      var d = b || 2
+      var e = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+      var f = Math.floor(Math.log(a) / Math.log(c))
+      var x = parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f]
+      return x
+    }
+
+    console.log(size2str(102.2)); // 102.2B
+    console.log(size2str(102.4)); // 0.1KB
+    console.log(size2str(1000)); // 0.98KB
+    console.log(size2str(102400));
+    console.log(size2str(10240000));
+    console.log(size2str(1000111111));
+
+    console.log(size2str(1234));
+    // console.log(size2str(1234, 3));
+    // console.log(size2str(123400, 3));
+    // console.log(size2str(12340000, 3));
+    // console.log(size2str(12340000000, 3));
+    // console.log(size2str(12340000000000, 3));
+    // console.log(size2str(1234000000000000, 3));
+
+  </script>
+</body>
+
+</html>

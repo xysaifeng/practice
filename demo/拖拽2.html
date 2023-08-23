@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    #main {
+      border: 1px solid beige;
+      width: 400px;
+      display: grid;
+      height: 400px;
+      gap: 20px;
+      grid-template-columns: 120px 120px 120px;
+      grid-template-rows: 120px 120px 120px;
+
+      /* justify-content: space-between; */
+    }
+
+    .img {
+      width: 120px;
+      user-select: none;
+      border: 1px solid beige;
+      height: 120px;
+      background: no-repeat center center;
+      background-size: cover;
+    }
+
+    .img:hover {
+      cursor: pointer;
+    }
+
+    .bg1 {
+      background-image: url('../img/img1.png');
+    }
+
+    .bg2 {
+      background-image: url('../img/img2.png');
+    }
+
+    .bg3 {
+      background-image: url('../img/img3.png');
+    }
+
+    .bg4 {
+      background-image: url('../img/img4.png');
+    }
+
+    .bg5 {
+      background-image: url('../img/img5.png');
+    }
+
+    .bg6 {
+      background-image: url('../img/img6.png');
+    }
+
+    .bg7 {
+      background-image: url('../img/img7.png');
+    }
+
+    .zw {
+      background-color: #999;
+      width: 120px;
+      height: 120px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="main">
+    <span class="img bg1" data-index="0">0</span>
+    <span class="img bg2" data-index="1">1</span>
+    <span class="img bg3" data-index="2">2</span>
+    <span class="img bg4" data-index="3">3</span>
+    <span class="img bg5" data-index="4">4</span>
+    <span class="img bg6" data-index="5">5</span>
+    <span class="img bg7" data-index="6">6</span>
+    <span class="zw" id="zw">zw</span>
+  </div>
+
+  <script>
+
+    const imgs = document.querySelectorAll('.img')
+    const main = document.getElementById('main')
+    const zw = document.getElementById('zw')
+
+    let isDrag = false
+    let zIndex
+    let py = {
+      left: 0,
+      top: 0
+    }
+    const move = (el, x, y) => {
+      el.setAttribute('style', `pointer-events:none;position:absolute;left:${x}px;top:${y}px;`)
+    }
+
+    document.addEventListener('mousedown', e => {
+      index = e.target.dataset.index
+      if (index && !isDrag) {
+        py.left = e.pageX - imgs[index].offsetLeft
+        py.top = e.pageY - imgs[index].offsetTop
+        zw.style.display = 'block'
+        main.insertBefore(zw, imgs[index])
+        move(imgs[index], e.pageX - py.left, e.pageY - py.top)
+      }
+      isDrag = true
+    })
+
+    document.addEventListener('mousemove', e => {
+      if (isDrag && index) {
+        move(imgs[index], e.pageX - py.left, e.pageY - py.top)
+      }
+    })
+
+    document.addEventListener('mouseup', e => {
+      isDrag = false
+      zw.style.display = ''
+      if (imgs[index]) {
+        imgs[index].setAttribute('style', '')
+        main.insertBefore(imgs[index], zw,)
+      }
+    })
+
+
+    imgs.forEach(img => {
+      return
+
+      img.addEventListener('mouseenter', e => {
+        if (isDrag) {
+          // console.log(12, img,);
+          const list = [...main.children]
+
+          const imgIdex = list.findIndex(el => el === img)
+          const zwIdex = list.findIndex(el => el === zw)
+
+          console.log('imgIdex: ' + imgIdex, 'zwIdex: ' + zwIdex, '====');
+
+          if (zwIdex < imgIdex) {
+            main.insertBefore(img, zw)
+          } else {
+            main.insertBefore(zw, img,)
+          }
+        }
+      })
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <input type="button" value="click" id="btn" onclick="btnClick()">
+  </div>
+  <script>
+
+
+    function fn1() {
+      console.log('fn133');
+    }
+    // function fn2() {
+    //   console.log('fn2333');
+    // }
+
+
+    function btnClick() {
+      // Function 构造函数只创建全局执行的函数,所以写在这里被使用会报错
+      // function fn2() {
+      //   console.log('fn2333');
+      // }
+
+      function fn1() { // 也ok
+        console.log('344');
+      }
+
+      eval('fn' + 1)() // ok
+
+      // console.log(eval('1+1'));
+
+      // Function(`fn${2}()`) // err
+
+      // Function 构造函数只创建全局执行的函数
+      // Function(`fn${2}()`)()// ok 
+
+      // console.log(runCodeWithDateFunction(
+      //   "function(Date){ return Date(5) }"
+      // ))
+    }
+
+    function test() {
+      var x = 2, y = 4;
+      // console.log(eval('x + y'));  // 直接调用，使用本地作用域，结果是 6
+      var geval = eval; // 等价于在全局作用域调用
+      // console.log(geval('x + y')); // 间接调用，使用全局作用域，throws ReferenceError 因为`x`未定义
+      (0, eval)('x + y'); // 另一个间接调用的例子
+    }
+    // test()
+
+    var x = 10;
+
+    function createFunction1() {
+      var x = 20;
+      return new Function('return x;'); // 这里的 x 指向最上面全局作用域内的 x
+    }
+    var fn = createFunction1()
+    // console.log('  fn(): ', fn()); // 10
+
+
+    // 使用eval
+    // function looseJsonParse(obj) {
+    //   return eval("(" + obj + ")");
+    // }
+    // console.log(looseJsonParse(
+    //   "{a:(4-1), b:function(){}, c:new Date()}"
+    // ))
+
+    // 用Function
+    function looseJsonParse(obj) {
+      return Function('"use strict";return (' + obj + ')')();
+    }
+    // console.log(looseJsonParse(
+    //   "{a:(4-1), b:function(){}, c:new Date()}"
+    // ))
+
+
+    function Date(n) {
+      return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][n % 7 || 0];
+    }
+    // function looseJsonParse(obj) {
+    //   return eval("(" + obj + ")");
+    // }
+    // console.log(looseJsonParse(
+    //   "{a:(4-1), b:function(){}, c:new Date()}"
+    // ))
+
+
+
+
+    function runCodeWithDateFunction(obj) {
+      return Function('"use strict";return (' + obj + ')')()(Date)
+    }
+    // console.log(runCodeWithDateFunction(
+    //   "function(Date){ return Date(5) }"
+    // ))
+
+
+    // eval 中函数作为字符串被定义需要“（”和“）”作为前缀和后缀
+    var fctStr1 = 'function a() {}'
+    var fctStr2 = '(function a() {})'
+    var fct1 = eval(fctStr1)  // 返回 undefined
+    // console.log('fct1: ', fct1);
+    var fct2 = eval(fctStr2)  // 返回一个函数
+    // console.log('fct2: ', fct2);
+
+
+
+  </script>
+</body>
+
+</html>
