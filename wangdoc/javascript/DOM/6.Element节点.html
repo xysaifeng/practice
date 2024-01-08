@@ -14,9 +14,9 @@
 
     #s {
       /* opacity: 1; */
-      /* visibility: visible; */
+      visibility: visible;
       /* visibility: hidden; */
-      display: none;
+      /* display: none; */
     }
 
     #ch {}
@@ -63,7 +63,7 @@
 
 <body>
   <div dir="ltr">
-    <span id="s" contenteditable>
+    <span id="s" contenteditable="false">
       this is div
     </span>
     <div class="one two three" id="myDiv">myDiv</div>
@@ -131,16 +131,16 @@
     const in2 = document.getElementById('in2')
 
     btn2.onclick = function (e) {
-      // s.hidden = !s.hidden
+      s.hidden = !s.hidden
 
       // myDiv.classList.add('o')
       // myDiv.classList.add('o', 's')
       myDiv.classList.toggle('o',)
 
       // in2.scrollIntoView(false)
-      in2.scrollIntoView(true)
-      e.preventDefault();
-      e.stopPropagation();
+      // in2.scrollIntoView(true)
+      // e.preventDefault();
+      // e.stopPropagation();
 
       // myDiv.classList.remove('three', 'two')
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    body {
+      background-color: #000;
+
+    }
+
+    /* 文本模糊之后你就会发现，这些文字的边缘部分，处于一个灰度状态，哪这样肯定不行，我们要让它做一个抉择，要不就黑色，要不就白色。
+我们找到父元素，同样设置 filter，但是这一次给它设置为 contrast 表示对比度。
+ */
+    .container {
+      margin-top: 50px;
+      text-align: center;
+      background-color: #000;
+      filter: contrast(30);
+    }
+
+    .text {
+      font-size: 100px;
+      color: #fff;
+      animation: showup 3s linear forwards;
+
+    }
+
+    @keyframes showup {
+      0% {
+        filter: blur(10px);
+        letter-spacing: -50px;
+      }
+
+      100% {
+        letter-spacing: 10px;
+        filter: blur(2px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- https://juejin.cn/post/7245316146336563261 -->
+
+  <div class="container">
+    <span class="text">Duyi Education</span>
+  </div>
+</body>
+
+</html>

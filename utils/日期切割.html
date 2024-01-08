@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+  <script>
+    function getDate(params) {
+      var start = '2022-10-01', end = '2024-01-05';
+      // var s1 = dayjs(start).unix(), s2 = dayjs(end).unix();
+      var dates = []
+      var s1 = Date.parse(start), s2 = Date.parse(end)
+      console.log('s1: ', s1);
+
+      var diff = s2 - s1;
+      var day = 24 * 60 * 60 * 1000
+      var days = 6 * 30 * day;
+      var count = Math.ceil(diff / (days));
+      for (var i = 0; i <= count; i++) {
+        var s = s1 + i * (i > 0 ? days + (day) : days);
+        var e = s + days;
+        var ss = dayjs(s).format('YYYY-MM-DD');
+        var ee = dayjs(e).format('YYYY-MM-DD');
+        // var ss = dayjs.unix(s).format('YYYY-MM-DD');
+        // var ee = dayjs.unix(e).format('YYYY-MM-DD');
+        ee = ee > end ? end : ee
+        dates.push([ss, ee])
+      }
+      return dates
+    }
+
+    console.log(getDate());
+  </script>
+</body>
+
+</html>

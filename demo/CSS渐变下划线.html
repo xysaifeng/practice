@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS渐变下划线</title>
+
+  <style>
+    .title span {
+      background: linear-gradient(to right, #ec695c, #61c454) no-repeat right bottom;
+      background-size: 0 2px;
+      transition: background-size 1s ease-in-out;
+    }
+
+    .title:hover span {
+      background-size: 100% 2px;
+      background-position-x: left;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- https://juejin.cn/post/7252171043383623739 -->
+  <h2 class="title">
+    <span>十年后，你会发现CSS才是你永远也学不会的语言</span>
+    <br>
+    <br>
+    <span>一直是</span>
+  </h2>
+
+</body>
+
+</html>

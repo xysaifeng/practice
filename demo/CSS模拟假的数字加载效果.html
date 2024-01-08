@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .number-loader {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border: 2px solid #333;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      overflow: hidden;
+    }
+
+    .number-loader::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, #00ff00, #008800);
+      transform: translateY(100%);
+      animation: loadingAnimation 3s infinite linear;
+    }
+
+    @keyframes loadingAnimation {
+
+      0%,
+      100% {
+        transform: translateY(100%);
+      }
+
+      50% {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- https://juejin.cn/post/7270430481694212108 -->
+  <div class="number-loader">
+    <span class="number">0</span>
+  </div>
+
+</body>
+
+</html>
