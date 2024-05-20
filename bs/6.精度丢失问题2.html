@@ -95,6 +95,8 @@
       return (+str).toFixed(precision)
     }
     var r = toFixed1(1.335, 2)
+    // console.log('toFixed1(1.15, 1): ', toFixed1(1.44, 1));
+    // console.log('toFixed1(1.15, 1): ', toFixed1(1.005, 2));
     // console.log('r: ', r);
     // console.log(toFixed1(1.3335, 3)); // 1.334 ok
     // console.log(1.3335.toFixed(3)); // 1.333 error
@@ -113,6 +115,27 @@
     // console.log(toFixed2(1.005, 2)); // 1 // error
     // console.log(toFixed2(1.3335, 3)); // 1.334 // ok
     // console.log(1.005.toFixed(2)); // 1.00 error
+
+    // 修复方式3: 类似方式1 https://www.cnblogs.com/97z4moon/p/14955149.html
+    // 理念是将小数点左移s（参数）个单位，加上0.5后取整完成四舍五入，
+    // 如 1.236.toFixed(2) 小数点左移两个单位 -> 123.6 + 0.5 = 124.1 取整 -> 124，
+    // 最后再将小数点右移s个单位后将Float类型格式化为String类型后return即可。
+    Number.prototype.toFixed3 = function (s) {
+      changenum = (parseInt(this * Math.pow(10, s) + 0.5) / Math.pow(10, s)).toString()
+      index = changenum.indexOf(".")
+      if (index < 0 && s > 0) {
+        changenum = changenum + "."
+        for (i = 0; i < s; i++) {
+          changenum = changenum + "0"
+        }
+      } else {
+        index = changenum.length - index;
+        for (i = 0; i < (s - index) + 1; i++) {
+          changenum = changenum + "0"
+        }
+      }
+      return changenum;
+    }
 
 
     /**
@@ -150,7 +173,6 @@
        */
       function toInteger(floatNum) {
         var ret = { times: 0, num: 0 }
-
         if (isInteger(floatNum)) {
           ret.num = floatNum
           return ret
@@ -168,7 +190,8 @@
             少了0.0000000001
             加上0.5 0.16344556*10000000+0.5=1634456.0999999999 parseInt之后乘法的精度问题得以矫正
         */
-        var intNum = parseInt((Math.abs(floatNum) * times) + 0, 10)
+        // var intNum = parseInt((Math.abs(floatNum) * times) + 0, 10) // 有bug
+        var intNum = parseInt(strNum.split('.').join(''))
         ret.times = times
         if (isNeative) {
           intNum = -intNum
@@ -176,9 +199,11 @@
         ret.num = intNum
         return ret
       }
+
+      // console.log(toInteger(2.01)); // 200 => bug
       // console.log(' ', toInteger(1.005));
-      console.log(' toInteger(-19.923): ', toInteger(19.923));
-      console.log(' toInteger(-19.923): ', toInteger(19.3));
+      // console.log(' toInteger(-19.923): ', toInteger(19.923));
+      // console.log(' toInteger(-19.923): ', toInteger(19.3));
       // console.log(' toInteger(-19.923): ', toInteger(-19.0));
       /*
        * 核心方法，实现加减乘除运算，确保不丢失精度
@@ -189,15 +214,17 @@
       function operation(a, b, op) {
         var o1 = toInteger(a)
         var o2 = toInteger(b)
+        console.log(o1, o2);
         var n1 = o1.num
         var n2 = o2.num
         var t1 = o1.times
         var t2 = o2.times
         var max = t1 > t2 ? t1 : t2
+        max ||= 1
         var res = null
         switch (op) {
           case 'add':
-            if (t1 === t2) { // 两个小数相同
+            if (t1 === t2) { // 两个小数个数相同
               res = n1 + n2
             } else if (t1 > t2) {
               res = n1 + n2 * (t1 - t2)
@@ -215,11 +242,14 @@
             }
             return res / max
           case 'multiply':
+            t1 ||= 1
+            t2 ||= 1
             // 325*3153/(100*1000) 扩大100倍 ==>缩小100倍
             res = (n1 * n2) / (t1 * t2)
             return res
           case 'divide':
             // (325/3153)*(1000/100)  缩小100倍 ==>扩大100倍
+            t2 ||= 1
             res = t1 > 0 ? (n1 / n2) * (t2 / t1) : n1 / n2
             return res
         }
@@ -242,10 +272,43 @@
       }
 
     })()
-    // console.log('floatObj.multiply(3.25,3.153): ', floatObj.multiply(3.25, 3.153));
+
+    // console.log(floatObj.add(1.1, 2.2));
+    // console.log(floatObj.multiply(4.01, 2.01));
+
+
+    // console.log('floatObj.multiply(3.25,3.153): ', floatObj.multiply(3.25, 3.153)); // 10.24725
     // console.log('floatObj.divide(3.25,3.153): ', floatObj.divide(3.25, 3.153));
     // console.log('floatObj.divide(3.25,3.153): ', floatObj.divide(1, 3));
     // console.log('floatObj.divide(3.25,3.153): ', floatObj.divide(2, 1.2));
+
+    // console.log(floatObj.add(1.2, 100.3));
+    // console.log(floatObj.add(1, 100));
+    // console.log(floatObj.add(0.01, 100.98));
+    // console.log(floatObj.add(100.01, 1.01));
+
+
+    // console.log(floatObj.subtract(0.01, 100.98));
+    // console.log(floatObj.subtract(100.01, 1.01));
+    // console.log(floatObj.subtract(34, 34));
+
+    // console.log(floatObj.multiply(1.2, 100.3));
+    // console.log(floatObj.multiply(34, 34));
+    // console.log(floatObj.multiply(10.99, 0.01));
+    // console.log(floatObj.multiply(0.23, 0.01));
+    console.log(floatObj.multiply(2.01, 100)); //200 
+    console.log(floatObj.multiply(1.12, 100));
+    console.log(floatObj.multiply(35.41, 10));
+    console.log(floatObj.divide(35.41, 10));
+
+    // console.log(floatObj.divide(34, 34));
+    // console.log(floatObj.divide(34.1, 34));
+    // console.log(floatObj.divide(34, 34.67));
+    // console.log(floatObj.divide(10.99, 0.01));
+    // console.log(floatObj.divide(0.23, 0.01));
+
+    // console.log((1.56).toFixed(2));
+
 
 
     //是否是纯数字
@@ -280,7 +343,6 @@
       let index = s.indexOf('.');
       let prefix = s.substring(0, index);
       let suffix = s.substring(index + 1, s.length);
-      console.log('suffix: ', suffix);
       if (suffix) {
         for (let i = suffix.length - 1; i != 0; i--) {
           //最末位不为0，直接break;
@@ -299,14 +361,32 @@
       if (typeof precision !== 'number' || Number.isNaN(precision)) {
         throw new Error('请输入数字或者数字字符串～');
       }
-      console.log(this, '---s');
       return fixed(this, precision);
     };
 
-    console.log(1.30.tofixed(2)); // 1.33
+    // console.log(1.30.tofixed(2), 999); // 1.33
+    // console.log(1.15.tofixed(1),); // 1.1 （error: bug ）
     // console.log((130).tofixed(2)); // 1.33
-    console.log((1.335).toFixed(2)); // 1.33
-    console.log(toFixed1(1.335, 2));// 1.34
+    // console.log((1.335).toFixed(2)); // 1.33
+    // console.log(toFixed1(1.335, 2));// 1.34
+
+
+    function actionOperationResult(val1, val2) {
+      const p = this.actionOperation(val1, val2);
+      return ((val1 * p) * (val2 * p)) / (p * p);
+    }
+
+    function actionOperation(val1, val2) {
+      const len1 = val1.toString().length - val1.toString().indexOf(".") - 1;
+      const len2 = val2.toString().length - val2.toString().indexOf(".") - 1;
+      const p = Math.max(len1, len2);
+      // 避免最终求出结果的长度大于最大长度的时候导致精度丢失 开启下面
+      // p += p - Math.min(len1, len2); 
+      return Math.pow(10, p);
+    }
+    // console.log(actionOperationResult(2.01, 100));// bug
+    // console.log(actionOperationResult(35.41, 10));// bug
+    // console.log(actionOperationResult(1.12, 10));// bug
   </script>
 </body>
 

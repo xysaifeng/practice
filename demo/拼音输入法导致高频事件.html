@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text"></input>
+  <script>
+    var input = document.querySelector('input');
+    var isComposing = false;
+
+    // 搜索防抖
+    input.addEventListener('keyup', function (e) {
+      if (e.keyCode === 13) {
+        search()
+      }
+    });
+    function search() {
+      console.log('search===', input.value);
+    }
+
+    input.addEventListener('input', function () {
+      if (!isComposing) {
+        search()
+      }
+    });
+
+    // compositionstart事件
+    // compositionend事件
+    // 当输入法开始输入时触发compositionstart事件，当输入法输入完毕时触发compositionend事件
+    // composition => 合成 表示多个按键对应到一个文字，比如：中文输入法的拼音 多个键盘输入对应一个汉字
+    input.addEventListener('compositionstart', function () {
+      console.log('compositionstart');
+      isComposing = true
+    });
+    input.addEventListener('compositionend', function () {
+      console.log('compositionend');
+      isComposing = false
+      search()
+    });
+  </script>
+</body>
+
+</html>

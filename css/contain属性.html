@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box1 {
+      width: 100px;
+      height: 100px;
+      background: red;
+      margin: 10px;
+      font-size: 25px;
+    }
+
+    .card {
+      width: 70%;
+      height: 90px;
+      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .fixed {
+      position: fixed;
+      right: 10px;
+      top: 10px;
+      background: coral;
+    }
+
+    .float {
+      float: left;
+      margin: 10px;
+      background: aquamarine;
+    }
+
+    body {
+      counter-reset: list-items;
+    }
+
+    li::before {
+      counter-increment: list-items;
+      content: counter(list-items) "：";
+    }
+
+    .container {
+      contain: style;
+    }
+
+    body {
+      quotes: "【" "】" "『" "』";
+    }
+
+    .open-quote:before {
+      content: open-quote;
+    }
+
+    .close-quote:after {
+      content: close-quote;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- paint:绘制局限 -->
+  <!-- 元素后代不在元素边界外显示。若包含盒在屏外，
+    则浏览器无需绘制其被局限的元素——这些元素因为完全局限于此盒故必定也在屏外。
+    若后代元素溢出包含元素的边界，则此后代元素将被裁剪至包含元素的边框盒。 -->
+  <!-- <div class="box1" style="contain:paint">
+    <p>此文本将被裁剪至盒子边界。</p>
+  </div>
+  <div class="box1">
+    <p>此文本将不被裁剪至盒子边界。</p>
+  </div> -->
+
+  <!-- layout:布局局限 -->
+  <!-- 从页面的其余部分中隔离出元素的内部布局。此值意味着元素外的任意内容和元素内部布局互不影响。 -->
+  <!-- <div class="card" style="contain: layout;">
+    <h2>卡片 1</h2>
+    <div class="fixed">
+      <p>固定盒 1</p>
+    </div>
+    <div class="float">
+      <p>浮动盒 1</p>
+    </div>
+  </div>
+  <div class="card">
+    <h2>卡片 2</h2>
+    <div class="fixed">
+      <p>固定盒 2</p>
+    </div>
+    <div class="float">
+      <p>浮动盒 2</p>
+    </div>
+  </div>
+  <div class="card">
+    <h2>卡片 3</h2>
+  </div> -->
+
+  <!-- style:样式局限 -->
+  <!-- 对于可在元素及其后代外产生影响的属性，其影响将不会逃离包含元素。计数器和引号的作用域被限制为元素及其内容。 -->
+  <!-- 样式局限将计数器和引号的作用域限制为被局限元素。对于 CSS 计数器，counter-increment 和 counter-set 属性的作用域被限制为此元素，且将元素视为在文档根部。 -->
+  <!-- 1.局限与计数器 -->
+  <ul>
+    <li>元素甲</li>
+    <li>元素乙</li>
+    <li class="container">元素丙</li>
+    <li>元素丁</li>
+    <li>元素戊</li>
+  </ul>
+  <!-- 2.局限与引号 -->
+  <!-- CSS 引号受类似影响，与引号相关的 content 值的作用域被限制为此元素： -->
+  <!-- 有样式局限 -->
+  <span class="open-quote">外<span style="contain: style;"><span class="open-quote">内</span></span></span><span
+    class="close-quote">闭</span>
+  <br />
+  <!-- 无局限 -->
+  <span class="open-quote">外<span><span class="open-quote">内</span></span></span><span class="close-quote">闭</span>
+</body>
+
+</html>

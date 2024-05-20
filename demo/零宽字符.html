@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- https://zhuanlan.zhihu.com/p/87919817 -->
+  <div>
+    零宽字符Unicode：\u200d;
+    零宽字符HTML：2&#8205;3&zwj;5
+    <p>零宽字符HTML：<code>&#8205; &zwj;</code></p>
+  </div>
+
+  <script>
+    // 1.怎么实现的？
+    // 首先，输入需要被加密的内容将被转换为其二进制形式，然后该二进制将被转换为一系列表示每个二进制数字的零宽度字符。
+    // 然后可以将零宽度的字符串不可见地插入正常文本中。如果将文本粘贴在其他地方，则可以提取零宽度的字符串，然后反向进行操作以找出被加密的内容！
+    // 2.具体加密过程
+    // 2.1 将需加密的内容转换为二进制, 只是将每个字符转换为其等效的二进制
+    const zeroPad = num => '00000000'.slice(String(num).length) + num
+    console.log(zeroPad('tom'));
+    const textToBinary = text => text.split('').map(char => zeroPad(char.charCodeAt(0).toString(2))).join(' ')
+    console.log(textToBinary('tom'));
+    // 2.1 将二进制转换为0宽字符, 它将遍历二进制字符串，并将每个1转换为0宽度空间，将每个0转换为零宽非连接符。转换字母后，我们将插入0宽连接符，然后再下一个。
+    const binaryToZeroWidth = binary => (
+      binary.split('').map((binaryNum) => {
+        const num = parseInt(binaryNum, 10);
+        if (num === 1) {
+          return '​'; // zero-width space
+        } else if (num === 0) {
+          return '‌'; // zero-width non-joiner
+        }
+        return '‍'; // zero-width joiner
+      }).join('') // zero-width no-break space
+    );
+    console.log('-' + binaryToZeroWidth(textToBinary('tom')) + '-');
+  </script>
+
+</body>
+
+</html>

@@ -35,12 +35,27 @@
 // }, 0);
 
 
-setImmediate(()=> {
+setImmediate(() => {
     console.log('---------setImmediate 1');
-    setImmediate(()=> {
+    setImmediate(() => {
         console.log('---------setImmediate 2');
     })
     setTimeout(() => {
         console.log('---------setTimeout 1');
     }, 1);
 })
+
+
+var list = [
+    [1, 2, 3],
+    [1, 2, 3],
+    [1, 2, 3],
+]
+
+function dp(arr) {
+    let r = arr.length, c = arr[0].length;
+
+    let dp = new Array(r).fill(0).map(() => new Array(c).fill(0));
+    console.log('dp: ', dp);
+}
+dp(list)
