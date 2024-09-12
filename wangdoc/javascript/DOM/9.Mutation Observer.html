@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mutation Observer</title>
+</head>
+
+<body>
+  <div id="app">Mutation Observer</div>
+
+  <div class="row">
+    <button onClick="change()">click</button>
+    <button onClick="change2()">click2</button>
+  </div>
+  <script>
+    // 封装一个监听 DOM 生成的函数
+    (function (win) {
+      'use strict'
+      var listeners = []
+      var doc = win.document
+      var MutationObserver = win.MutationObserver || win.WebKitMutationObserver || win.MozMutationObserver
+      var observer
+
+      function ready(selector, fn) {
+        // 存储选择器和回调函数
+        listeners.push({
+          selector: selector,
+          fn: fn
+        });
+        console.log(listeners, 'l');
+        if (!observer) {
+          // 监听doucment变化
+          observer = new MutationObserver(check)
+          observer.observe(doc.documentElement, {
+            childList: true,
+            subtree: true
+          })
+        }
+
+        // 检查该节点是否已经在DOM中
+        // check()
+      }
+
+      function check() {
+        console.log(arguments);
+        // 检查是否匹配已储存的节点
+        for (var i = 0; i < listeners.length; i++) {
+          var listener = listeners[i]
+          // 检查指定节点是否匹配
+          var els = doc.querySelectorAll(listener.selector)
+          for (var j = 0; j < els.length; j++) {
+            var element = els[j]
+            // 确保回调函数只会对该元素调用一次
+            if (!element.ready) {
+              element.ready = true
+              listener.fn.call(element, element)
+            }
+          }
+
+        }
+      }
+      // 对外暴露ready方法
+      win.ready = ready
+
+    })(this)
+
+    ready('#app', function (element) {
+      console.log('element: ', element);
+
+    })
+
+
+    var observer = new MutationObserver(function (mutations, observer) {
+      console.log('observer: ', observer);
+      console.log('mutations: ', mutations);
+    })
+    // observer.observe(app, {
+    //   'subtree': true,
+    //   'childList': true,
+    //   'attributes': true,
+    //   'characterData': true,
+    //   // 'subtree': true,
+    //   'attributeOldValue': true,
+    //   // 'characterDataOldValue': true,
+    //   // 'attributeFilter': ['class']
+    // })
+    var p = document.createElement('p')
+    p.classList.add('p')
+    p.innerHTML = 'pp'
+    function change() {
+      app.title = 'mu'
+      app.appendChild(p)
+      // app.firstChild.appendData(' 999')
+    }
+    function change2() {
+      p.classList.add('p1')
+    }
+
+    var callback = function (records, observer) {
+      console.log('observer: ', observer);
+      console.log('records: ', records);
+      records.map(function (record) {
+        // console.log('Mutation type: ' + record.type);
+        // console.log('Mutation target: ', record.target);
+      });
+    };
+
+    var mo = new MutationObserver(callback);
+
+    var option = {
+      'childList': true,
+      'subtree': true
+    };
+
+    // mo.observe(document.body, option);
+  </script>
+</body>
+
+</html>

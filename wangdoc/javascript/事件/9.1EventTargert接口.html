@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>9.1EventTargert接口</title>
+  <style>
+    .parent {
+      width: 200px;
+      height: 200px;
+      background-color: red;
+    }
+
+    .child {
+      width: 100px;
+      height: 100px;
+      background-color: blue;
+    }
+  </style>
+</head>
+
+<body onload="console.log(777)">
+  <div class="parent">
+    <div class="child"></div>
+  </div>
+  <button onclick="handleClick()">click abort signal</button>
+  <button onclick="handleClick2()">dispatch event</button>
+
+  <script>
+
+    const single = new AbortController()
+    console.log('single: ', single);
+    const p = document.querySelector('.parent')
+    const c = document.querySelector('.child')
+
+    // var event = new Event('okd');
+    var event = new CustomEvent("okd", {
+      data: "hahah",
+      detail: {
+        // 传参用detail字段
+        content: "jeij",
+      },
+    });
+
+    p.addEventListener('okd', function (e) {
+      console.log(this, e, '----okd----');
+      e.preventDefault()
+    },)
+
+    p.addEventListener('click', function (e) {
+      console.log(e.target)
+      console.log(e.currentTarget)
+      e.preventDefault()
+      console.log('----end1----');
+    }, false)
+    c.onclick = function (e) {
+      console.log(222);
+    }
+    c.addEventListener('click', function (e) {
+      console.log(e.target)
+      console.log(e.currentTarget)
+      e.stopPropagation()
+      e.stopImmediatePropagation()
+      console.log('----end2----');
+    }, {
+      capture: false,
+      signal: single.signal
+    })
+    c.addEventListener('click', function (e) {
+      console.log('----end22----');
+    }, false)
+
+    function handleClick() {
+      console.log(2);
+      single.abort()
+    }
+
+    function handleClick2() {
+
+      // dispatchEvent()方法表示在当前节点(p)上触发指定的时间，从而触发监听函数的执行
+      const res = p.dispatchEvent(event)
+      console.log('res: ', res);
+    }
+
+
+
+  </script>
+</body>
+
+</html>

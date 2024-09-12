@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style id="stl" title="stl" style="display: block;">
+    #p1 {
+      color: red;
+      font-size: 14px;
+    }
+
+    #p1 {
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <p id="p1" style="width: auto;">8</p>
+  <p id="para">A <em>B</em> C</p>
+  <div>Hello <em>World</em></div>
+  <p id="p">foobar</p>
+  <div id="foo#bar">2</div>
+  <script>
+    var p = document.getElementById('p');
+    var textnode = p.firstChild;
+    setTimeout(() => {
+      var newText = textnode.splitText(3);
+      console.log(newText, '==newText');
+      console.log(textnode, '==textnode');
+      console.log(p.childNodes.length);
+      p.normalize();
+      console.log(p.childNodes.length);
+    }, 3000);
+  </script>
+  <script>
+    var textNode = document.querySelector('p').firstChild;
+    console.log('textNode: ', textNode);
+    var t = new Text('this is a text')
+    console.log('t: ', t);
+    var hi = document.createTextNode('Hi');
+    console.log('hi: ', hi);
+
+
+
+
+    setTimeout(() => {
+      var myStyleSheet = document.getElementById('stl').sheet;
+      console.log('myStyleSheet: ', myStyleSheet);
+      // myStyleSheet.disabled = true
+
+      try {
+        const r = myStyleSheet.insertRule('#para { color: red;font-weight: bold; }', 2)
+        console.log('r: ', r);
+      } catch (error) {
+        console.log('error: ', error);
+
+      }
+
+
+      // p1.firstChild.data = '9' // √
+      // p1.firstChild.nodeValue = '19' // √
+      // p1.firstChild.textContent = '29' // √
+      p1.firstChild.wholeText = '39' // X
+      // var el = document.querySelector('#foo#bar') // undefined
+      // var el = document.querySelector('#foo\#bar') // undefined
+      // var el = document.querySelector('#foo\\#bar') // √
+      var el = document.querySelector('#' + CSS.escape('foo#bar')) // √
+
+      // console.log('el: ', el);
+      console.log(el, 77);
+    }, 2000);
+
+    setTimeout(() => {
+      // console.log('para.firstChild.wholeText: ', '=' + para.firstChild.wholeText + '=');
+      // console.log('para.firstChild.data: ', '=' + para.firstChild.data + '=');
+
+      var tn = document.querySelector('div').firstChild;
+      tn.appendData('world ')
+      // tn.deleteData(1, -1)
+      // tn.insertData(2, '1')// 不支持负数位置
+      tn.replaceData(1, 2, '2')
+      tn.remove()
+      console.log('tn.nextElementSibling: ', tn.nextElementSibling);
+    }, 2000);
+  </script>
+</body>
+
+</html>

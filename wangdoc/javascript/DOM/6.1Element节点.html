@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .btn1 {
+      visibility: visible;
+      /* display: block; */
+
+      /* visibility: visible */
+    }
+
+    #clt {
+      height: 100px;
+      background-color: powderblue;
+      border: 2px solid red;
+      padding: 5px 0;
+      margin: 5px 0;
+    }
+
+    #clt::after {
+      display: block;
+      content: ' ';
+      width: 100px;
+      height: 13px;
+    }
+
+    .p {
+      width: 200px;
+      height: 49px;
+      background-color: antiquewhite;
+    }
+
+    /* #cc {
+      position: absolute;
+      top: 10px;
+      background-color: azure;
+    } */
+    #cc {
+      display: block;
+      height: 26px;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="btn1  btn" tabindex="2">click1</button>
+  <button id='btn' accessKey="H" tabindex="1">click2</button>
+  <input id="ipt" type="text">
+  <div id="Foo" contentEditable>Lorem ipsum dolor sit amet.</div>
+  <div id="foo" lang="en">a1xx2</div>
+  <!-- <div id="ds" data-^="ss">dataset</div> -->
+  <div id="ds" data-a-b="ss">dataset</div>
+  <p id="para"> 5 > 3 </p>
+
+  <div id="clt" style="min-height: 22px; max-height: 30px;">clientHeight</div>
+
+  <div class="p" id="pp" style="position: relative;">parent
+
+    <div>
+      <span id="cc">child</span>
+    </div>
+  </div>
+
+  <div>
+    <h3 id="outer">
+      <p>Hello</p>
+      <div id="inner">
+        <p>World</p>
+      </div>
+    </h3>
+  </div>
+
+  <div id="example">
+    <p class="foo">1</p>
+    <p class="foo">2</p>
+  </div>
+
+  <ul id="ul">
+    <li>1</li>
+    <li id="l2">2</li>
+    <li id="l3">3</li>
+    <li>4</li>
+  </ul>
+  <script>
+    // 元素绑定自定义事件
+    btn.addEventListener('okd', listener, false);
+    function listener() {
+      console.log('cc');
+    }
+
+    var event = new Event('okd');
+    setTimeout(() => {
+      console.log('----disp');
+      // 元素触发自定义事件
+      btn.dispatchEvent(event);
+    }, 4000);
+
+    setTimeout(() => {
+      const li = document.createElement('li')
+      li.innerHTML = 5
+      // l3.insertAdjacentElement('beforeBegin', li)
+      // ul.insertAdjacentElement('afterbegin', li)
+      ul.insertAdjacentElement('beforeend', li)
+      // l3.insertAdjacentElement('afterend', li)
+
+      l2.insertAdjacentHTML('beforeBegin', '&lt;b&gt;beforeBegin</b>')
+      l2.insertAdjacentHTML('afterbegin', '<b>afterbegin</b>')
+      ipt.focus({ preventScroll: true })
+      // console.log('btn: ', btn);
+    }, 2000);
+  </script>
+  <script>
+    // 浏览器对元素id属性的值大小写敏感
+    console.log(foo);
+    console.log(Foo);
+    console.log(Foo.tagName, Foo.nodeName, Foo.attributes);
+    console.log(Foo.getAttributeNames(), 2);
+    Foo.dir = 'rtl'
+    // btn.classList.add('btn2', 'btn22')
+    btn.classList.toggle('btn2', false)
+    console.log(' btn.classList.toString(): ', btn.classList.toString());
+    console.log(ds.dataset);
+    btn.matches('.btn2', '===mm')
+    console.log(btn.matches('.btn,.btn1',), '===mm');
+    // console.log(para.innerHTML);
+    var name = "<script>alert('haha')<\/script>";
+    var name = "<img src=x onerror=alert(1)>";
+    // para.innerHTML = name;
+    para.textContent = name;
+
+    console.log(clt.clientHeight);// 块元素本身高度和padding,如果有平滚动条，还有减去水平滚动条高度
+    console.log(clt.offsetHeight, '-0');// 块元素本身高度、padding、border,以及水平滚动条高度（如果有水平滚动条的话），不包括margin
+    console.log(clt.scrollHeight, 2); // 块元素总高度，包括溢出容器不可见部分，也包括padding,不包括border,margin,以及水平滚动条高度（如果有水平滚动条的话），还包括伪元素(::before或::after)的高度
+    console.log(clt.getBoundingClientRect(), '---3');
+    console.log(clt.getClientRects(), '---4');
+    console.log(Object.keys(clt.getBoundingClientRect()), '---3');//rect对象没有自身属性，而Object.keys方法只返回对象自身的属性，所以返回了一个空数组
+    console.log(clt.clientLeft);// 块元素上边框宽度
+    console.log(clt.clientTop);// 块元素上边框宽度
+    console.log(cc.offsetParent);
+    console.log(cc.offsetTop);
+    console.log(cc.children);
+    console.log(pp.childElementCount);
+    console.log('------ ');
+    var outer = document.getElementById('outer');
+    console.log(outer.querySelectorAll('div p'));
+    var element = document.getElementById('example');
+    var matches = element.getElementsByClassName('foo');
+    console.log('matches: ', matches);
+
+    setTimeout(() => {
+      for (var i = 0; i < matches.length; i++) {
+        matches[i].classList.remove('foo');
+        matches.item(i).classList.add('bar');
+      }
+    }, 4000);
+
+  </script>
+</body>
+
+</html>

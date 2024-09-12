@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <p style="width:fit-content">hello</p>
+  </div>
+  <p id="para">Hello <em>World</em></p>
+  <input type="text" id="my-input" />
+  <script>
+    var input = document.getElementById('my-input');
+
+    // input.addEventListener('keypress', checkName, false);
+    input.addEventListener('click', l1, false);
+    input.addEventListener('click', l2, true);
+
+
+    function l1(e) {
+      console.log(1, e.composedPath());
+
+    }
+
+    function l2(e) {
+      // e.stopImmediatePropagation();
+      console.log('hello world');
+
+    }
+
+
+    function checkName(e) {
+      if (e.charCode < 97 || e.charCode > 122) {
+        e.preventDefault();
+      }
+    }
+
+    var div = document.querySelector('div');
+    var p = document.querySelector('p');
+
+    function cb(e) {
+      console.log('e: ', e);
+      console.log(click, '----click2');
+      var tag = e.target.tagName;
+      if (tag === 'DIV') {
+        console.log('div');
+      } else if (tag === 'P') {
+        console.log('p');
+      }
+    }
+    div.addEventListener('click', cb, false);
+    // para.addEventListener('click', function (e) {
+    //   if (this === e.currentTarget) {
+    //     console.log(e.currentTarget, 8);
+    //   }
+    //   console.log(e);
+    //   console.log(this, e.target);
+    // }, true);
+
+    var click = new Event('click', {
+      'bubbles': false,
+      'cancelable': true
+    });
+    console.log(click, '-c');
+    if (click.cancelable) {
+      click.preventDefault()
+    }
+    // p.dispatchEvent(click) // 不会触发事件监听
+    // div.dispatchEvent(click) // 会触发事件监听 =》 不管div元素是在冒泡阶段监听，还是在捕获阶段监听，都会触发监听函数。因为这时div元素是事件的目标，不存在是否冒泡的问题，div元素总是会接收到事件，因此导致监听函数生效。
+    var previousX;
+    var previousY;
+    var previousT;
+    // window.addEventListener('mousemove', function (event) {
+    //   if (
+    //     previousX !== undefined &&
+    //     previousY !== undefined &&
+    //     previousT !== undefined
+    //   ) {
+    //     var deltaX = event.screenX - previousX;
+    //     var deltaY = event.screenY - previousY;
+    //     var deltaD = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+
+    //     var deltaT = event.timeStamp - previousT;
+    //     console.log(deltaD / deltaT * 1000);
+    //   }
+
+    //   previousX = event.screenX;
+    //   previousY = event.screenY;
+    //   previousT = event.timeStamp;
+    // });
+  </script>
+</body>
+
+</html>

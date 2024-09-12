@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const pinia = {}
+
+    setupFn('user', pinia)
+
+    function setupFn(id) {
+      function setup() {
+        let store = pinia[id]
+        return Object.assign(store, {
+          b: 2
+        })
+      }
+      createSetupContext(id, setup)
+    }
+
+    function createSetupContext(id, setup) {
+      const store = { a: 1 }
+      pinia[id] = store
+      const setupStore = (() => setup())()
+      console.log('setupStore: ', setupStore);
+
+    }
+  </script>
+</body>
+
+</html>

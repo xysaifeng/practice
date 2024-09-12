@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <a data-foo="foo" data-helloWorld="helloWorld" class="link" id="test" bgcolor="yellow" onload=""
+      href="http://www.example.com">
+      链接
+    </a>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    'use strict'
+    console.log(test.attributes);
+    // test.removeAttribute('href');
+    console.log(test.attributes.bgcolor);
+    console.log(test.attributes['ONLoAD'].name);
+
+    setTimeout(() => {
+      var para = document.getElementsByTagName('a')[0];
+      var result = document.getElementById('result');
+      para.removeAttribute('href');
+      delete para.bgcolor;
+
+      console.log(para.dataset.foo, 'f1');
+      delete para.dataset.foo
+      console.log(para.dataset.helloWorld, 'f2');// undefined
+      console.log(para.dataset.helloworld, 'f22');// helloWorld
+
+      console.log(para.getAttributeNames());
+      console.log(para.getAttribute('bgCoLor'), 1); // yellow
+      console.log(para.bgcolor, 2);// undefined => bgcolor非元素的标准属性
+      console.log(para.class, 3);// undefined
+      console.log(para.className, 3);// link  class属性改为className,for属性改为htmlFor
+      if (para.hasAttributes()) {
+        var attrs = para.attributes;
+        var output = '';
+        for (var i = attrs.length - 1; i >= 0; i--) {
+          output += attrs[i].name + '->' + attrs[i].value + ' ';
+        }
+        result.innerHTML = output;
+      } else {
+        result.textContent = 'No attributes to show';
+      }
+    }, 2000);
+  </script>
+</body>
+
+</html>
