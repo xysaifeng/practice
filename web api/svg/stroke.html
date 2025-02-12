@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* html,
+    body,
+    svg {
+      height: 100%;
+    } */
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    line {
+      stroke: red;
+      stroke-width: 1px;
+    }
+
+    .line {
+      stroke: black;
+      stroke-width: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <svg viewBox="0 0 30 12" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="1" x2="30" y2="1" />
+    <line x1="0" y1="3" x2="30" y2="3" stroke-dasharray="4"></line>
+    <line x1="0" y1="5" x2="30" y2="5" stroke-dasharray="4 1"></line>
+    <line x1="0" y1="7" x2="30" y2="7" stroke-dasharray="4 1 2"></line>
+    <line x1="0" y1="9" x2="30" y2="9" stroke-dasharray="4 1 2 3"></line>
+    <line x1="0" y1="11" x2="30" y2="11" stroke-dasharray="0 4 0"></line>
+  </svg> -->
+
+  <!-- <svg viewBox="-3 0 30 12" xmlns="http://www.w3.org/2000/svg">
+    <line x1="0" y1="1" x2="30" y2="1" />
+    <line x1="0" y1="3" x2="30" y2="3" stroke-dasharray="3 1"></line> -->
+  <!-- 虚线正向偏移了 3 个单位 -->
+  <!-- <line x1="0" y1="5" x2="30" y2="5" stroke-dasharray="3 1" stroke-dashoffset="3"></line> -->
+
+  <!-- 虚线反向偏移了 3 个单位 -->
+  <!-- <line x1="0" y1="7" x2="30" y2="7" stroke="black" stroke-dasharray="3 1" stroke-dashoffset="-3" /> -->
+
+  <!-- 虚线正向偏移了 1 个单位，最终渲染结果和上一个例子相同 -->
+  <!-- <line x1="0" y1="9" x2="30" y2="9" stroke="black" stroke-dasharray="3 1" stroke-dashoffset="1" /> -->
+  <!-- 底下的红线突显了每行虚线的偏移量 -->
+  <!-- <path d="M0,5 H-3 M0,7 H3 M0,9 H-1" stroke="rgb(0 255 0 / 50%)"></path> -->
+  <!-- </svg> -->
+  <!-- <svg width="120" height="120" viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <line class="line" x1="30" y1="30" x2="30" y2="90" stroke-linecap="butt"></line>
+    <line class="line" x1="60" y1="30" x2="60" y2="90" stroke-linecap="round"></line>></line>
+    <line class="line" x1="90" y1="30" x2="90" y2="90" stroke-linecap="square"></line>></line>
+    <path d="M30,30 L30,90 M60,30 L60,90 M90,30 L90 90" stroke="orange"></path> -->
+
+  <!-- <g id="highlight">
+      <path d="M1,5 a2,2 0,0,0 2,-3 a3,3 0 0 1 2,3.5" stroke="pink" fill="none" stroke-width="0.025" />
+      <circle cx="1" cy="5" r="0.05" fill="pink" />
+      <circle cx="3" cy="2" r="0.05" fill="pink" />
+      <circle cx="5" cy="5.5" r="0.05" fill="pink" />
+    </g>
+    <use xlink:href="#highlight" x="6" /> -->
+  <!-- </svg> -->
+
+  <svg viewBox="0 0 10 10">
+    <path d="M1,4 l2,-2 l2,2" stroke="black" fill="none" stroke-linejoin="round" />
+  </svg>
+</body>
+
+</html>

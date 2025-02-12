@@ -1,0 +1,18 @@
+#myrect {
+  stroke: orange;
+  stroke-width: 3;
+  fill: black;
+  cursor: pointer;
+  transition: all .6s ease;
+}
+
+#myrect:hover {
+  stroke: black;
+  fill: orange;
+
+}
+
+#MyRect {
+  fill: red;
+  stroke: black;
+}
