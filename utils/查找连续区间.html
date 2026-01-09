@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    // 
+    function disabledArea() {
+      const res = [1, 2, 58, 59, 4, 7, 8, 101, 102, 100];
+      let idx = 0;
+      let r = []
+      res.forEach((e, i, a) => {
+        if (e + 1 === a[i + 1]) {
+          idx++
+        } else {
+          r.push({
+            s: res[i - idx],
+            len: idx + 1
+          })
+          s = 0
+          idx = 0
+        }
+
+      })
+      console.log(r, '===res')
+    }
+
+    // disabledArea()
+
+    const EntryValue = [
+      "汽车车窗玻璃升降器用零件（滑块）",
+      "汽车车窗玻璃升降器用零件（滑块）",
+      "胶水",
+      "螺母",
+      "标签",
+      "滚轮",
+      "滚轮",
+      "鱼嘴泡棉",
+      "单喇叭音箱"
+    ]
+    const DecValue = ['BD MAX 0.3毫升锥形小管（100', 'BD MAX 微量反应板 24通道', '校准瓶']
+
+    // **注意所有数组中的元素都将是这个确定的值：如果 value 是个对象，那么数组的每一项都会引用这个元素。**
+    let data1 = Array.from({ length: 9 }).fill({})
+    // let data1 = [{}, {}, {}, {}, {}, {}, {}, {}, {}]
+    console.log('data:1 ', data1)
+    console.log(data1[0] === data1[2]);
+
+    // const data = data1.map((e, i) => {
+    //   console.log('i: ', i);
+    //   e.EntryValue = EntryValue[i]
+    //   console.log('e.EntryValue: ', e.EntryValue);
+    //   e.DecValue = DecValue[i]
+    //   console.log(' e.DecValu: ', e.DecValue);
+    //   return e
+    // })
+    // console.log(data[2].EntryValue, 99)
+
+    // const data = []
+    // data1.forEach((e, i) => {
+    //   e.EntryValue = EntryValue[i]
+    //   e.DecValue = DecValue[i]
+    //   data.push(e)
+
+    // })
+    // console.log(data);
+
+  </script>
+</body>
+
+</html>

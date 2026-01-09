@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+  <style>
+    #video {
+      border: 1px solid #999;
+      width: 98%;
+      max-width: 860px;
+    }
+
+    #log {
+      width: 25rem;
+      height: 15rem;
+      border: 1px solid black;
+      padding: 0.5rem;
+      overflow: scroll;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="start">开启屏幕捕获</button>
+  <button id="stopp">停止屏幕捕获</button>
+  <button id="record">开始录像</button>
+  <button id="stopRecord">结束录像</button>
+  <button id="pause">暂停录像</button>
+  <button id="resume">继续录像</button>
+  <button id="slice">视频快照</button>
+
+
+  <div>
+    <video id="video" controls autoplay></video>
+  </div>
+
+  <strong>Log:</strong>
+  <br />
+  <pre id="log"></pre>
+
+  <script>
+
+    let videoElem = document.getElementById('video');
+    let recorder = null
+    let captureStream = null
+
+    stopp.onclick = function () {
+      console.log('=stop record');
+      let tracks = captureStream.getTracks();
+      tracks.forEach((track) => track.stop());
+    }
+
+
+
+
+    let chunks = [];
+    start.onclick = async function () {
+
+      try {
+        captureStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true,
+          // video: {
+          //   displaySurface: "window", // browser | window | monitor
+          // },
+          // audio: {
+          //   echoCancellation: true,
+          //   noiseSuppression: true,
+          //   sampleRate: 44100,
+          //   suppressLocalAudioPlayback: true,
+          // },
+          // surfaceSwitching: "include",
+          // selfBrowserSurface: "exclude",
+          // systemAudio: "exclude",
+        });
+        const options = {
+          audioBitsPerSecond: 128000,
+          videoBitsPerSecond: 2500000,
+          // mimeType: "video/mp4",
+          mimeType: "video/mp4;codecs=avc3.64003E,mp4a.40.2",
+          mimeType: 'video/webm;codecs=h264' // 或 'video/mp4'
+        };
+
+
+        recorder = new MediaRecorder(captureStream, options)
+
+        console.log('recorder: ', recorder);
+        recorder.start();
+
+
+        recorder.ondataavailable = function (e) {
+          console.log(e, '---');
+          chunks.push(e.data);
+        };
+
+        recorder.onstop = function (e) {
+          console.log(captureStream, 2);
+          console.log(chunks, 3);
+          const blob = new Blob(chunks, { type: 'video/mp4' });
+          // const blob = new Blob(chunks, { type: 'video/webm' });
+          const audioURL = window.URL.createObjectURL(blob);
+          videoElem.src = audioURL;
+        };
+
+        pause.onclick = function () {
+          console.log('pause-----s');
+          console.log(recorder.state);
+          recorder.pause();
+        };
+
+        resume.onclick = function () {
+          console.log('resume-----s');
+          console.log(recorder.state);
+          recorder.resume();
+        };
+
+
+        record.onclick = function () {
+          console.log('record-----s');
+          // recorder.start(5 * 1000);
+          recorder.start();
+        };
+
+        stopRecord.onclick = function () {
+          console.log('record-----e');
+          recorder.stop();
+        };
+        slice.onclick = function () {
+          console.log('requestData-----');
+          recorder.requestData();
+        };
+
+        const stream = captureStream.getVideoTracks()[0];
+        stream.onended = function () {
+          console.log('=======stream ended');
+        };
+      } catch (error) {
+        console.log('error: ', error);
+      }
+    }
+  </script>
+</body>
+
+</html>

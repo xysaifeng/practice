@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="./js/indexedDB.js"></script>
+</head>
+
+<body>
+  <script>
+    init();
+
+    async function init() {
+      const db = await openDb("class");
+      console.log("db: ", db);
+
+      // addData(db, "users", {
+      //   uuid: "1",
+      //   name: "张三",
+      //   age: 18,
+      //   sex: "男",
+      //   address: "北京",
+      //   createTime: new Date().getTime(),
+      // });
+
+      // addData(db, "users", {
+      //   uuid: "2",
+      //   name: "李四",
+      //   age: 20,
+      //   sex: "男",
+      //   address: "天津",
+      //   createTime: new Date().getTime(),
+      // });
+
+      // addData(db, "users", {
+      //   uuid: "8",
+      //   name: "田辉",
+      //   age: 21,
+      //   sex: "女",
+      //   address: "东莞",
+      //   createTime: new Date().getTime(),
+      // });
+      // addData(db, "users", {
+      //   uuid: "9",
+      //   name: "梦琳",
+      //   age: 22,
+      //   sex: "男",
+      //   address: "青岛",
+      //   createTime: new Date().getTime(),
+      // });
+      // addData(db, "users", {
+      //   uuid: "10",
+      //   name: "李丽",
+      //   age: 19,
+      //   sex: "女",
+      //   address: "哈尔滨",
+      //   createTime: new Date().getTime(),
+      // });
+      // addData(db, "users", {
+      //   uuid: "11",
+      //   name: "李杰",
+      //   age: 23,
+      //   sex: "男",
+      //   address: "南京",
+      //   createTime: new Date().getTime(),
+      // });
+
+      // 通过主键查询数据
+      // getDataByKey(db, "users", "1")
+
+      // 通过主键查询数据2
+      // getDataByKey2(db, "users", "2")
+      // getDataByKey2(db, "users",)
+
+      // 通过游标查询数据
+      // getDataByCursor(db, "users",)
+      // getDataByCursor(db, "users", IDBKeyRange.upperBound('2', true))
+
+      // 通过索引查询数据
+      // 查找name='张三'的数据
+      // getDataByIndex(db, "users", "name", "张三")
+
+      // 通过索引和游标查询数据
+      // 查找name='张三'的数据
+      // getDataByIndexAndCursor(db, "users", "age", 20)
+      // getDataByIndexAndCursor(db, "users", "name", '张三')
+
+      // 通过索引和游标进行分页查询
+      // getDataByIndexAndCursor2(db, "users", "age", 20, 2, 2)
+      // getDataByIndexAndCursor3(db, "users", "age", 20, 2, 2)
+
+      // 修改数据 key不用传入这里 因为使用了内联键uuid
+      // updateData(db, "users", {
+      //   address: "天津",
+      //   age: 22,
+      //   name: "李四",
+      //   sex: "男",
+      //   uuid: 22,
+      // }, 22);
+
+      // 通过游标索引更新数据
+      // updateData2(db, "users", 'name', '李四')
+
+      // 删除数据
+      // deleteData(db, "users", 22);
+
+      // 通过索引游标删除数据
+      deleteData2(db, "users", 'name', '李四三');
+
+
+      setTimeout(() => {
+        closeDB(db)
+      }, 3000);
+    }
+  </script>
+</body>
+
+</html>

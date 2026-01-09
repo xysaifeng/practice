@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div.source,
+    div.target {
+      border: 1px solid gray;
+      margin: 0.5rem;
+      padding: 0.5rem;
+      height: 1rem;
+      background-color: #e9eef1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="source" contenteditable="true">从这个盒子剪切文字</div>
+  <div class="target" contenteditable="true">在这里粘贴</div>
+
+  <script>
+    // const source = document.querySelector("div.source");
+
+    // source.addEventListener("copy", (event) => {
+    //   const selection = document.getSelection();
+    //   console.log(selection.toString(), 1)
+    //   event.clipboardData.setData("text/plain", selection.toString().toUpperCase());
+    //   // selection.deleteFromDocument();
+    //   event.preventDefault();
+    // });
+
+
+    // const target = document.querySelector("div.target");
+
+    // target.addEventListener("paste", (event) => {
+    //   event.preventDefault();
+
+    //   let paste = (event.clipboardData || window.clipboardData).getData("text");
+    //   paste = paste.toUpperCase();
+    //   console.log('paste: ', paste);
+    //   const selection = window.getSelection();
+    //   console.log('selection: ', selection);
+    //   if (!selection.rangeCount) return;
+    //   selection.deleteFromDocument();
+    //   selection.getRangeAt(0).insertNode(document.createTextNode(paste));
+    //   selection.collapseToEnd();
+    // });
+
+
+    document.addEventListener('copy', function (e) {
+      e.preventDefault()
+      const clipboardData = e.clipboardData || window.clipboardData
+      console.log('clipboardData: ', clipboardData);
+      e.clipboardData.setData('text/plain', 123)
+    })
+    document.addEventListener('paste', function (event) {
+      event.preventDefault()
+      const paste = (event.clipboardData || window.clipboardData).getData('text')
+      console.log('paste: ', paste)
+      console.log(state.selectedRow, '=======selectedRow')
+      console.log(state.selectedValue, '=======state.selectedValue')
+      if (!state.selectedRow) return
+      state.selectedRow[state.selectedRowIndex][state.selectedField] = paste
+      console.log('paste: ', paste)
+      console.log('state.selectedValue: ', state.selectedValue)
+    })
+  </script>
+</body>
+
+</html>

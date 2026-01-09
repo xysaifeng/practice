@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <meta name="color scheme" />
+
+  <style>
+    :root {
+      --text-primary: #1b1b1b;
+      --background-primary: #fff;
+      color-scheme: light dark;
+
+      /* color-scheme: only light; */
+    }
+
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      /* color: var(--text-primary); */
+      font: 400 1rem / 1.1876 Inter, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
+      height: 300px;
+      overflow: hidden;
+      position: relative;
+      /* background-color: var(--background-primary); */
+      overflow: hidden;
+      padding: 1rem;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+
+    section {
+      width: 240px;
+      height: 100%;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: light-dark(white, black);
+      background-color: light-dark(black, white);
+    }
+
+    #demo {
+      width: 80%;
+      height: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <section>
+    ok
+    <textarea name="demo" id="demo">area</textarea>
+  </section>
+
+  <script>
+    setChoice('color-scheme: light dark ;')
+    // setChoice('color-scheme: light;')
+    setChoice('color-scheme: normal;')
+    setChoice('color-scheme: dark;')
+    /** @param {string} code */
+    function setChoice(code) {
+      const element = document.getElementById("demo");
+      if (element) {
+        // element.style.cssText = code;
+      }
+    }
+
+
+
+  </script>
+</body>
+
+</html>

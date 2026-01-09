@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <el-button id="fetchStream">获取流</el-button>
+    <el-button id="removeTracks">删除轨道</el-button>
+    <video controls id="video" autoplay></video>
+  </div>
+
+
+  <script>
+
+    let initialStream, newStream;
+
+    let fetchStreamBtn = document.getElementById('fetchStream');
+    let removeTracksBtn = document.getElementById('removeTracks');
+
+    fetchStreamBtn.addEventListener('click', fetchStreamFunction);
+    removeTracksBtn.addEventListener('click', removeTracksFunction);
+
+
+    function attachToDom(stream) {
+
+      // newStream = new MediaStream(stream.getTracks())
+      newStream = new MediaStream(stream)
+      console.log('newStream: ', newStream);
+      video.srcObject = newStream;
+
+      let videoTrack = newStream.getVideoTracks()[0];
+
+      console.log(1, videoTrack.getCapabilities());
+      console.log(2, videoTrack.getConstraints());
+      console.log(3, videoTrack.getSettings());
+    }
+
+    async function fetchStreamFunction() {
+      initialStream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 620, height: 310 },
+        audio: true
+      });
+      if (initialStream) {
+        await attachToDom(initialStream)
+      }
+    }
+
+    function removeTracksFunction() {
+      let videoTrack = newStream.getVideoTracks()[0];
+      let audioTrack = newStream.getAudioTracks()[0];
+      newStream.removeTrack(videoTrack);
+      newStream.removeTrack(audioTrack);
+
+      // videoTrack.stop()
+      // audioTrack.stop();
+      // video.srcObject = null;
+      console.log(newStream.getTracks());
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediaStream API 完整演示</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- <link href="https://cdn.bootcdn.net/ajax/libs/daisyui/4.12.10/full.min.css" rel="stylesheet"> -->
+  <style>
+    video {
+      background-color: #000;
+      border-radius: 8px;
+    }
+
+    .control-panel {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen p-4">
+  <div class="container mx-auto max-w-6xl">
+    <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">MediaStream API 完整演示</h1>
+
+    <!-- 主视频显示区域 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">主视频流</h2>
+          <video id="mainVideo" autoplay playsinline class="w-full h-64"></video>
+          <div class="text-sm text-gray-600">
+            <p>流ID: <span id="streamId" class="font-mono">-</span></p>
+            <p>活动状态: <span id="streamActive" class="badge badge-success">-</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">轨道信息</h2>
+          <div class="space-y-2">
+            <div>
+              <h3 class="font-semibold">音频轨道:</h3>
+              <div id="audioTracks" class="text-sm text-gray-600">-</div>
+            </div>
+            <div>
+              <h3 class="font-semibold">视频轨道:</h3>
+              <div id="videoTracks" class="text-sm text-gray-600">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 控制面板 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+      <!-- 获取媒体流 -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">获取媒体流</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="label">
+                <span class="label-text">音频配置</span>
+              </label>
+              <select id="audioConfig" class="select select-bordered w-full">
+                <option value="false">禁用音频</option>
+                <option value="true" selected>启用音频</option>
+                <option value="advanced">高级音频配置</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="label">
+                <span class="label-text">视频配置</span>
+              </label>
+              <select id="videoConfig" class="select select-bordered w-full">
+                <option value="false">禁用视频</option>
+                <option value="true" selected>启用视频</option>
+                <option value="advanced">高级视频配置</option>
+              </select>
+            </div>
+
+            <button id="getMediaBtn" class="btn btn-primary w-full">获取媒体流</button>
+            <button id="stopAllBtn" class="btn btn-error w-full">停止所有轨道</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 轨道操作 -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">轨道操作</h2>
+          <div class="space-y-4">
+            <button id="toggleAudioBtn" class="btn btn-secondary w-full" disabled>切换音频轨道</button>
+            <button id="toggleVideoBtn" class="btn btn-secondary w-full" disabled>切换视频轨道</button>
+            <button id="removeAudioBtn" class="btn btn-warning w-full" disabled>移除音频轨道</button>
+            <button id="removeVideoBtn" class="btn btn-warning w-full" disabled>移除视频轨道</button>
+            <button id="cloneStreamBtn" class="btn btn-info w-full" disabled>克隆媒体流</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 高级配置面板 -->
+    <div id="advancedConfig" class="hidden mt-6">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">高级配置</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h3 class="font-semibold mb-2">视频设置</h3>
+              <label class="label">
+                <span class="label-text">宽度</span>
+                <input type="number" id="videoWidth" class="input input-bordered" value="1280" min="320" max="1920">
+              </label>
+              <label class="label">
+                <span class="label-text">高度</span>
+                <input type="number" id="videoHeight" class="input input-bordered" value="720" min="240" max="1080">
+              </label>
+              <label class="label">
+                <span class="label-text">帧率</span>
+                <input type="number" id="videoFrameRate" class="input input-bordered" value="30" min="5" max="60">
+              </label>
+              <label class="label">
+                <span class="label-text">摄像头</span>
+                <select id="facingMode" class="select select-bordered">
+                  <option value="user">前置摄像头</option>
+                  <option value="environment">后置摄像头</option>
+                </select>
+              </label>
+            </div>
+
+            <div>
+              <h3 class="font-semibold mb-2">音频设置</h3>
+              <label class="label">
+                <span class="label-text">回声消除</span>
+                <input type="checkbox" id="echoCancellation" class="checkbox" checked>
+              </label>
+              <label class="label">
+                <span class="label-text">噪声抑制</span>
+                <input type="checkbox" id="noiseSuppression" class="checkbox" checked>
+              </label>
+              <label class="label">
+                <span class="label-text">自动增益</span>
+                <input type="checkbox" id="autoGainControl" class="checkbox">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 克隆的流 -->
+    <div id="clonedStreamContainer" class="hidden mt-6">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">克隆的媒体流</h2>
+          <video id="clonedVideo" autoplay playsinline class="w-full h-48"></video>
+          <button id="stopClonedBtn" class="btn btn-error">停止克隆流</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 日志输出 -->
+    <div class="mt-6">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title">操作日志</h2>
+          <div id="logOutput"
+            class="bg-gray-100 p-4 rounded-lg h-32 overflow-y-auto font-mono text-sm whitespace-pre-wrap"></div>
+          <button id="clearLogBtn" class="btn btn-ghost btn-sm">清空日志</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStream = null;
+    let clonedStream = null;
+    let audioTrack = null;
+    let videoTrack = null;
+
+    // 日志功能
+    function log(message) {
+      const logOutput = document.getElementById('logOutput');
+      const timestamp = new Date().toLocaleTimeString();
+      logOutput.innerHTML += `[${timestamp}] ${message}\n`;
+      logOutput.scrollTop = logOutput.scrollHeight;
+    }
+
+    // 更新轨道信息显示
+    function updateTrackInfo() {
+      if (!currentStream) {
+        document.getElementById('audioTracks').textContent = '-';
+        document.getElementById('videoTracks').textContent = '-';
+        return;
+      }
+
+      const audioTracks = currentStream.getAudioTracks();
+      console.log('audioTracks: ', audioTracks);
+      const videoTracks = currentStream.getVideoTracks();
+      console.log('videoTracks: ', videoTracks);
+
+      document.getElementById('audioTracks').innerHTML = audioTracks.map(track =>
+        `<div>ID: ${track.id.substring(0, 8)}... | 标签: ${track.label} | 状态: ${track.readyState}</div>`
+      ).join('') || '无音频轨道';
+
+      document.getElementById('videoTracks').innerHTML = videoTracks.map(track =>
+        `<div>ID: ${track.id.substring(0, 8)}... | 标签: ${track.label} | 状态: ${track.readyState}</div>`
+      ).join('') || '无视频轨道';
+    }
+
+    // 更新流信息
+    function updateStreamInfo() {
+      if (currentStream) {
+        document.getElementById('streamId').textContent = currentStream.id;
+        document.getElementById('streamActive').textContent = currentStream.active ? '活动' : '非活动';
+        document.getElementById('streamActive').className = currentStream.active ? 'badge badge-success' : 'badge badge-error';
+      }
+    }
+
+    // 获取媒体流
+    async function getMediaStream() {
+      try {
+        const audioConfig = document.getElementById('audioConfig').value;
+        const videoConfig = document.getElementById('videoConfig').value;
+
+        let constraints = {};
+
+        // 音频配置
+        if (audioConfig === 'true') {
+          constraints.audio = true;
+        } else if (audioConfig === 'advanced') {
+          constraints.audio = {
+            echoCancellation: document.getElementById('echoCancellation').checked,
+            noiseSuppression: document.getElementById('noiseSuppression').checked,
+            autoGainControl: document.getElementById('autoGainControl').checked
+          };
+        } else {
+          constraints.audio = false;
+        }
+
+        // 视频配置
+        if (videoConfig === 'true') {
+          constraints.video = true;
+        } else if (videoConfig === 'advanced') {
+          constraints.video = {
+            width: { ideal: parseInt(document.getElementById('videoWidth').value) },
+            height: { ideal: parseInt(document.getElementById('videoHeight').value) },
+            frameRate: { ideal: parseInt(document.getElementById('videoFrameRate').value) },
+            facingMode: document.getElementById('facingMode').value
+          };
+        } else {
+          constraints.video = false;
+        }
+
+        log(`请求媒体流: ${JSON.stringify(constraints)}`);
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        currentStream = stream;
+
+        document.getElementById('mainVideo').srcObject = stream;
+
+        // 获取轨道引用
+        audioTrack = stream.getAudioTracks()[0] || null;
+        videoTrack = stream.getVideoTracks()[0] || null;
+
+        updateStreamInfo();
+        updateTrackInfo();
+        updateButtons();
+
+        log('成功获取媒体流');
+
+        // 监听轨道事件
+        stream.addEventListener('addtrack', (e) => {
+          log(`轨道已添加1: ${e.track.kind} - ${e.track.label}`);
+          updateTrackInfo();
+        });
+
+        stream.addEventListener('removetrack', (e) => {
+          log(`轨道已移除2: ${e.track.kind} - ${e.track.label}`);
+          updateTrackInfo();
+        });
+
+      } catch (error) {
+        log(`获取媒体流失败: ${error.name} - ${error.message}`);
+        alert(`获取媒体流失败: ${error.message}`);
+      }
+    }
+
+    // 停止所有轨道
+    function stopAllTracks() {
+      if (currentStream) {
+        currentStream.getTracks().forEach(track => {
+          console.log('track: ', track);
+          log(`停止轨道: ${track.kind} - ${track.label}`);
+          track.stop();
+        });
+        currentStream = null;
+        document.getElementById('mainVideo').srcObject = null;
+        updateStreamInfo();
+        updateTrackInfo();
+        updateButtons();
+        log('已停止所有轨道');
+      }
+    }
+
+    // 切换音频轨道
+    function toggleAudioTrack() {
+      if (audioTrack) {
+        audioTrack.enabled = !audioTrack.enabled;
+        log(`音频轨道 ${audioTrack.enabled ? '启用' : '禁用'}`);
+      }
+    }
+
+    // 切换视频轨道
+    function toggleVideoTrack() {
+      if (videoTrack) {
+        videoTrack.enabled = !videoTrack.enabled;
+        log(`视频轨道 ${videoTrack.enabled ? '启用' : '禁用'}`);
+      }
+    }
+
+    // 移除音频轨道
+    function removeAudioTrack() {
+      if (currentStream && audioTrack) {
+        currentStream.removeTrack(audioTrack);
+        audioTrack.stop();
+        audioTrack = null;
+        log('已移除音频轨道');
+        updateTrackInfo();
+        updateButtons();
+      }
+    }
+
+    // 移除视频轨道
+    function removeVideoTrack() {
+      if (currentStream && videoTrack) {
+        currentStream.removeTrack(videoTrack);
+        videoTrack.stop();
+        videoTrack = null;
+        log('已移除视频轨道');
+        updateTrackInfo();
+        updateButtons();
+      }
+    }
+
+    // 克隆媒体流
+    function cloneStream() {
+      if (currentStream) {
+        clonedStream = currentStream.clone();
+        console.log('clonedStream: ', clonedStream);
+        document.getElementById('clonedVideo').srcObject = clonedStream;
+        document.getElementById('clonedStreamContainer').classList.remove('hidden');
+        log('已克隆媒体流');
+
+        // 监听克隆流的轨道事件
+        clonedStream.addEventListener('addtrack', (e) => {
+          log(`克隆流 - 轨道已添加: ${e.track.kind}`);
+        });
+
+        clonedStream.addEventListener('removetrack', (e) => {
+          log(`克隆流 - 轨道已移除: ${e.track.kind}`);
+        });
+      }
+    }
+
+    // 停止克隆流
+    function stopClonedStream() {
+      if (clonedStream) {
+        clonedStream.getTracks().forEach(track => track.stop());
+        clonedStream = null;
+        document.getElementById('clonedVideo').srcObject = null;
+        document.getElementById('clonedStreamContainer').classList.add('hidden');
+        log('已停止克隆流');
+      }
+    }
+
+    // 更新按钮状态
+    function updateButtons() {
+      const hasStream = !!currentStream;
+      console.log('hasStream: ', hasStream);
+      const hasAudio = hasStream && currentStream.getAudioTracks().length > 0;
+      console.log('hasAudio: ', hasAudio);
+      const hasVideo = hasStream && currentStream.getVideoTracks().length > 0;
+      console.log('hasVideo: ', hasVideo);
+
+      document.getElementById('toggleAudioBtn').disabled = !hasAudio;
+      document.getElementById('toggleVideoBtn').disabled = !hasVideo;
+      document.getElementById('removeAudioBtn').disabled = !hasAudio;
+      document.getElementById('removeVideoBtn').disabled = !hasVideo;
+      document.getElementById('cloneStreamBtn').disabled = !hasStream;
+    }
+
+    // 显示/隐藏高级配置
+    function toggleAdvancedConfig() {
+      const audioConfig = document.getElementById('audioConfig').value;
+      const videoConfig = document.getElementById('videoConfig').value;
+
+      if (audioConfig === 'advanced' || videoConfig === 'advanced') {
+        document.getElementById('advancedConfig').classList.remove('hidden');
+      } else {
+        document.getElementById('advancedConfig').classList.add('hidden');
+      }
+    }
+
+    // 事件监听器
+    document.getElementById('getMediaBtn').addEventListener('click', getMediaStream);
+    document.getElementById('stopAllBtn').addEventListener('click', stopAllTracks);
+    document.getElementById('toggleAudioBtn').addEventListener('click', toggleAudioTrack);
+    document.getElementById('toggleVideoBtn').addEventListener('click', toggleVideoTrack);
+    document.getElementById('removeAudioBtn').addEventListener('click', removeAudioTrack);
+    document.getElementById('removeVideoBtn').addEventListener('click', removeVideoTrack);
+    document.getElementById('cloneStreamBtn').addEventListener('click', cloneStream);
+    document.getElementById('stopClonedBtn').addEventListener('click', stopClonedStream);
+    document.getElementById('clearLogBtn').addEventListener('click', () => {
+      document.getElementById('logOutput').innerHTML = '';
+    });
+
+    document.getElementById('audioConfig').addEventListener('change', toggleAdvancedConfig);
+    document.getElementById('videoConfig').addEventListener('change', toggleAdvancedConfig);
+
+    // 初始化
+    log('页面已加载，准备获取媒体流...');
+
+    // 检查浏览器支持
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      log('警告：您的浏览器不支持 getUserMedia API');
+      alert('您的浏览器不支持 getUserMedia API，请使用现代浏览器访问');
+    }
+
+    // 监听配置变化
+    toggleAdvancedConfig();
+  </script>
+</body>
+
+
+
+</html>

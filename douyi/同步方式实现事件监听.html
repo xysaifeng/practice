@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      font-size: 20px;
+      margin: 0 auto;
+      height: 100%;
+    }
+
+    ul {
+      /* list-style: none; */
+      width: 200px;
+      border: 1px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <button id="btn">click</button>
+    <input id="ipt" type="text">
+    <ul id="list">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+    </ul>
+  </div>
+  <script>
+    function getElement(id) {
+      const btn = document.getElementById(id)
+
+      // 不行 点击后就不变了resolved 状态
+      // btn.waitClick = new Promise((resolve) => {
+      //   btn.onclick = resolve
+      // })
+
+      const proxy = new Proxy(btn, {
+        get(target, key) {
+          if (!key.startsWith('wait')) {
+            return Reflect.get(target, key)
+          }
+          return target[key] = new Promise((resolve) => {
+            const ename = key.slice(4).toLowerCase()
+            console.log('ename: ', ename);
+            target.addEventListener(ename, resolve, {
+              once: true // 最好设为true 因为点击是一次性的
+            })
+          })
+        }
+      })
+      // return btn
+      return proxy
+    }
+    async function handleClick() {
+      const btn = getElement('btn')
+      console.log('btn: ', btn);
+      let i = 0
+      while (2) {
+        i++
+        await btn.waitClick
+        console.log('btn click', i);
+        if (i > 4) {
+          break
+        }
+      }
+    }
+
+    async function handleClickNew() {
+      let ob = document.when('click')
+
+      const clicked = async () => {
+        // ob = document.when('click')
+        return new Promise(resolve => {
+          ob.take(1).filter(e => {
+            console.log('e: ', e);
+            return e.clientX > 300
+          }).subscribe(resolve)
+        })
+      }
+
+      while (2) {
+        const r = await clicked()
+        console.log('r: ', r);
+        // ob = null
+
+      }
+    }
+    // handleClick()
+    handleClickNew()
+
+
+
+    // 自己yy的 不生效
+    async function handleClick2() {
+      // chrome新版浏览器EventTarget的when方法
+      let i = 0
+      while (true) {
+        i++
+        // console.log(btn.when);
+        const res = await btn.when('click')
+        console.log('res: ', res);
+        console.log('btn click');
+        if (i > 10) {
+          break
+
+        }
+      }
+    }
+
+
+    // subscribe
+    function handleClick3() {
+      const ob = btn.when('click');
+      console.log('click: ', ob);
+      // 订阅 Observable（这才是真正开始监听的时候）
+      // const subscription2 = ob.subscribe({
+      //   next: (event) => {
+      //     console.log('Button clicked!', event);
+      //     console.log('ClientX:', event.clientX, 'ClientY:', event.clientY);
+      //   },
+      //   error: (err) => {
+      //     console.error('Error occurred:', err);
+      //   },
+      //   complete: () => {
+      //     console.log('Observation completed');
+      //   }
+      // });
+
+      const subscription = ob.subscribe(e => {
+        console.log(e);
+      });
+      console.log(subscription);
+      // 当你不再需要监听时，取消订阅
+      // subscription.unsubscribe();
+    }
+
+    // first
+    async function handleClick4() {
+      // 只监听第一次点击 
+      const e = btn.when('click')
+      // 只取第一个事件
+      const res = await e.first()
+      console.log('res: ', res);
+    }
+
+
+
+    // take takeUntil drop
+    function handleClick5() {
+      // 创建一个用于通知停止的信号
+      const stopSignal = new EventTarget();
+      const ob = btn.when('click');
+      let i = 0
+      console.log('click: ', ob);
+      // 使用 take(n) 限制事件次数
+      ob.take(5) // 仅处理前5个点击事件
+        .drop(1) // 跳过第一个点击事件
+        .takeUntil(stopSignal.when('stop')) // 当 stopSignal 发出 stop 事件时结束
+        .subscribe({
+          next(e) {
+            console.log(e);
+          }
+        })
+      // .subscribe(e => {
+      //   i++
+      //   if (i > 3) {
+      //     // 当需要停止监听时
+      //     // stopSignal.dispatchEvent(new Event('stop'));
+      //   }
+      //   console.log(i);
+      // });
+    }
+
+
+    // filter
+    function handleClick6() {
+      const ob = btn.when('click');
+      console.log('ob: ', ob);
+      ob.filter(event => event.shiftKey) // 只处理按住Shift键的点击
+        .subscribe(event => {
+          console.log('Shift + Click!', event);
+        });
+    }
+
+    // map
+    function handleClick7() {
+      const ob = btn.when('click');
+      console.log('ob: ', ob);
+      ob.map(event => ({ x: event.clientX, y: event.clientY })) //  测试 map
+        .subscribe(coords => {
+          console.log('点击坐标:', coords);
+        });
+    }
+
+    // switchMap
+    function handleClick8() {
+      const stopSignal = new EventTarget();
+      const ob = ipt.when('input');
+      console.log('ob: ', ob);
+      ob.takeUntil(stopSignal.when('stop')).switchMap(event => {
+        const val = event.target.value;
+
+        return fetch(`https://jsonplaceholder.typicode.com/posts/${val}`)
+          .then(response => {
+            if (response.status !== 200) {
+              // throw new Error('请求失败')
+              // return Promise.reject(('请求失败2')) // error回调捕捉
+              return Promise.resolve({ code: 1002, status: response.status, data: null, msg: '请求失败' })// next回调捕捉
+            }
+            return response.json()
+          })
+        // .catch(err => {
+        //   console.log('err:1 ', err);
+        //   return Promise.resolve({ code: 1001, data: null, msg: err })
+        // })
+
+      })
+        .catch(err => {
+          console.log('err: s', err);
+          stopSignal.dispatchEvent(new Event('stop'));
+          // return { fallback: 'error data' }
+        })
+        .finally((s) => {
+          console.log(s, 'finally');
+
+        })
+        // .subscribe(value => console.log('防抖后的输入:', value)); 这种方式错误捕捉不了
+        .subscribe({
+          next(value) {
+            console.log('value: ', value);
+          },
+          error(err) { // 错误回调
+            console.log('err: ', err);
+          },
+        });
+    }
+
+    // .reduce((total, delta) => {
+    //     return {
+    //       totalDx: total.totalDx + delta.dx,
+    //       totalDy: total.totalDy + delta.dy
+    //     }
+    //   }, { totalDx: 0, totalDy: 0 })
+    // 测试reduce 不生效
+    function handleClick9() {
+      let startX = 0, startY = 0;
+      const ob = btn.when('click');
+      ob.take(5).map(event => {
+        const o = {
+          dx: event.clientX - startX,
+          dy: event.clientY - startY
+        }
+        startX = event.clientX;
+        startY = event.clientY;
+        return o
+      })
+        .subscribe(res => {
+          console.log('res: ', res);
+        })
+    }
+
+    // some every
+    async function handleClick10() {
+      const ob = document.body.when('click');
+      console.log('ob: ', ob);
+      const s = await ob.every(function (e, t) {
+        // const s = await ob.some(function (e, t) {
+        console.log('t: ', t);
+        console.log(arguments);
+        return e.clientY < 100
+      }, { once: true })
+      console.log('s: ', s);
+      // .subscribe(res => {
+      //   console.log('res: ', res);
+      // })
+    }
+
+    // 测试reduce 结合take
+    async function handleClick11() {
+      const ob = document.body.when('click');
+      const r = await ob.take(3).reduce(function (total, delta, t) {
+        console.log('t: ', t);
+
+        return {
+          totalDx: total.totalDx + delta.clientX,
+          totalDy: total.totalDy + delta.clientY
+        }
+      }, { totalDx: 0, totalDy: 0 })
+      console.log(r, 999);
+    }
+
+    // 测试toArray 结合take
+    async function handleClick12() {
+      const ob = document.body.when('click');
+      const r = await ob.take(3).map(event => ({ x: event.clientX, y: event.clientY })).toArray()
+      console.log(r, 999);
+    }
+
+    // find 找到目标节点
+    async function handleClick13() {
+      const ob = document.body.when('click');
+      const r = await ob.find((event, t,) => {
+        console.log('t: ', t);
+        return event.target.id === 'btn'
+      })
+      console.log(r, 999);
+    }
+    // last
+    async function handleClick14() {
+      // 获取最后一次点击
+      const r = await document.when('click').take(4)
+        .last()
+      console.log(r, 22);
+    }
+
+
+    // inspect 不知咋用
+    async function handleClick15() {
+      // 获取最后一次点击
+      const r = document.when('click').take(10)
+        .map((event, t) => {
+          console.log(t, '---a');
+          return ({ x: event.clientX, y: event.clientY })
+        })
+        .filter((event, t) => {
+          console.log('t: ', '----b');
+          return event.x > 500
+        })
+        .inspect(function (event,) {
+          console.log(event, 77777);
+        })
+        .subscribe((coord, t) => {
+          console.log('最终坐标:', coord);
+        })
+      console.log(r, 22);
+    }
+
+    // flatMap
+    function handleClick16() {
+      let start = 0
+
+      const ob = document.when('click')
+      console.log('ob: ', ob);
+      ob.take(5) // 取5次点击
+        .inspect(event => {
+          start = performance.now()
+        })
+        .flatMap((event, t) => {
+          console.log('t: ', t);
+          // 为每次点击创建一个处理流程
+          const clickData = {
+            type: 'click',
+            position: { x: event.clientX, y: event.clientY },
+            timestamp: Date.now()
+          };
+
+          // 返回一个Promise（会被自动转换为Observable）
+          return Promise.all([
+            fetch('https://jsonplaceholder.typicode.com/posts/1').then(response => response.json()),
+            fetch('https://jsonplaceholder.typicode.com/posts/3').then(response => response.json()),
+            fetch('https://jsonplaceholder.typicode.com/posts/2').then(response => response.json())
+          ]);
+        })
+        .inspect(result => {
+          if (start) {
+            console.log('处理耗时:', performance.now() - start);
+            start = 0
+          }
+        })
+        .subscribe(result => {
+          console.log('点击跟踪结果:', result);
+        });
+    }
+
+    async function handleClick17() {
+      const el = document.getElementById('list');
+      const r = await el.when('click')
+        .filter(event => event.target.tagName === 'LI')
+        .take(3)
+        .forEach((event, index) => {
+          console.log(`第 ${index + 1} 次按钮点击:`, event.target.textContent);
+          // 这里可以执行副作用操作，如修改UI
+          event.target.style.backgroundColor = 'lightblue';
+
+          // 3秒后恢复颜色
+          setTimeout(() => {
+            event.target.style.backgroundColor = '';
+          }, 3000);
+          if (index === 2) {
+            throw new Error('结束')
+          }
+          return index
+        }).then(r => {
+          console.log(r, '2--res');
+          return 2333
+        }).catch(r => {
+          console.log(r, '--catch');
+          return 2444
+        }).finally(() => {
+          console.log('--finally');
+        }).then(r => {
+          console.log(r, '--res2');
+          return 2555
+        })
+      console.log(r, '--res'); // 2333
+    }
+
+    // handleClick17()
+    // handleClick16()
+    // handleClick15()
+    // handleClick3()
+    // handleClick4()
+    // handleClick5()
+    // handleClick6()
+    // handleClick7()
+    // handleClick8()
+    // handleClick9()
+    // handleClick10()
+    // handleClick11()
+    // handleClick12()
+    // handleClick13()
+    // handleClick14()
+    // 
+
+  </script>
+</body>
+
+</html>

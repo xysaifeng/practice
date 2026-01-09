@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+  <style>
+    #video {
+      border: 1px solid #999;
+      width: 98%;
+      max-width: 860px;
+    }
+
+    #log {
+      width: 25rem;
+      height: 15rem;
+      border: 1px solid black;
+      padding: 0.5rem;
+      overflow: scroll;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="start">点击录像</button>
+  <button id="stopp">停止录像</button>
+
+
+  <div>
+    <video id="video" controls autoplay></video>
+  </div>
+
+  <strong>Log:</strong>
+  <br />
+  <pre id="log"></pre>
+
+  <script>
+
+    let videoElem = document.getElementById('video');
+    // console.log('srcObject' in videoElem);
+    let recorder = null
+    let captureStream = null
+    stopp.onclick1 = function () {
+      console.log(1);
+      // let tracks = videoElem.srcObject.getTracks();
+      let tracks = captureStream.getTracks();
+      console.log('captureStream: ', captureStream);
+      console.log('tracks: ', tracks);
+
+
+      tracks.forEach((track) => track.stop());
+      // videoElem.srcObject = null;
+      // captureStream = null;
+    }
+    stopp.onclick = function () {
+      recorder.stop();
+    }
+
+    let chunks = [];
+    start.onclick = async function () {
+      // let video = document.createElement('video');
+      // video.src = 'https://www.w3schools.com/html/mov_bbb.mp4';
+      // video.controls = true;
+      // video.autoplay = true;
+      // document.body.appendChild(video);
+
+      try {
+        // const captureStream = await navigator.mediaDevices.getUserMedia({
+        captureStream = await navigator.mediaDevices.getDisplayMedia({
+          // videoElem.srcObject = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true,
+
+          // video: {
+          //   displaySurface: "window", // browser | window | monitor
+          // },
+          // audio: {
+          //   echoCancellation: true,
+          //   noiseSuppression: true,
+          //   sampleRate: 44100,
+          //   suppressLocalAudioPlayback: true,
+          // },
+          // surfaceSwitching: "include",
+          // selfBrowserSurface: "exclude",
+          // systemAudio: "exclude",
+        });
+
+        // videoElem.src = URL.createObjectURL(captureStream);
+        // videoElem.srcObject = (captureStream);
+        console.log(videoElem.srcObject);
+        const options = {
+          audioBitsPerSecond: 128000,
+          videoBitsPerSecond: 2500000,
+          mimeType: "video/mp4",
+        };
+        recorder = new MediaRecorder(captureStream, options)
+
+        console.log('recorder: ', recorder);
+
+
+        recorder.ondataavailable = function (e) {
+          chunks.push(e.data);
+        };
+
+        recorder.onstop = function (e) {
+          console.log(captureStream, 2);
+          const blob = new Blob(chunks, { type: 'video/mp4' });
+          const audioURL = window.URL.createObjectURL(blob);
+          videoElem.src = audioURL;
+        };
+
+        recorder.start();
+
+
+        // console.log('recorder: ', recorder);
+
+        // console.log(captureStream.getVideoTracks(), 1);
+        const stream = captureStream.getVideoTracks()[0];
+        // console.log('stream: ', stream);
+        // console.log(stream.getCapabilities(), 1);
+        // console.log(stream.getCaptureHandle(), 2);
+        // console.log(stream.getConstraints(), 3);
+        // console.log(stream.getSettings(), 4);
+        stream.onended = function () {
+          console.log('ended');
+          // recorder.stop();
+          // const blob = new Blob(chunks, { type: 'video/mp4' });
+          // const audioURL = window.URL.createObjectURL(blob);
+          // videoElem.src = audioURL;
+        };
+      } catch (error) {
+        console.log('error: ', error);
+
+      }
+    }
+  </script>
+</body>
+
+</html>

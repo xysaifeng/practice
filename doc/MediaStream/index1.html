@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <video id="video"></video>
+  </div>
+  <script>// Prefer camera resolution nearest to 1280x720.
+    const constraints = {
+      audio: false,
+      // video: { width: 1280, height: 540, facingMode: { exact: "user" } },
+      // video: { width: 1280, height: 540, facingMode: 'user', frameRate: { ideal: 10, max: 15 } },
+      video: true,
+    };
+
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((mediaStream) => {
+        const video = document.querySelector("video");
+        console.dir(video);
+        video.srcObject = mediaStream;
+        // console.log('mediaStream: ', mediaStream);
+
+        // video.src = URL.createObjectURL(new Blob([mediaStream], { type: 'video/mp4' }));
+        // console.log(' video.src: ', video.src);
+
+        video.onloadeddata = (event) => {
+          console.log(
+            "Yay! readyState just increased to  " +
+            "HAVE_CURRENT_DATA or greater for first time.",
+          );
+        };
+        video.onloadedmetadata = () => {
+          console.log('play');
+          video.play();
+        };
+        video.loadstart = () => {
+          console.log('loadstart');
+          // video.play();
+        };
+      })
+      .catch((err) => {
+        // always check for errors at the end.
+        console.error(`${err.name}: ${err.message}`);
+      });</script>
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="play">radio play</button>
+  <button id="pause">pause</button>
+  <hr>
+  <button id="play2">video play</button>
+  <button id="pause2">video pause</button>
+  <canvas id="cas" width="300" height="300"></canvas>
+  <script>
+
+    const url = 'https://ws6.stream.qqmusic.qq.com/RS02003rJ07J34rn73.mp3?guid=1755151698&vkey=A312DC29ACF394FC8968E08B06AA8A9AF69644C633B730337F42397B2EC5864478D1932D49F7973FF4F9B62543F0726C421203EF235AC150__v2b9ab89a&uin=&fromtag=154'
+    const videoUrl = 'https://www.runoob.com/try/demo_source/movie.mp4'
+    const player = new Object({
+      play() {
+        this.audio = document.createElement('audio');
+        this.audio.src = url;
+        this.audio.volume = 0.8; // 可以设置音量
+        this.audio.play()
+        this.audio.isPlaying = true;
+        this.audio.onended = function () {
+          console.log('播放结束')
+        }
+      },
+      pause() {
+        if (this.audio.isPlaying) {
+          this.audio.pause()
+          this.audio.isPlaying = false;
+        } else {
+          this.audio.play()
+          this.audio.isPlaying = true;
+        }
+      }
+    })
+    console.log(player);
+    play.onclick = function () {
+      player.play()
+    }
+    pause.onclick = function () {
+      player.pause()
+    }
+
+    const videoPlayer = new Object({
+      video: document.createElement('video'),
+
+      play() {
+
+        if (this.video.isPlaying) {
+          console.log(this.video?.paused, this.video?.isPlaying);
+          return
+        }
+
+        console.log(this.video, this.video?.paused, this.video?.ended);
+        // if(this.video && (this.video.paused || this.video.ended)) {}
+        this.video.src = videoUrl;
+        this.video.volume = 0.8; // 可以设置音量
+        this.video.play()
+        this.video.controls = true;
+        this.video.isPlaying = true;
+        const canvasBox = document.createElement('canvas');
+        this.canvasBox = document.getElementById('cas');
+        // canvasBox.width = 300;
+        // canvasBox.height = 300;
+        this.ctx = this.canvasBox.getContext('2d');
+        document.body.appendChild(canvasBox);
+        this.video.draw = () => {
+          if (!this.video?.paused && !this.video?.ended) {
+            this.ctx.drawImage(this.video, 0, 0, this.canvasBox.width, this.canvasBox.height);
+            requestAnimationFrame(this.video.draw);
+          }
+        }
+
+        this.video.draw()
+
+        this.video.onended = () => {
+          console.log('播放结束')
+          this.video.isPlaying = false
+          setTimeout(() => {
+            this.video = null
+          }, 10);
+        }
+      },
+      pause() {
+        console.log('this.video: ', this, this.video.isPlaying);
+        if (this.video.isPlaying) {
+          this.video.pause()
+          this.video.isPlaying = false
+        } else {
+          this.video.play()
+          this.video.draw()
+          this.video.isPlaying = true
+        }
+      }
+    })
+
+    play2.onclick = function () {
+      videoPlayer.play()
+    }
+    pause2.onclick = function () {
+      videoPlayer.pause()
+    }
+  </script>
+</body>
+
+</html>

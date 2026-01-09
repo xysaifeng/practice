@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .box {
+      width: 200px;
+      height: 40px;
+      display: inline-block;
+      padding: 1em;
+      margin: 8px;
+      outline: 2px solid #333;
+      vertical-align: middle;
+    }
+
+    .theme-a {
+      background: #dca;
+      color: #731;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .theme-a.adaptive {
+        background: #753;
+        color: #dcb;
+        outline: 5px dashed #000;
+      }
+    }
+
+    .theme-b {
+      background: #447;
+      color: #bbd;
+    }
+
+    @media (prefers-color-scheme: light) {
+      .theme-b.adaptive {
+        background: aquamarine;
+        color: #334;
+        outline: 5px dotted #000;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box theme-a">Theme A (initial)</div>
+  <div class="box theme-a adaptive">Theme A (changed if dark preferred)</div>
+  <br />
+
+  <div class="box theme-b">Theme B (initial)</div>
+  <div class="box theme-b adaptive">Theme B (changed if light preferred)</div>
+
+  <hr>
+
+  <script>
+    const themeObj = window.matchMedia('(prefers-color-scheme: light)');
+    console.log('themeObj: ', themeObj);
+
+    themeObj.addEventListener('change', (e) => {
+      console.log('e: ', e);
+      console.log('e.matches: ', e.matches);
+      console.log('e.media: ', e.media);
+      console.log('e.type: ', e.type);
+      console.log('e.target: ', e.target);
+      console.log('e.currentTarget: ', e.currentTarget);
+    })
+  </script>
+</body>
+
+</html>

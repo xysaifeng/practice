@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>冒泡排序可视化</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .bar {
+      transition: all 0.3s ease;
+    }
+
+    .comparing {
+      background-color: #f59e0b !important;
+    }
+
+    .swapping {
+      background-color: pink !important;
+    }
+
+    .sorted {
+      background-color: #10b981 !important;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">冒泡排序可视化</h1>
+    <p class="text-center text-gray-600 mb-8">通过柱状图动态展示排序过程</p>
+
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1">输入数组</label>
+          <div class="flex gap-2">
+            <input type="text" id="array-input"
+              class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              placeholder="例如: 5,3,8,4,2">
+            <button id="random-btn" class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
+              <i class="fas fa-random mr-1"></i>随机
+            </button>
+          </div>
+        </div>
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1">排序速度</label>
+          <select id="speed-select"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <option value="1000">慢速</option>
+            <option value="50" selected>中速</option>
+            <option value="10">快速</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-center gap-4 mb-6">
+        <button id="start-btn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">
+          <i class="fas fa-play mr-1"></i>开始排序
+        </button>
+        <button id="step-btn" class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition">
+          <i class="fas fa-step-forward mr-1"></i>单步执行
+        </button>
+        <button id="reset-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
+          <i class="fas fa-redo mr-1"></i>重置
+        </button>
+      </div>
+
+      <div class="h-64 flex items-end justify-center gap-1 mb-6" id="visualization">
+        <!-- 柱状图将在这里动态生成 -->
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-sm font-medium text-gray-500">比较次数</h3>
+          <p id="compare-count" class="text-2xl font-semibold text-gray-800">0</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-sm font-medium text-gray-500">交换次数</h3>
+          <p id="swap-count" class="text-2xl font-semibold text-gray-800">0</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="text-sm font-medium text-gray-500">当前状态</h3>
+          <p id="status" class="text-2xl font-semibold text-gray-800">准备就绪</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">算法说明</h2>
+      <div class="prose prose-indigo max-w-none">
+        <p>冒泡排序是一种简单的排序算法，它重复地遍历要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。</p>
+        <p>算法步骤：</p>
+        <ol class="list-decimal pl-5">
+          <li>比较相邻的元素。如果第一个比第二个大，就交换它们两个。</li>
+          <li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。</li>
+          <li>针对所有的元素重复以上的步骤，除了最后一个。</li>
+          <li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 初始化变量
+    let array = [];
+    let isSorting = false;
+    let sortingInterval = null;
+    let shouldStopSorting = false;
+    let compareCount = 0;
+    let swapCount = 0;
+    let speed = 500;
+
+    // DOM元素
+    const arrayInput = document.getElementById('array-input');
+    const speedSelect = document.getElementById('speed-select');
+    const startBtn = document.getElementById('start-btn');
+    const stepBtn = document.getElementById('step-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const randomBtn = document.getElementById('random-btn');
+    const visualization = document.getElementById('visualization');
+    const compareCountEl = document.getElementById('compare-count');
+    const swapCountEl = document.getElementById('swap-count');
+    const statusEl = document.getElementById('status');
+
+    // 初始化
+    function init() {
+      array = [5, 3, 8, 4, 2];
+      arrayInput.value = array.join(',');
+      renderBars();
+      updateStats();
+    }
+
+    // 渲染柱状图
+    function renderBars() {
+      visualization.innerHTML = '';
+      const maxValue = Math.max(...array, 1);
+
+      array.forEach((value, index) => {
+        const bar = document.createElement('div');
+        bar.className = 'bar bg-indigo-500 rounded-t-md flex items-center justify-center text-white text-xs';
+        bar.style.height = `${(value / maxValue) * 100}%`;
+        bar.style.width = '40px';
+        bar.textContent = value;
+        bar.dataset.index = index;
+        visualization.appendChild(bar);
+      });
+    }
+
+    // 更新统计信息
+    function updateStats() {
+      compareCountEl.textContent = compareCount;
+      swapCountEl.textContent = swapCount;
+    }
+
+    // 冒泡排序算法
+    async function bubbleSort(stepByStep = false) {
+      // debugger
+      if (isSorting) return;
+      isSorting = true;
+      shouldStopSorting = false; // 重置停止标志
+      statusEl.textContent = '排序中...';
+
+      const n = array.length;
+      let swapped;
+
+      outer: for (let i = 0; i < n - 1; i++) {
+        // 检查是否需要停止排序
+        if (shouldStopSorting) {
+          break outer;
+        }
+
+        swapped = false;
+        inner: for (let j = 0; j < n - i - 1; j++) {
+          // 再次检查是否需要停止排序
+          if (shouldStopSorting) {
+            break outer;
+          }
+
+          // 高亮显示正在比较的元素
+          highlightBars(j, j + 1, 'comparing');
+          compareCount++;
+          updateStats();
+
+          // 等待动画完成
+          await new Promise(resolve => setTimeout(resolve, speed));
+          // 再次检查是否需要停止排序
+          if (shouldStopSorting) {
+            break outer;
+          }
+
+          if (array[j] > array[j + 1]) {
+            // 交换元素
+            highlightBars(j, j + 1, 'swapping');
+            swapCount++;
+            updateStats();
+            await new Promise(resolve => setTimeout(resolve, speed));
+
+            if (shouldStopSorting) {
+              break outer;
+            }
+
+            [array[j], array[j + 1]] = [array[j + 1], array[j]];
+            renderBars();
+            swapped = true;
+            await new Promise(resolve => setTimeout(resolve, speed));
+          }
+          // 移除高亮
+          removeHighlight(j, j + 1);
+          if (stepByStep) {
+            // 单步模式下等待用户点击
+            await waitForStep();
+          }
+        }
+        // 标记已排序的元素
+        markSorted(n - i - 1);
+        if (!swapped) break;
+
+      }
+      // 标记所有元素为已排序（仅在未被中断时执行）
+      if (!shouldStopSorting) {
+        for (let i = 0; i < n; i++) {
+          markSorted(i);
+        }
+      }
+
+      isSorting = false;
+      if (!shouldStopSorting) {
+        statusEl.textContent = '排序完成';
+      }
+    }
+
+    // 高亮柱子
+    function highlightBars(index1, index2, className) {
+      console.log('className: ', className);
+      const bars = document.querySelectorAll('.bar');
+      bars[index1].classList.add(className);
+      bars[index2].classList.add(className);
+    }
+
+    // 移除高亮
+    function removeHighlight(index1, index2) {
+      const bars = document.querySelectorAll('.bar');
+      // 2222222
+      bars[index1].classList.remove('comparing', 'swapping');
+      bars[index2].classList.remove('comparing', 'swapping');
+    }
+
+    // 标记已排序
+    function markSorted(index) {
+      console.log('index: ', index);
+      const bars = document.querySelectorAll('.bar');
+      bars[index].classList.add('sorted');
+    }
+
+    // 等待单步执行
+    let resolveStep;
+    function waitForStep() {
+      return new Promise(resolve => {
+        resolveStep = resolve;
+      });
+      // const { resolve } = Promise.withResolvers();
+      // resolveStep = resolve;
+    }
+
+    // 事件监听器
+    startBtn.addEventListener('click', () => {
+      if (!isSorting) {
+        const inputArray = arrayInput.value.split(',').map(Number).filter(n => !isNaN(n));
+        console.log(inputArray, '===inputArray');
+        if (inputArray.length > 0) {
+          array = inputArray;
+          compareCount = 0;
+          swapCount = 0;
+          updateStats();
+          renderBars();
+          bubbleSort();
+        }
+      }
+    });
+
+    // 单步执行
+    stepBtn.addEventListener('click', () => {
+      console.log('isSorting: ', isSorting);
+      if (!isSorting) {
+        const inputArray = arrayInput.value.split(',').map(Number).filter(n => !isNaN(n));
+        if (inputArray.length > 0) {
+          array = inputArray;
+          compareCount = 0;
+          swapCount = 0;
+          updateStats();
+          renderBars();
+          bubbleSort(true);
+        }
+      } else if (resolveStep) {
+        resolveStep();
+      }
+    });
+
+    // 重置
+    resetBtn.addEventListener('click', () => {
+      // 设置停止标志
+      shouldStopSorting = true;
+
+      isSorting = false;
+      compareCount = 0;
+      swapCount = 0;
+      updateStats();
+      init();
+      statusEl.textContent = '准备就绪';
+    });
+
+    randomBtn.addEventListener('click', () => {
+      const randomArray = Array.from({ length: 8 }, () => Math.floor(Math.random() * 20) + 1);
+      arrayInput.value = randomArray.join(',');
+      array = randomArray;
+      compareCount = 0;
+      swapCount = 0;
+      updateStats();
+      renderBars();
+      statusEl.textContent = '准备就绪';
+    });
+
+    speedSelect.addEventListener('change', () => {
+      speed = parseInt(speedSelect.value);
+    });
+
+    // 初始化应用
+    init();
+  </script>
+</body>
+
+</html>

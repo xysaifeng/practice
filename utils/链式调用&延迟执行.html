@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+
+    function arrange2(name) {
+      tasks = []
+      return {
+        wait: function (time) {
+          tasks[1] = () => new Promise((resolve) => setTimeout(() => {
+            console.log(2);
+            resolve()
+          }, time * 1000))
+          return this;
+        },
+        waitFirst: function (time) {
+          tasks[0] = () => new Promise((resolve) => setTimeout(() => {
+            resolve()
+            console.log(1);
+          }, time * 1000))
+          return this;
+        },
+        do: function (action) {
+          tasks[2] = () => console.log(`${name} is ${action}`)
+          return this;
+        },
+        execute: function () {
+
+          (async () => {
+            for (let i = 0; i < tasks.length; i++) {
+              await tasks[i]()
+            }
+          })()
+          return this;
+        }
+      }
+    }
+
+    function arrange(name) {
+      tasks = []
+
+      tasks.push(() => console.log(`> ${name} is notified`))
+
+      function doAction(action) {
+        tasks.push(() => console.log(`> start to ${action} `))
+        return this;
+      }
+
+      function wait(time) {
+        tasks.push(() => new Promise(resolve => setTimeout(() => {
+          console.log(`${name} is waiting ${time} seconds`)
+          resolve()
+        }, time * 1000)))
+        return this;
+      }
+
+      function waitFirst(time) {
+        tasks.unshift(() => new Promise(resolve => setTimeout(() => {
+          console.log(`${name} is waitFirst ${time} seconds`)
+          resolve()
+        }, time * 1000)))
+        return this;
+      }
+
+      function execute() {
+        (async () => {
+          console.log(tasks);
+          for (let task of tasks) {
+            await task()
+          }
+        })()
+        return this;
+      }
+
+
+      return {
+        do: doAction,
+        wait,
+        waitFirst,
+        execute
+      }
+    }
+
+
+    arrange('William').wait(5)
+      .do('commit')
+      .wait(2)
+      .waitFirst(3)
+      .execute()
+
+
+  </script>
+
+</body>
+
+</html>
