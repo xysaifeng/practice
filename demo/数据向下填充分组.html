@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShareNetWt 计算示例</title>
+
+</head>
+
+<body>
+
+
+  <script>
+    const hasTradeQtyRows = [
+      {
+        "SeqNo": "1",
+        "TradeQty": 200,
+        "NetWt": 200,
+        // "NetWt": '',
+        "ShareNetWt": "",
+      },
+      {
+        "SeqNo": "2",
+        "TradeQty": 300,
+        "NetWt": 100,
+        "ShareNetWt": "",
+      },
+      {
+        "SeqNo": "3",
+        "TradeQty": 400,
+        // "NetWt": 120,
+        "ShareNetWt": "",
+      },
+      {
+        "SeqNo": "4",
+        "TradeQty": 500,
+        "NetWt": '1',
+        "ShareNetWt": "",
+      },
+      {
+        "SeqNo": "5",
+        "TradeQty": 600,
+        "NetWt": '',
+        "ShareNetWt": "",
+      }
+    ]
+
+
+    console.log('原始数据:', hasTradeQtyRows);
+    const arr = []
+    let currentItem = null
+
+    hasTradeQtyRows.forEach((item, i, a) => {
+      // debugger
+      const next = a[i + 1]
+      if (item.NetWt) {
+        if (currentItem) {
+          arr.push({ ...currentItem })
+          currentItem = null
+        }
+
+        currentItem = { NetWt: item.NetWt, group: [item] }
+
+        // 在这里判断可以
+        if (next && next.NetWt) {
+          arr.push(currentItem)
+          currentItem = null
+        }
+      } else {
+        if (currentItem) {
+          currentItem.group.push(item)
+
+          // 在这里判断也可以
+          // if (next && next.NetWt) {
+          //   arr.push(currentItem)
+          //   currentItem = null
+          // }
+        }
+      }
+    })
+
+    if (currentItem) {
+      arr.push(currentItem)
+    }
+    console.log(arr, '-----arr');
+
+
+  </script>
+</body>
+
+</html>

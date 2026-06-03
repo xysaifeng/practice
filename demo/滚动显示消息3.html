@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box {
+      position: relative;
+    }
+
+    .loc-entry {
+      display: block;
+      /* overflow: hidden; */
+      width: 54px;
+      height: 64px;
+      line-height: 64px;
+      color: #18191C;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #E5E5E5;
+    }
+
+    img {
+      width: 100%;
+      height: 20px;
+    }
+
+    .loc-mc-box {
+      --left-loc-height: 64px;
+      position: relative;
+      overflow: hidden;
+      width: 54px;
+      height: calc(var(--left-loc-height) * 3);
+      animation: locmoveclipslider 10s infinite ease-out;
+      animation-delay: 4.5s;
+    }
+
+    .loc-mc-box__text {
+      --left-loc-height: 64px;
+      width: 100%;
+      height: var(--left-loc-height);
+      color: #18191C;
+      text-align: center;
+      line-height: var(--left-loc-height);
+    }
+
+    .loc-mc-box__text--down {
+      --left-loc-height: 64px;
+      position: absolute;
+      top: calc(var(--left-loc-height) * 2);
+      left: 0;
+    }
+
+    .loc-mc-box__pic {
+      --left-loc-height: 64px;
+      position: absolute;
+      top: var(--left-loc-height);
+      left: 0;
+      width: 54px;
+      height: var(--left-loc-height);
+      transform: translateZ(0);
+      display: flex;
+      align-items: center;
+    }
+
+    .loc-mc-box__text--up {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    @keyframes locmoveclipslider {
+      0% {
+        transform: translateY(0);
+      }
+
+      5% {
+        transform: translateY(-64px);
+      }
+
+      50% {
+        transform: translateY(-64px);
+      }
+
+      55% {
+        transform: translateY(-128px);
+      }
+
+      100% {
+        transform: translateY(-128px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <a class="loc-entry loc-moveclip" loc-id="2954" href="https://www.bilibili.com/blackboard/era/oM2KU9cFu4RjrX9U.html"
+      target="_blank">
+      <div class="loc-mc-box">
+        <p class="loc-mc-box__text loc-mc-box__text--up">新春1</p>
+        <p class="loc-mc-box__pic"><img src="/img/xin.png" alt="图片"></p>
+        <p class="loc-mc-box__text loc-mc-box__text--down">新春季</p>
+      </div>
+    </a>
+  </div>
+
+  <script>
+
+
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <p>child</p>
+  <script>
+    console.log(1111);
+
+    setTimeout(() => {
+      // 向父窗口发送消息
+      window.parent.postMessage({ data: 12 }, 'http://127.0.0.1:5501')
+    }, 2000);
+  </script>
+</body>
+
+</html>

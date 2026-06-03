@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShareNetWt 计算示例</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .code {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>ShareNetWt 计算示例</h1>
+
+    <div class="section">
+      <h2>原始数据</h2>
+      <div id="original-data"></div>
+    </div>
+
+    <div class="section">
+      <h2>分组结果</h2>
+      <div id="group-result"></div>
+    </div>
+
+    <div class="section">
+      <h2>计算结果</h2>
+      <div id="calculation-result"></div>
+    </div>
+  </div>
+
+  <script>
+    const hasTradeQtyRows = [
+      {
+        "SeqNo": "1",
+        "TradeQty": 200,
+        "NetWt": 200,
+        // "NetWt": '',
+        "ShareNetWt": "",
+      },
+      {
+        "SeqNo": "2",
+        "TradeQty": 300,
+        "NetWt": '',
+        "ShareNetWt": "",
+      },
+      {
+        "SeqNo": "3",
+        "TradeQty": 400,
+        "NetWt": 120,
+        "ShareNetWt": "",
+      },
+      {
+        "SeqNo": "4",
+        "TradeQty": 500,
+        "NetWt": '',
+        "ShareNetWt": "",
+      },
+      {
+        "SeqNo": "5",
+        "TradeQty": 600,
+        "NetWt": '',
+        "ShareNetWt": "",
+      }
+    ]
+
+
+
+
+    // 生成表格的函数
+    function generateTable(data) {
+      if (!data || data.length === 0) return '<p>无数据</p>';
+
+      const headers = Object.keys(data[0]);
+      let table = '<table><thead><tr>';
+
+      // 添加表头
+      headers.forEach(header => {
+        table += `<th>${header}</th>`;
+      });
+      table += '</tr></thead><tbody>';
+
+      // 添加数据行
+      data.forEach(row => {
+        table += '<tr>';
+        headers.forEach(header => {
+          table += `<td>${row[header]}</td>`;
+        });
+        table += '</tr>';
+      });
+
+      table += '</tbody></table>';
+      return table;
+    }
+
+    // 显示原始数据
+    document.getElementById('original-data').innerHTML = generateTable(hasTradeQtyRows);
+    console.log('原始数据:', hasTradeQtyRows);
+
+    // 分组逻辑
+    const group = []
+    let temp = []
+    let currentNetWt = 0
+    let seq = 0
+
+    hasTradeQtyRows.forEach((item, i, a) => {
+      if (item.NetWt) {
+        // 有NetWt的行
+        if (temp.length > 0) {
+          // 之前有临时组，先结束并添加到group
+          group.push({ items: [...temp], netWt: currentNetWt, seq })
+          temp = []
+        }
+        // 开始新组
+        currentNetWt = item.NetWt
+        seq = item.SeqNo
+        temp.push(item)
+
+        // 检查下一行是否有NetWt
+        const next = a[i + 1]
+        if (next && next.NetWt) {
+          // 下一行也有NetWt，当前组结束
+          group.push({ items: [...temp], netWt: currentNetWt, seq })
+          temp = []
+        }
+      } else {
+        // 没有NetWt的行，添加到当前临时组
+        if (temp.length > 0) {
+          temp.push(item)
+        }
+      }
+    })
+
+    // 处理最后一个组
+    if (temp.length > 0) {
+      group.push({ items: temp, netWt: currentNetWt, seq })
+    }
+
+    // 显示分组结果
+    let groupHtml = '';
+    group.forEach((g, index) => {
+      groupHtml += `<div style="margin-bottom: 20px;">
+        <h3>组 ${index + 1} (NetWt: ${g.netWt})</h3>
+        ${generateTable(g.items)}
+      </div>`;
+    });
+    document.getElementById('group-result').innerHTML = groupHtml;
+    console.log('分组结果:', group);
+
+    // 计算ShareNetWt
+    group.forEach(groupItem => {
+      const { items, netWt } = groupItem
+      // 计算组内TradeQty总和
+      const sumQty = items.reduce((sum, item) => sum + (item.TradeQty || 0), 0)
+      console.log(`组内总数量SumQty: ${sumQty}, 组内NetWt: ${netWt}`);
+
+      // 计算每行的ShareNetWt
+      items.forEach(item => {
+        if (sumQty > 0) {
+          item.ShareNetWt = (netWt / sumQty) * (item.TradeQty || 0)
+        } else {
+          item.ShareNetWt = 0
+        }
+      })
+    })
+
+    // 显示计算结果
+    document.getElementById('calculation-result').innerHTML = generateTable(hasTradeQtyRows);
+    console.log('计算结果:', hasTradeQtyRows);
+
+  </script>
+</body>
+
+</html>
